@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PageRoutePath } from "./utils/config";
 import { ApplicationPages } from "./pages/index";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -13,15 +12,18 @@ function App() {
             <Route exact path='/' element={<Home/>}/>
           </Route> */}
         <Route
-          exact
           path={PageRoutePath.LOGIN}
           element={<ApplicationPages.Login />}
         />
 
         <Route
-          exact
           path={PageRoutePath.HOME}
           element={<ApplicationPages.Home />}
+        />
+
+        <Route
+          path={PageRoutePath.REGISTER}
+          element={<ApplicationPages.Register />}
         />
       </Routes>
     </BrowserRouter>

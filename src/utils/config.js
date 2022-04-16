@@ -1,4 +1,14 @@
 export const PageRoutePath = {
+
+    //Auth
     LOGIN: "/Login",
-    HOME: "/"
+    REGISTER: "/Register",
+
+    //App
+    HOME: "/Home"
 }
+
+
+export const APIRoutePath = {
+    USER: "/user"
+} 

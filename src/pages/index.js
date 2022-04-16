@@ -1,12 +1,14 @@
-import home from "./Home";
-import login from "./Login";
+import Home from "./Home";
+import Login from "./Login";
+import Register from "./Register"
 
 const ApplicationPages = {
     //Authentication
-    Login: login,
+    Login: Login,
+    Register: Register,
 
     //App
-    Home: home
+    Home: Home
    
 }
 
