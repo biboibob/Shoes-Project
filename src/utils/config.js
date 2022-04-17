@@ -10,5 +10,6 @@ export const PageRoutePath = {
 
 
 export const APIRoutePath = {
-    USER: "/user"
+    USER: "/user",
+    AUTH_USER: "/user/auth"
 } 

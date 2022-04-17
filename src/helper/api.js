@@ -6,6 +6,7 @@ export default class API {
     this.api_token = null;
     this.client = null;
     this.api_url = process.env.REACT_APP_API_URL;
+    //this.api_url = process.env.REACT_APP_API_URL_DEV;
   }
 
   init = () => {
@@ -25,4 +26,8 @@ export default class API {
   registerUser = (data) => {
     return this.init().post(APIRoutePath.USER, data);
   };
+
+  checkLoginUser = (data) => {
+    return this.init().post(APIRoutePath.AUTH_USER, data)
+  }
 }

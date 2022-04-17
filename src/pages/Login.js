@@ -36,15 +36,26 @@ function Login() {
     if (validateEmptyArray) {
       toast.info("There's Still Empty Field!");
     } else {
-      onRegister();
+      onLogin();
     }
   };
 
-  const onRegister = () => {
+  const onLogin = () => {
     const params = {
       username: form.Username,
       password: form.Password,
     };
+
+    api
+      .checkLoginUser(params)
+      .then((res) => {
+        if (res.data.status === 200) {
+          navigate(PageRoutePath.HOME);
+        } else {
+          toast.info(res.data.content);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const onNavigate = (val, data) => {
