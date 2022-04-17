@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { PageRoutePath } from "../utils/config";
 import API from "../helper/api";
 
 //component
@@ -106,6 +107,8 @@ function Register() {
           <Button variant="contained" onClick={() => onHandleRegister()}>
             Register
           </Button>
+
+          <span className="text-center mt-5">Already Has Account? <span onClick={() => navigate(PageRoutePath.LOGIN)} className="font-bold hover:text-primary-color hover:cursor-pointer">Login</span></span>
         </div>
       </div>
     </>
