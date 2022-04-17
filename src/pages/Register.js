@@ -8,6 +8,7 @@ import API from "../helper/api";
 import FormField from "../components/custom/FormField";
 
 function Register() {
+  //config
   const api = new API();
 
   let navigate = useNavigate();

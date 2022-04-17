@@ -10,14 +10,9 @@ export default class API {
 
   init = () => {
     let headers = {
-      'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-      'Access-Control-Allow-Headers':
-      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+      Accept: "application/json",
     };
-    
+
     this.client = axios.create({
       baseURL: this.api_url,
       timeout: 31000,
