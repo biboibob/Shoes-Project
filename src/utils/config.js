@@ -1,5 +1,4 @@
 export const PageRoutePath = {
-
     //Auth
     LOGIN: "/Login",
     REGISTER: "/Register",
@@ -10,6 +9,10 @@ export const PageRoutePath = {
 
 
 export const APIRoutePath = {
+    LOGIN: "/authServer/login",
+    LOGOUT: "/authServer/logout",
+    REFRESHTOKEN: "/authServer/refreshToken",
+
     USER: "/user",
-    AUTH_USER: "/user/auth"
+    EDIT_USER: "/user/editUser"
 } 

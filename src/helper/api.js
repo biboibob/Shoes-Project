@@ -1,33 +1,23 @@
 import { APIRoutePath } from "../utils/config";
-import * as axios from "axios";
+import Axios from "../utils/Token/interceptor"
+
 
 export default class API {
-  constructor() {
-    this.api_token = null;
-    this.client = null;
-    this.api_url = process.env.REACT_APP_API_URL;
-    //this.api_url = process.env.REACT_APP_API_URL_DEV;
-  }
-
-  init = () => {
-    let headers = {
-      Accept: "application/json",
-    };
-
-    this.client = axios.create({
-      baseURL: this.api_url,
-      timeout: 31000,
-      headers: headers,
-    });
-
-    return this.client;
+  checkLoginUser = (data) => {
+    return Axios.post(APIRoutePath.LOGIN, data);
   };
 
   registerUser = (data) => {
-    return this.init().post(APIRoutePath.USER, data);
+    return Axios.post(APIRoutePath.USER, data);
   };
 
-  checkLoginUser = (data) => {
-    return this.init().post(APIRoutePath.AUTH_USER, data)
-  }
+  getAllUser = () => {
+    return Axios.get(APIRoutePath.USER);
+  };
+
+  editUser = (data) => {
+    return Axios.patch(APIRoutePath.EDIT_USER, data);
+  };
+  
 }
+

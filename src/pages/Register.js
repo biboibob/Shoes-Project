@@ -57,10 +57,18 @@ function Register() {
     api
       .registerUser(params)
       .then((res) => {
-        //console.log(res);
+        toast.success(res.data.content);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally((res) => {
+        setForm({
+          Username: "",
+          Password: "",
+          ConfirmPassword: "",
+          Email: "",
+        });
       });
   };
 
@@ -75,7 +83,7 @@ function Register() {
           <FormField
             label={"Username"}
             name={"Username"}
-            value={form.UserName}
+            value={form.Username}
             onChange={onChangeForm}
             vertical={true}
           />
@@ -108,7 +116,15 @@ function Register() {
             Register
           </Button>
 
-          <span className="text-center mt-5">Already Has Account? <span onClick={() => navigate(PageRoutePath.LOGIN)} className="font-bold hover:text-primary-color hover:cursor-pointer">Login</span></span>
+          <span className="text-center mt-5">
+            Already Has Account?{" "}
+            <span
+              onClick={() => navigate(PageRoutePath.LOGIN)}
+              className="font-bold hover:text-primary-color hover:cursor-pointer"
+            >
+              Login
+            </span>
+          </span>
         </div>
       </div>
     </>
