@@ -5,6 +5,7 @@ import TokenService from "./tokenService";
 
 // tokenService
 const tokenService = TokenService.getService();
+let refreshTokenPromise;
 
 const AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL_DEV /*Dev Only*/,
@@ -22,7 +23,6 @@ AxiosInstance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
-    //config.headers['Content-Type'] = 'application/json';
     return config;
   },
   (error) => {
@@ -41,30 +41,62 @@ AxiosInstance.interceptors.response.use(
       error.response.status === 403 &&
       originalRequest.url === "/authServer/refreshToken"
     ) {
-      console.log("i got hit?");
-      //console.log("this token has been change");
       return Promise.reject(error);
     }
-
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refreshToken = tokenService.getRefreshToken();
-      return AxiosInstance.post("/authServer/refreshToken", {
-        token: refreshToken,
-      }).then((res) => {
-        if (res.status === 200) {
-          tokenService.setNewToken({
-            accessToken: res.data.accessToken,
-          });
-          AxiosInstance.defaults.headers.common["Authorization"] =
-            "Bearer " + tokenService.getAccessToken();
-
-          return AxiosInstance(originalRequest);
-        }
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = getRefreshToken().then((token) => {
+          refreshTokenPromise = null; // clear state
+          return token; // resolve with the new token
+        });
+      }
+      
+      return refreshTokenPromise.then(() => {
+        AxiosInstance.defaults.headers.common["Authorization"] =
+        "Bearer " + tokenService.getAccessToken();
+        
+        return AxiosInstance.request(originalRequest);
       });
+
+      // ******* Issued Way With Parallel Request ****** //
+
+      //const refreshToken = tokenService.getRefreshToken();
+      // return AxiosInstance.post("/authServer/refreshToken", {
+      //   token: refreshToken,
+      // })
+      //   .then((res) => {
+      //     if (res.status === 200) {
+      //       tokenService.setToken({
+      //         accessToken: res.data.accessToken,
+      //         refreshToken: res.data.refreshToken,
+      //       });
+      //       AxiosInstance.defaults.headers.common["Authorization"] =
+      //         "Bearer " + tokenService.getAccessToken();
+
+      //       return AxiosInstance.request(originalRequest);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+
+      // ******* End ****** //
     }
     return Promise.reject(error);
   }
 );
+
+const getRefreshToken = () =>
+  AxiosInstance.post("/authServer/refreshToken", {
+    token: tokenService.getRefreshToken(),
+  }).then((res) => {
+    tokenService.setToken({
+      accessToken: res.data.accessToken,
+      refreshToken: res.data.refreshToken,
+    });
+
+    return res.data.refreshToken;
+  });
 
 export default AxiosInstance;
