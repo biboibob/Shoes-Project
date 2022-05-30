@@ -1,10 +1,20 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React from "react";
+import { Route } from "react-router-dom";
+// import { Navigate, Outlet } from "react-router-dom";
+// import interceptor from "../../utils/Token/interceptor";
 
-const PrivateRoute = () => {
-    const auth = null; // determine if authorized, from context or however you're doing it
+const PrivateRoute = ({ children, ...rest }) => {
 
-    // If authorized, return an outlet that will render child elements
-    // If not, return element that will navigate to login page
-    return auth ? <Outlet /> : <Navigate to="/login" />;
-}
+  console.log(children)
+  console.log(...rest)
+  return (
+    <Route
+      {...rest}
+      render={() => (children)}
+    />
+
+    
+  );
+};
+
+export default PrivateRoute;

@@ -4,13 +4,24 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../utils/config";
 import API from "../helper/api";
+import TokenService from "../utils/Token/tokenService";
+import { useDispatch } from "react-redux";
+
+//redux Action
+import { addUser } from "../service/redux/slice/user";
 
 //component
 import FormField from "../components/custom/FormField";
 
+// tokenService
+const tokenService = TokenService.getService();
+
 function Login() {
   const api = new API();
   let navigate = useNavigate();
+
+  //redux
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     Username: "",
@@ -50,9 +61,14 @@ function Login() {
       .checkLoginUser(params)
       .then((res) => {
         if (res.data.status === 200) {
+          dispatch(addUser(res.data.data.userInfo));
           navigate(PageRoutePath.HOME);
+          tokenService.setToken({
+            accessToken: res.data.data.accessToken,
+            refreshToken: res.data.data.refreshToken,
+          });
         } else {
-          toast.info(res.data.content);
+          toast.info(res.data.message);
         }
       })
       .catch((err) => console.log(err));
@@ -69,7 +85,7 @@ function Login() {
         <h1 className="text-center text-2xl font-bold bg-primary-color text-white p-3">
           Login Page
         </h1>
-        <div className="flex flex-col px-10 py-6 gap-5">
+        <div className="flex flex-col px-10 py-6 gap-3">
           <FormField
             label={"Username"}
             name={"Username"}
