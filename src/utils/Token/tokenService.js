@@ -13,9 +13,6 @@ const tokenService = (function () {
     Cookies.set("accessToken", tokenObj.accessToken);
     Cookies.set("refreshToken", tokenObj.refreshToken);
   }
-  function _setNewToken(tokenObj) {
-    Cookies.set("accessToken", tokenObj.accessToken);
-  }
   function _getAccessToken() {
     return Cookies.get("accessToken");
   }
@@ -29,7 +26,6 @@ const tokenService = (function () {
   return {
     getService: _getService,
     setToken: _setToken,
-    setNewToken: _setNewToken,
     getAccessToken: _getAccessToken,
     getRefreshToken: _getRefreshToken,
     clearToken: _clearToken,

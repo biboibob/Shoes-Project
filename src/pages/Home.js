@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { faTrash, faEdit, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 //component
 import FormField from "../components/custom/FormField";
@@ -15,7 +15,7 @@ function Home() {
   const [users, setUsers] = useState([]);
 
   //redux 
-  const ReduxVal = useSelector((state) => state.userInfoStore);
+  // const ReduxVal = useSelector((state) => state.userInfoStore);
 
   const [form, setForm] = useState({
     Username: "",
@@ -85,9 +85,6 @@ function Home() {
         console.log(err);
       });
   }, []);
-
-
-  console.log("This is redux val", ReduxVal)
 
   return (
     <>
