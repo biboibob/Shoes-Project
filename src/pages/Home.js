@@ -139,7 +139,6 @@ function Home() {
       </Modal>
 
       <div className="flex flex-col">
-        <span>Home</span>
         <div className="flex flex-col max-w-screen-md mx-auto">
           <span>test</span>
           <table className="tableConfig table-fixed">
