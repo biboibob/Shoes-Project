@@ -1,7 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PageRoutePath } from "./utils/config";
-import { ApplicationPages } from "./pages/index";
+import {
+  Home,
+  Login,
+  Register,
+  Products,
+  DetailProduct,
+  Cart,
+} from "./pages/index";
 import PublicRoute from "./utils/Routes/PublicRoute";
 import PrivateRoute from "./utils/Routes/PrivateRoute";
 
@@ -24,7 +31,40 @@ function App() {
           element={
             <PrivateRoute>
               <Layout>
-                <ApplicationPages.Home />
+                <Home />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.PRODUCTS}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Products />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.DETAIL_PRODUCTS}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <DetailProduct />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.CART}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Cart />
               </Layout>
             </PrivateRoute>
           }
@@ -34,7 +74,7 @@ function App() {
           path={PageRoutePath.LOGIN}
           element={
             <PublicRoute>
-              <ApplicationPages.Login />{" "}
+              <Login />
             </PublicRoute>
           }
         />
@@ -48,7 +88,7 @@ function App() {
           path={PageRoutePath.REGISTER}
           element={
             <PublicRoute>
-              <ApplicationPages.Register />
+              <Register />
             </PublicRoute>
           }
         />

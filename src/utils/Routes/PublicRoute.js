@@ -5,9 +5,9 @@ import { PageRoutePath } from "../config";
 
 const PublicRoute = ({ children }) => {
   const navigate = useNavigate();
-  const loginData = useSelector((state) => state.userInfoStore);
+  const loginData = useSelector((state) => state.userInfo.loginData);
   useEffect(() => {
-    if (loginData.username.length > 0) {
+    if (loginData !== null) {
         navigate(PageRoutePath.HOME);
     }
   }, [loginData])
