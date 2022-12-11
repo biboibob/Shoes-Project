@@ -1,10 +1,13 @@
 export const PageRoutePath = {
     //Auth
-    LOGIN: "/Login",
+    LOGIN: "/",
     REGISTER: "/Register",
 
     //App
-    HOME: "/Home"
+    HOME: "/Home",
+    PRODUCTS: "/Products",
+    DETAIL_PRODUCTS: "/Products/:id",
+    CART: "/Cart",
 }
 
 

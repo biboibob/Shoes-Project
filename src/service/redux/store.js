@@ -13,6 +13,8 @@ import {
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 import userInfo from "./slice/user";
+import userInterface from "./slice/ui"
+import cart from "./slice/cart"
 
 const persistConfig = {
   key: "root",
@@ -22,7 +24,9 @@ const persistConfig = {
 
 //Add New Reducer Here
 const rootReducer = combineReducers({
-  userInfoStore: userInfo,
+  userInfo,
+  userInterface,
+  cart
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

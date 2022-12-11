@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: "",
-  username: "",
-  role: "",
-  email: "",
+  loginData: null,
 };
 
 export const counterSlice = createSlice({
@@ -12,15 +9,10 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      state.loginData = action.payload;
     },
     removeUser: (state, action) => {
-      state = Object.keys(state).forEach(key => {
-        state[key] = "";
-      });;
+      state.loginData = null;
     },
   },
 });
