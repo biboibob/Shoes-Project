@@ -1,6 +1,6 @@
 import React from "react";
 
-function ShoesColor({ colors, onChange, selected }) {
+function ShoesColor({ colors, onChange, selected, name = "color" }) {
   return (
     <div className="flex gap-2">
       {colors.map((val, idx) => {
@@ -11,7 +11,7 @@ function ShoesColor({ colors, onChange, selected }) {
             }`}
             style={{ backgroundColor: val }}
             key={idx}
-            onClick={() => onChange("color", val)}
+            onClick={() => onChange(name, val)}
           />
         );
       })}
