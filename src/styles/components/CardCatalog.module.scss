@@ -11,11 +11,11 @@
     // gap: 20px;
 
     @include xl {
-        flex-basis: calc(calc(100% / 3) - .5rem);
+        flex-basis: calc(calc(100% / 3) - .7rem);
     }
 
     @include xxl {
-        flex-basis: calc(calc(100% / 4) - .5rem);
+        flex-basis: calc(calc(100% / 4) - .7rem);
     }
 }
 

@@ -35,19 +35,19 @@ function CardShoes({ data, limit = 5 }) {
     >
       {/* Start of Card  */}
       {data.map((val, idx) => (
-        <SwiperSlide className={styles.cardWrapper} key={idx}>
+        <SwiperSlide className={`${styles.cardWrapper} shadow-CardShadow`} key={idx}>
           <div className={`${styles.ImageCard} relative`}>
             <img
               src={JordanBlue}
               className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
             />
           </div>
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-1">
+          <div className="flex flex-col md:flex-row gap-1 md:gap-0 justify-between">
+            <div className="flex flex-col md:gap-1">
               <span className="text-xs md:text-base font-bold">Nike Air Max 97</span>
-              <span className="text-[0.625rem] md:text-xs font-lighter">Men's Shoes</span>
+              <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">Men's Shoes</span>
             </div>
-            <span className="text-sm md:text-2xl text-primary-color font-bold">$153</span>
+            <span className="text-sm md:text-xl text-primary-color font-bold">$153</span>
           </div>
         </SwiperSlide>
       ))}

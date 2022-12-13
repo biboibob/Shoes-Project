@@ -13,23 +13,21 @@ function CardShoes({ data }) {
     // flex-basis: calc(calc(100% / 4) - 5rem);
 
     /* Adding Flex auto in after will make it behave as grid */
-    <div className="flex flex-wrap gap-[.5rem] justify-between after:flex-auto">
+    <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">
       {data.map((val, idx) => (
-        <div className={`${styles.cardWrapper}`} key={idx}>
+        <div className={`${styles.cardWrapper} shadow-CardShadow gap-3`} key={idx}>
           <div className={`${styles.ImageCard} relative`}>
             <img
               src={JordanBlue}
-              className="absolute z-99 inset-0 m-auto -rotate-[20deg] w-56 h-auto"
+              className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
             />
           </div>
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-1">
-              <span className="text-base font-bold">Nike Air Max 97</span>
-              <span className="text-xs font-lighter">Men's Shoes</span>
+          <div className="flex flex-col md:flex-row gap-2 md:gap-0 justify-between">
+            <div className="flex flex-col md:gap-1">
+              <span className="text-xs md:text-base font-bold">Nike Air Max 97</span>
+              <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">Men's Shoes</span>
             </div>
-            <span className="text-primary-color text-2xl font-semibold">
-              $153
-            </span>
+            <span className="text-sm md:text-xl text-primary-color font-bold">$153</span>
           </div>
         </div>
       ))}
