@@ -63,36 +63,39 @@ function Home() {
   return (
     <div className="flex flex-col container my-3 md:my-5">
       <section className="flex flex-col gap-5 md:gap-0 mt-3 md:my-5 md:flex-row order-[2] md:order-first">
-        <div className="flex flex-col relative bg-white rounded-lg md:!bg-inherit w-100 md:w-50 p-4 md:p-0">
-          <i className="fa-regular fa-heart absolute top-8 left-5 fa-xl md:hidden"></i>
+        <div className="flex flex-col relative bg-white shadow-CardShadow md:shadow-none rounded-lg md:!bg-inherit w-100 md:w-50 p-3 md:p-0">
+      
+          <span className="block md:hidden font-semibold absolute top-0 left-0 bg-red-pallete text-white px-3.5 py-1.5 rounded-tl-lg rounded-br-lg">Featured</span>
+
           <ShoesPreview
             asset={ShoesFeatured}
             responsive={true}
             className={"flex justify-evenly my-3 md:hidden"}
           />
-
-          <span className="text-xs md:text-lg text-purple-pallete font-semibold">
+          
+          <span className="text-xs md:text-lg hidden md:block text-purple-pallete font-semibold">
             Featured
           </span>
           <span className="text-lg md:text-5xl font-bold text-soft-gray">
             NIKE Metcon '8 By You
           </span>
+          <span className="text-xs block md:hidden text-dark-gray-3">Men's Shoes</span>
           <span className="text-xs md:text-base text-soft-gray my-3 tracking-wider hidden md:block">
             The Nike Metcon 8 NBY will bring your everyday workout routines with
             chrome options and sharp look that define your inner athlete.
           </span>
 
-          <div id="price" className="flex flex-col font-medium mt-1 md:my-3">
+          <div id="price" className="flex flex-col font-medium mt-2 md:my-3">
             <span className="text-sm md:text-base hidden md:block">
               Price :
             </span>
             <div className="flex gap-2 md:gap-3">
-              <span className="text-sm md:text-3xl font-bold">
-                <span className="text-xs text-soft-green md:text-base">$</span>
+              <span className="text-base md:text-3xl font-bold">
+                <span className="text-sm text-soft-green md:text-base">$</span>
                 <span className="line-through">199</span>
               </span>
-              <span className="text-sm md:text-3xl font-bold">
-                <span className="text-xs text-soft-green md:text-base">$</span>
+              <span className="text-base md:text-3xl font-bold">
+                <span className="text-sm text-soft-green md:text-base">$</span>
                 160
               </span>
             </div>

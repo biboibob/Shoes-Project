@@ -30,6 +30,7 @@ module.exports = {
         "soft-gray-2": "#F9F9F9",
         "dark-gray": "#D9D9D9", 
         "dark-gray-2": "#F2F2F2",
+        "dark-gray-3": "#B2B2B4",
         "dark-gray-3": "#CDCDCD",
         "purple-pallete": "#414E97"
       },
@@ -41,7 +42,8 @@ module.exports = {
         'headerShadow': '0px 0px 10px #E4EEE4',
         'headerIcon': '1px 2px 8px -5px #414E97;',
         'inputProductShadow': "1px 2px 8px -5px #414E97",
-        'CartShadow': "0px 0px 5px #ECE9E9"
+        'CartShadow': "0px 0px 5px #ECE9E9",
+        "CardShadow": "0px 1px 6px 0px rgb(0 0 0 / 12%)"
       },
     },
   },
