@@ -152,13 +152,32 @@ function Header() {
         {/* End Large Scrren Handle */}
 
         {/* Small Screen Handle */}
-        <div className="flex ml-auto items-center lg:hidden">
-          {/* <FontAwesomeIcon
-            size="lg"
+        <div className="flex w-full justify-between lg:hidden">
+          <i
+            className="fa-solid fa-bars"
             onClick={() => dispatch(sideBarToggle(sideBar ? false : true))}
-            className="text-soft-black"
-            icon={faBars}
-          /> */}
+          ></i>
+          <img
+            src={Logo}
+            width={50}
+            onClick={() => handleNavigate(PageRoutePath.HOME)}
+            className={"cursor-pointer"}
+          />
+          <i
+            className="fa-solid fa-cart-shopping relative"
+            onClick={() => handleNavigate(PageRoutePath.CART)}
+          >
+            <span className="flex absolute h-4 w-4 top-[-.7rem] right-[-.6rem]">
+              <span
+                className={`${
+                  totalCart.status && "animate-ping"
+                } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
+              ></span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-red-pallete text-white text-[.5rem] font-bold items-center justify-center">
+                {totalCart.value}
+              </span>
+            </span>
+          </i>
         </div>
       </div>
     </>
