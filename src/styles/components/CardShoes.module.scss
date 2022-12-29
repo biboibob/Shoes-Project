@@ -1,12 +1,35 @@
+@import "../index.scss";
+
 .cardWrapper {
     display: flex;
     flex-direction: column;
     // flex-basis: calc(calc(100% / 4) - 5rem);
     // flex-wrap: wrap;
     background-color: white;
+    padding: .7rem;
+    border-radius: 10px;
+    gap: 20px;
+
+    @include xl {
+        padding: 1rem;
+    }
+}
+
+.cardWrapperSkeleton {
+    display: flex;
+    flex-direction: column;
+    flex-basis: calc(calc(100% / 2) - .5rem) ;
+    // flex-wrap: wrap;
+    background-color: white;
     padding: 1rem;
     border-radius: 10px;
-    gap: 20px
+    // gap: 20px;
+
+    @include xl {
+        flex-basis: calc(calc(100% / 4) - .5rem) ;
+    }
+
+    
 }
 
 .ImageCard {

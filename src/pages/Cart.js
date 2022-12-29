@@ -8,7 +8,11 @@ import { Checkbox, Card, Button } from "../components/custom/index";
 import { Quantity } from "../components/index";
 
 /* redux Action */
-import { addNewShoes, removeAllCart, removeItem } from "../service/redux/slice/cart";
+import {
+  addNewShoes,
+  removeAllCart,
+  removeItem,
+} from "../service/redux/slice/cart";
 
 function Cart() {
   /* Hook */
@@ -46,21 +50,23 @@ function Cart() {
       objForm[val] = arr[idx][val].value;
     });
 
-    dispatch(addNewShoes(objForm))
+    dispatch(addNewShoes(objForm));
   };
 
   /* Handle Delete Items from Cart */
   const onHandleDeleteItem = (val) => {
-    dispatch(removeItem(val))
-  }
+    dispatch(removeItem(val));
+  };
 
   return (
     <div className="flex container min-h-full mt-3 gap-3">
-      <div className="basis-2/3 flex flex-col gap-3">
-        <span className="font-black text-2xl text-soft-gray">Cart</span>
-        <div className="flex justify-between">
+      <div className="basis-full md:basis-2/3 flex flex-col gap-3">
+        <span className="font-black text-lg md:text-2xl text-soft-gray">
+          Cart
+        </span>
+        <div className="flex items-center justify-between">
           <Checkbox name={"SelectAll"} label={"Select All"} />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-sm md:text-base">
             <i className="fa-solid fa-trash-can"></i>
             <span>Delete All</span>
           </div>
@@ -71,22 +77,29 @@ function Cart() {
           <div className="flex flex-col gap-3" key={idx}>
             <div className="flex gap-2">
               <Checkbox noLabel={true} />
-              <img width={100} height={100} />
+              <img className="h-16 w-16 md:h-24 md:w-24" />
               <div className="flex flex-col ml-2">
-                <span className="text-xl font-semibold">{val.name.value}</span>
-                <span className="text-sm">
+                <span className="text-sm md:text-xl font-semibold">
+                  {val.name.value}
+                </span>
+                <span className="text-xs md:text-sm">
                   {val.size.value} EU - {val.color.value}
                 </span>
-                <span className="font-black mt-2">{val.price.value}</span>
+                <span className="font-black mt-2 text-sm md:text-base">
+                  ${val.price.value}
+                </span>
               </div>
             </div>
             <div className="flex justify-between ml-8">
-              <div className="flex gap-2 text-purple-pallete items-center">
-                <i className="fa-solid fa-pencil fa-xs"></i>
-                <span className="font-bold text-sm">Write A Note</span>
+              <div className="flex gap-2 text-purple-pallete items-center text-xs md:text-sm">
+                <i className="fa-solid fa-pencil"></i>
+                <span className="font-bold">Write A Note</span>
               </div>
               <div className="flex items-center gap-3">
-                <i className="fa-solid fa-trash-can text-dark-gray cursor-pointer" onClick={() => onHandleDeleteItem(val.name.value)}></i>
+                <i
+                  className="fa-solid fa-trash-can text-dark-gray fa-sm md:fa-lg cursor-pointer"
+                  onClick={() => onHandleDeleteItem(val.name.value)}
+                ></i>
                 <Quantity
                   size="small"
                   name={"addToCart"}
@@ -99,8 +112,14 @@ function Cart() {
             <div className="border-t-2 border-dark-gray-2"></div>
           </div>
         ))}
+
+        <div className="md:hidden">
+          <div className="flex justify-between">
+            <span className="text-base font-bold">Checkout</span>
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col basis-1/3 px-3 gap-3">
+      <div className="flex-col hidden md:flex px-3 gap-3">
         <Card className="flex items-center shadow-CartShadow gap-2 py-3 px-4">
           <div className="flex text-2xl font-bold">%</div>
           <div className="flex flex-col px-2">
