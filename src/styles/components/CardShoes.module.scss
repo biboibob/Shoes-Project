@@ -46,6 +46,7 @@
 
 .SwiperClass {
     padding: 5px;
+    display: flex;
 
     .swiper-pagination {
         bottom: -10px !important;
@@ -55,7 +56,6 @@
     .swiper-button-prev {
         color: red !important;
         opacity: 100%;
-
     }
 
     .swiper-button-next {

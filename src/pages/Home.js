@@ -20,6 +20,9 @@ import { First, Second, Third } from "../assets/JPG/Slider";
 import Model from "../assets/PNG/Model/index";
 import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
 
+//EndPoint
+import API from "../helper/api";
+
 //Component
 import {
   CardShoes,
@@ -33,12 +36,18 @@ import { Button } from "../components/custom/index";
 import "../styles/Home.sass";
 
 function Home() {
+  const api = new API();
+
   /* Redux */
   const dispatch = useDispatch();
   const uiSelector = useSelector((state) => state.userInterface);
 
   /* State */
-  const [data, setData] = useState({
+  const [featured, setFeatured] = useState({
+    title: "",
+    category: "",
+    description: "",
+    price: "",
     color: ["#414E97", "#555"],
     image: [],
     size: [
@@ -57,13 +66,14 @@ function Home() {
     ],
   });
 
+  const [popular, setPopular] = useState([]);
+  const [newRelease, setNewRelease] = useState([]);
+
   const [selected, setSelected] = useState({
     color: "",
     size: "",
     type: "",
   });
-
-  const [sample, setSample] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   const onHandleChange = (name, value) => {
     setSelected({
@@ -75,10 +85,41 @@ function Home() {
   useEffect(() => {
     dispatch(skeletonToggle(true));
 
-    setTimeout(() => {
-      dispatch(skeletonToggle(false));
-    }, 3000);
+    Promise.all([getData()])
+      .then(() => {
+        dispatch(skeletonToggle(false));
+      })
+      .catch(() => {
+        dispatch(skeletonToggle(false));
+      });
   }, []);
+
+  const getData = () => {
+    return api.homeInitiate().then((res) => {
+      const featured = res.data.data.featured;
+      const newRelease = res.data.data.newRelease;
+      const popular = res.data.data.popular;
+
+      console.log(res.data.data)
+
+      setFeatured({
+        title: featured.detailShoes.shoes.name,
+        category: featured.categoryShoes.category.category_name,
+        description: featured.detailShoes.shoes.description,
+        price: featured.detailShoes.shoes.price,
+        color: featured.colorOpt.map((val) => {
+          return val.color;
+        }),
+        image: [],
+        size: featured.sizeOpt.map((val) => {
+          return val.size;
+        }),
+      });
+
+      setPopular(popular);
+      setNewRelease(newRelease);
+    });
+  };
 
   return (
     <div className="flex flex-col container my-3 md:my-5">
@@ -100,15 +141,13 @@ function Home() {
                 Featured
               </span>
               <span className="text-lg md:text-5xl font-bold text-soft-gray">
-                NIKE Metcon '8 By You
+                {featured.title}
               </span>
               <span className="text-xs block md:hidden text-dark-gray-3">
-                Men's Shoes
+                {featured.category}
               </span>
-              <span className="text-xs md:text-base text-gray-400 my-3 tracking-wider hidden md:block">
-                The Nike Metcon 8 NBY will bring your everyday workout routines
-                with chrome options and sharp look that define your inner
-                athlete.
+              <span className="text-xs md:text-base text-gray-400 my-3 tracking-wider hidden md:block md:line-clamp-3">
+                {featured.description}
               </span>
             </>
           ) : (
@@ -139,13 +178,13 @@ function Home() {
                     <span className="text-sm text-soft-green md:text-base">
                       $
                     </span>
-                    <span className="line-through">199</span>
+                    <span className="line-through">{featured.price}</span>
                   </span>
                   <span className="text-base md:text-3xl font-bold">
                     <span className="text-sm text-soft-green md:text-base">
                       $
                     </span>
-                    160
+                    {featured.price}
                   </span>
                 </div>
               </>
@@ -174,7 +213,7 @@ function Home() {
                 Colors :
               </span>
               <ShoesColor
-                colors={data.color}
+                colors={featured.color}
                 onChange={onHandleChange}
                 selected={selected.color}
               />
@@ -188,7 +227,7 @@ function Home() {
                 Size :
               </span>
               <ShoesSize
-                size={data.size}
+                size={featured.size}
                 onChange={onHandleChange}
                 selected={selected.size}
               />
@@ -266,12 +305,12 @@ function Home() {
 
       <section className="my-4 flex flex-col gap-2 order-[3]">
         {!uiSelector.skeleton ? (
-          <span className="ContentTitle">Hot Deals</span>
+          <span className="ContentTitle">New Release</span>
         ) : (
           <span className="h-10 w-1/5 rounded-lg bg-dark-gray animate-pulse" />
         )}
         <div className="justify-between gap-3">
-          <CardShoes data={sample} />
+          <CardShoes data={newRelease} />
         </div>
       </section>
 
@@ -282,7 +321,7 @@ function Home() {
           <span className="h-10 w-1/5 rounded-lg bg-dark-gray animate-pulse" />
         )}
         <div className="justify-between gap-3">
-          <CardShoes data={sample} />
+          <CardShoes data={popular} />
         </div>
       </section>
 

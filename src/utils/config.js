@@ -17,5 +17,8 @@ export const APIRoutePath = {
     REFRESHTOKEN: "/authServer/refreshToken",
 
     USER: "/user",
-    EDIT_USER: "/user/editUser"
+    EDIT_USER: "/user/editUser",
+
+    // Home
+    HOME_INITIATE: "/home/HomeInitiate"
 } 
