@@ -1,9 +1,9 @@
-import Kids from "./Kids.png"
-import Men from "./Men.png"
-import Women from "./Women.png"
+import kids from "./Kids.png"
+import men from "./Men.png"
+import women from "./Women.png"
 
 export default {
-    Men,
-    Women,
-    Kids, 
+    men,
+    women,
+    kids, 
 }

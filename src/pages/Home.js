@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /* Skeleton Library */
 import Skeleton from "react-loading-skeleton";
@@ -20,8 +21,9 @@ import { First, Second, Third } from "../assets/JPG/Slider";
 import Model from "../assets/PNG/Model/index";
 import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
 
-//EndPoint
+//EndPoint and RoutePath
 import API from "../helper/api";
+import { PageRoutePath } from "../utils/config";
 
 //Component
 import {
@@ -33,10 +35,11 @@ import {
 } from "../components/index";
 import { Button } from "../components/custom/index";
 
-import "../styles/Home.sass";
+import "../styles/Home.scss";
 
 function Home() {
   const api = new API();
+  const navigate = useNavigate();
 
   /* Redux */
   const dispatch = useDispatch();
@@ -100,8 +103,6 @@ function Home() {
       const newRelease = res.data.data.newRelease;
       const popular = res.data.data.popular;
 
-      console.log(res.data.data)
-
       setFeatured({
         title: featured.detailShoes.shoes.name,
         category: featured.categoryShoes.category.category_name,
@@ -118,6 +119,14 @@ function Home() {
 
       setPopular(popular);
       setNewRelease(newRelease);
+    });
+  };
+
+  const navigateTo = (Route, state) => {
+    navigate(Route, {
+      state: {
+        state,
+      },
     });
   };
 
@@ -333,7 +342,12 @@ function Home() {
         )}
         <div className="flex flex-col md:flex-row gap-3">
           {Object.keys(Model).map((val, idx) => (
-            <div key={idx}>
+            <div
+              key={idx}
+              onClick={() =>
+                navigateTo(PageRoutePath.PRODUCTS, { category: val })
+              }
+            >
               <CardModel label={val} image={Model[val]} />
             </div>
           ))}

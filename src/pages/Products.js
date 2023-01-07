@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 /* Component */
@@ -23,6 +24,7 @@ import debounce from "lodash.debounce";
 
 function Products() {
   /* Redux */
+  let param = useLocation();
   const dispatch = useDispatch();
   const uiSelector = useSelector((state) => state.userInterface);
 
@@ -160,6 +162,23 @@ function Products() {
   useEffect(() => {
     dispatch(skeletonToggle(true));
 
+    for (var i = 0; i < Object.keys(form).length; i++) {
+      /* Check Value if Has State Category */
+      if (param.state.state.category) {
+        Object.keys(form).map((val) => {
+          if (val === param.state.state.category) {
+            setForm({
+              ...form,
+              [param.state.state.category]: {
+                ...form[param.state.state.category],
+                value: true,
+              },
+            });
+          }
+        });
+      } 
+    }
+
     setTimeout(() => {
       dispatch(skeletonToggle(false));
     }, 2000);
@@ -179,8 +198,8 @@ function Products() {
       setForm({
         ...form,
         [name]: {
+          ...form[name],
           value: value,
-          statusErr: false,
         },
       });
     }
@@ -207,9 +226,20 @@ function Products() {
             onChange={onHandleChange}
             name={"women"}
             label={"Women's"}
+            value={form.women.value}
           />
-          <Checkbox onChange={onHandleChange} name={"men"} label={"Men's"} />
-          <Checkbox onChange={onHandleChange} name={"kid"} label={"Kids'"} />
+          <Checkbox
+            onChange={onHandleChange}
+            name={"men"}
+            label={"Men's"}
+            value={form.men.value}
+          />
+          <Checkbox
+            onChange={onHandleChange}
+            name={"kid"}
+            label={"Kids'"}
+            value={form.kids.value}
+          />
         </div>
         <div className="FilterStyle">
           <span className="font-bold">Price Range</span>
