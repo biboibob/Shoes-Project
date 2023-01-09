@@ -6,7 +6,7 @@ import { PageRoutePath } from "../utils/config";
 import API from "../helper/api";
 
 //component
-import FormField from "../components/custom/FormField";
+import FormField from "../components/custom/Input";
 
 function Register() {
   //config

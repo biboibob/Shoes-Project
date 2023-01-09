@@ -1,18 +1,18 @@
 import Home from "./Home";
 import Login from "./Login";
-import Register from "./Register"
-
-const ApplicationPages = {
-    //Authentication
-    Login: Login,
-    Register: Register,
-
-    //App
-    Home: Home
-   
-}
+import Products from "./Products";
+import Register from "./Register";
+import DetailProduct from "./DetailProduct";
+import Cart from "./Cart"
 
 export {
-    ApplicationPages
-}
-
+  //Authentication
+  Login,
+  Register,
+  
+  //App
+  Home,
+  Products,
+  DetailProduct,
+  Cart
+};

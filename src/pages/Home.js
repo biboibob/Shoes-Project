@@ -1,180 +1,360 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { faTrash, faEdit, faClose } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-//component
-import FormField from "../components/custom/FormField";
+/* Skeleton Library */
+import Skeleton from "react-loading-skeleton";
 
+/* Action */
+import { skeletonToggle } from "../service/redux/slice/ui";
+
+/*** Swiper ***/
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Mousewheel, Pagination, Autoplay } from "swiper";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+// Asset
+import { First, Second, Third } from "../assets/JPG/Slider";
+import Model from "../assets/PNG/Model/index";
+import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
+
+//EndPoint and RoutePath
 import API from "../helper/api";
-import "../styles/Home.sass";
+import { PageRoutePath } from "../utils/config";
+
+//Component
+import {
+  CardShoes,
+  CardModel,
+  ShoesPreview,
+  ShoesColor,
+  ShoesSize,
+} from "../components/index";
+import { Button } from "../components/custom/index";
+
+import "../styles/Home.scss";
 
 function Home() {
   const api = new API();
-  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
-  //redux 
-  // const ReduxVal = useSelector((state) => state.userInfoStore);
+  /* Redux */
+  const dispatch = useDispatch();
+  const uiSelector = useSelector((state) => state.userInterface);
 
-  const [form, setForm] = useState({
-    Username: "",
-    Role: "",
-    Email: "",
+  /* State */
+  const [featured, setFeatured] = useState({
+    title: "",
+    category: "",
+    description: "",
+    price: "",
+    color: ["#414E97", "#555"],
+    image: [],
+    size: [
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+    ],
   });
 
-  const [show, setShow] = useState(false);
+  const [popular, setPopular] = useState([]);
+  const [newRelease, setNewRelease] = useState([]);
 
-  const handleClose = () => {
-    setShow(false);
-    setForm({
-      Username: "",
-      Role: "",
-      Email: "",
-    });
-  };
+  const [selected, setSelected] = useState({
+    color: "",
+    size: "",
+    type: "",
+  });
 
-  const handleShow = (val) => {
-    setShow(true);
-    setForm({
-      Username: val.username,
-      Role: val.role,
-      Email: val.email,
-    });
-  };
-
-  const onChangeForm = (event) => {
-    const { name, value } = event.target;
-
-    const updatedForm = {
-      ...form,
+  const onHandleChange = (name, value) => {
+    setSelected({
+      ...selected,
       [name]: value,
-    };
-
-    //console.log("Form Change", updatedForm);
-
-    setForm(updatedForm);
-  };
-
-  const onSave = () => {
-    const params = {
-      username: form.Username,
-      role: form.Role,
-      email: form.Email
-    }
-    api
-      .editUser(params)
-      .then((res) => {
-        console.log("input success");
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+    });
   };
 
   useEffect(() => {
-    api
-      .getAllUser()
-      .then((res) => {
-        const { status, data } = res.data;
-        if (status === 200) {
-          setUsers(data);
-        }
+    dispatch(skeletonToggle(true));
+
+    Promise.all([getData()])
+      .then(() => {
+        dispatch(skeletonToggle(false));
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        dispatch(skeletonToggle(false));
       });
   }, []);
 
-  return (
-    <>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Editing {form.Username}
-          </Modal.Title>
-          <FontAwesomeIcon
-            size="xl"
-            className="ml-auto"
-            onClick={handleClose}
-            icon={faClose}
-          />
-        </Modal.Header>
-        <Modal.Body>
-          <div className="flex flex-col gap-3">
-            <FormField
-              label={"Username"}
-              name={"Username"}
-              value={form.Username}
-              onChange={onChangeForm}
-              vertical={true}
-            />
-            <FormField
-              label={"Role"}
-              name={"Role"}
-              value={form.Role}
-              onChange={onChangeForm}
-              vertical={true}
-            />
-            <FormField
-              label={"Email"}
-              name={"Email"}
-              value={form.Email}
-              onChange={onChangeForm}
-              vertical={true}
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-primary" onClick={onSave}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  const getData = () => {
+    return api.homeInitiate().then((res) => {
+      const featured = res.data.data.featured;
+      const newRelease = res.data.data.newRelease;
+      const popular = res.data.data.popular;
 
-      <div className="flex flex-col">
-        <span>Home</span>
-        <div className="flex flex-col max-w-screen-md mx-auto">
-          <span>test</span>
-          <table className="tableConfig table-fixed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((val) => (
-                <tr key={val.id}>
-                  <td>{val.username}</td>
-                  <td>{val.role}</td>
-                  <td>{val.email}</td>
-                  <td className="flex justify-center gap-3">
-                    <FontAwesomeIcon
-                      className="text-red-pallete"
-                      icon={faTrash}
-                    />{" "}
-                    <FontAwesomeIcon
-                      onClick={() => handleShow(val)}
-                      className="text-blue-pallete"
-                      icon={faEdit}
-                    />{" "}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      setFeatured({
+        title: featured.detailShoes.shoes.name,
+        category: featured.categoryShoes.category.category_name,
+        description: featured.detailShoes.shoes.description,
+        price: featured.detailShoes.shoes.price,
+        color: featured.colorOpt.map((val) => {
+          return val.color;
+        }),
+        image: [],
+        size: featured.sizeOpt.map((val) => {
+          return val.size;
+        }),
+      });
+
+      setPopular(popular);
+      setNewRelease(newRelease);
+    });
+  };
+
+  const navigateTo = (Route, state) => {
+    navigate(Route, {
+      state: {
+        state,
+      },
+    });
+  };
+
+  return (
+    <div className="flex flex-col container my-3 md:my-5">
+      <section className="flex flex-col gap-5 md:gap-0 mt-3 md:my-5 md:flex-row order-[2] md:order-first">
+        <div className="flex flex-col relative bg-white shadow-CardShadow md:shadow-none rounded-lg md:!bg-inherit w-100 md:w-50 p-3 md:p-0">
+          <span className="block md:hidden font-semibold absolute top-0 left-0 bg-red-pallete text-white px-3.5 py-1.5 rounded-tl-lg rounded-br-lg">
+            Featured
+          </span>
+
+          <ShoesPreview
+            asset={ShoesFeatured}
+            responsive={true}
+            className={"md:hidden"}
+          />
+
+          {!uiSelector.skeleton ? (
+            <>
+              <span className="text-xs md:text-lg hidden md:block text-purple-pallete font-semibold">
+                Featured
+              </span>
+              <span className="text-lg md:text-5xl font-bold text-soft-gray">
+                {featured.title}
+              </span>
+              <span className="text-xs block md:hidden text-dark-gray-3">
+                {featured.category}
+              </span>
+              <span className="text-xs md:text-base text-gray-400 my-3 tracking-wider hidden md:block md:line-clamp-3">
+                {featured.description}
+              </span>
+            </>
+          ) : (
+            <Skeleton
+              wrapper={() => (
+                <div className="flex flex-col gap-2 animate-pulse my-4 md:my-0">
+                  <span className="h-5 md:h-10 rounded-lg bg-dark-gray w-3/4" />
+
+                  <div className="flex-col gap-2 my-3 hidden md:flex">
+                    <span className="h-5 rounded-lg bg-dark-gray w-full" />
+                    <span className="h-5 rounded-lg bg-dark-gray w-2/3" />
+                  </div>
+
+                  <span className="h-2 rounded-lg bg-dark-gray w-1/3 md:hidden" />
+                </div>
+              )}
+            />
+          )}
+
+          <div id="price" className="flex flex-col font-medium mt-2 md:my-3">
+            {!uiSelector.skeleton ? (
+              <>
+                <span className="text-sm md:text-base hidden md:block">
+                  Price :
+                </span>
+                <div className="flex gap-2 md:gap-3">
+                  <span className="text-base md:text-3xl font-bold">
+                    <span className="text-sm text-soft-green md:text-base">
+                      $
+                    </span>
+                    <span className="line-through">{featured.price}</span>
+                  </span>
+                  <span className="text-base md:text-3xl font-bold">
+                    <span className="text-sm text-soft-green md:text-base">
+                      $
+                    </span>
+                    {featured.price}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <Skeleton
+                containerClassName="h-fit"
+                wrapper={() => (
+                  <div>
+                    <span className="h-3 w-20 hidden md:block bg-dark-gray" />
+                  </div>
+                )}
+              />
+            )}
+          </div>
+
+          <div
+            id="colorAndSize"
+            className="hidden md:flex flex-row gap-3 md:gap-0 "
+          >
+            <div className="flex flex-col gap-3 w-50">
+              <span
+                className={`${
+                  uiSelector.skeleton && "!hidden"
+                } text-sm md:text-base`}
+              >
+                Colors :
+              </span>
+              <ShoesColor
+                colors={featured.color}
+                onChange={onHandleChange}
+                selected={selected.color}
+              />
+            </div>
+            <div className="flex flex-col gap-3 w-50">
+              <span
+                className={`${
+                  uiSelector.skeleton && "!hidden"
+                } text-sm md:text-base`}
+              >
+                Size :
+              </span>
+              <ShoesSize
+                size={featured.size}
+                onChange={onHandleChange}
+                selected={selected.size}
+              />
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-3 mt-5">
+            <Button
+              value={"Add To Chart"}
+              className="py-2.5 px-3 md:py-3 md:px-4 !w-fit rounded-2xl md:rounded-md !text-sm md:!text-base"
+            />
+            <span
+              className={`${
+                uiSelector.skeleton && "!hidden"
+              } text-sm md:text-lg underline cursor-pointer`}
+            >
+              See Details
+            </span>
+          </div>
         </div>
-      </div>
-    </>
+        <div className="hidden md:flex flex-col w-100 md:w-50 items-center mx-auto">
+          <ShoesPreview asset={ShoesFeatured} />
+        </div>
+      </section>
+      <section className="flex flex-col my-2 md:!my-4 order-first  md:order-[2]">
+        {!uiSelector.skeleton ? (
+          <Swiper
+            autoHeight={true}
+            mousewheel={true}
+            spaceBetween={20}
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination, Mousewheel, Autoplay]}
+            className="mySwiper rounded-2xl"
+          >
+            <SwiperSlide>
+              <div className="relative">
+                <img
+                  className="w-100 rounded-2xl"
+                  src={First}
+                  alt="First Slider"
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                className="w-100 rounded-2xl"
+                src={Second}
+                alt="Second Slider"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                className="w-100 rounded-2xl"
+                src={Third}
+                alt="Third Slider"
+              />
+            </SwiperSlide>
+          </Swiper>
+        ) : (
+          <Skeleton
+            containerClassName="h-fit"
+            wrapper={() => (
+              <div className="w-100 h-28 md:h-72 rounded-lg bg-dark-gray animate-pulse" />
+            )}
+          />
+        )}
+      </section>
+
+      <section className="my-4 flex flex-col gap-2 order-[3]">
+        {!uiSelector.skeleton ? (
+          <span className="ContentTitle">New Release</span>
+        ) : (
+          <span className="h-10 w-1/5 rounded-lg bg-dark-gray animate-pulse" />
+        )}
+        <div className="justify-between gap-3">
+          <CardShoes data={newRelease} />
+        </div>
+      </section>
+
+      <section className="my-4 flex flex-col gap-2 order-[4]">
+        {!uiSelector.skeleton ? (
+          <span className="ContentTitle">Popular</span>
+        ) : (
+          <span className="h-10 w-1/5 rounded-lg bg-dark-gray animate-pulse" />
+        )}
+        <div className="justify-between gap-3">
+          <CardShoes data={popular} />
+        </div>
+      </section>
+
+      <section className="my-4 flex flex-col gap-2 order-[5]">
+        {!uiSelector.skeleton ? (
+          <span className="ContentTitle">More Nike</span>
+        ) : (
+          <span className="h-10 w-1/5 rounded-lg bg-dark-gray animate-pulse" />
+        )}
+        <div className="flex flex-col md:flex-row gap-3">
+          {Object.keys(Model).map((val, idx) => (
+            <div
+              className="cursor-pointer"
+              key={idx}
+              onClick={() =>
+                navigateTo(PageRoutePath.PRODUCTS, { category: val })
+              }
+            >
+              <CardModel label={val} image={Model[val]} />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../utils/config";
@@ -11,7 +10,13 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../service/redux/slice/user";
 
 //component
-import FormField from "../components/custom/FormField";
+import { Input, Button } from "../components/custom";
+
+//asset
+import Nike from "../assets/PNG/Logo.png";
+
+//scss
+import LoginStyle from "../styles/Login.module.scss";
 
 // tokenService
 const tokenService = TokenService.getService();
@@ -22,6 +27,8 @@ function Login() {
 
   //redux
   const dispatch = useDispatch();
+
+  const [boolRegister, setBoolboolRegister] = useState(false);
 
   const [form, setForm] = useState({
     Username: "",
@@ -41,7 +48,7 @@ function Login() {
     setForm(updatedForm);
   };
 
-  const onHandleRegister = () => {
+  const onHandleLogin = () => {
     const validateEmptyArray = Object.values(form).includes("");
 
     if (validateEmptyArray) {
@@ -79,46 +86,90 @@ function Login() {
   };
 
   return (
-    <>
+    <div className="flex flex-col h-100 bg-gray-50">
       <ToastContainer />
-      <div className="flex flex-col m-auto w-3/12 shadow-2xl">
-        <h1 className="text-center text-2xl font-bold bg-primary-color text-white p-3">
-          Login Page
-        </h1>
-        <div className="flex flex-col px-10 py-6 gap-3">
-          <FormField
-            label={"Username"}
-            name={"Username"}
-            value={form.UserName}
-            onChange={onChangeForm}
-            vertical={true}
+      <div className="flex my-auto container px-0 shadow-2xl">
+        <div
+          className={`${LoginStyle.HomePhoto} hidden md:flex md:w-3/5 relative`}
+        >
+          <img
+            src={Nike}
+            width={70}
+            className="absolute top-5 left-5"
+            alt="logo"
+          />
+        </div>
+
+        <div className="flex flex-col bg-white w-full p-5 md:w-2/5">
+          <img src={Nike} width={100} className="flex mx-auto" alt="logo" />
+          <span className="text-center font-black my-3 text-2xl">
+            Your Sport Companion.
+          </span>
+          <div className="flex flex-col gap-1 my-5">
+            <Input
+              label={"Username"}
+              name={"Username"}
+              value={form.UserName}
+              onChange={onChangeForm}
+              className="my-2"
+            />
+            <Input
+              type="password"
+              label={"Password"}
+              name={"Password"}
+              value={form.Password}
+              onChange={onChangeForm}
+              className="my-2"
+            />
+            <span className="flex text-base mt-1">Forgot Password ?</span>
+          </div>
+
+          <Button
+            value={"Login"}
+            onClick={() => onHandleLogin()}
+            className="p-3"
           />
 
-          <FormField
-            label={"Password"}
-            name={"Password"}
-            value={form.Password}
-            onChange={onChangeForm}
-            vertical={true}
-          />
+          <hr className="mt-28 mb-3"></hr>
 
-          <Button variant="contained" onClick={() => onHandleRegister()}>
-            Login
-          </Button>
-
-          <span className="text-sm text-center mt-5">
-            Don't have an account yet?{" "}
+          <span className="mx-auto">
+            Not A Member?{" "}
             <span
+              className="font-bold"
               onClick={() => onNavigate(PageRoutePath.REGISTER)}
-              className="font-bold cursor-pointer hover:text-primary-color"
             >
-              Create Account
+              Join Now!
             </span>
           </span>
         </div>
+
+        
       </div>
-    </>
+    </div>
   );
 }
+
+{
+  /* <Input
+label={"Username"}
+name={"Username"}
+value={form.UserName}
+onChange={onChangeForm}
+
+/>
+
+<Input
+label={"Password"}
+name={"Password"}
+value={form.Password}
+onChange={onChangeForm}
+/>
+
+<Button variant="contained" >
+Login
+</Button> */
+}
+
+// onClick={() => onNavigate(PageRoutePath.REGISTER)}
 
 export default Login;

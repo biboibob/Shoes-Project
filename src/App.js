@@ -1,7 +1,19 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PageRoutePath } from "./utils/config";
-import { ApplicationPages } from "./pages/index";
+import {
+  Home,
+  Login,
+  Register,
+  Products,
+  DetailProduct,
+  Cart,
+} from "./pages/index";
+import PublicRoute from "./utils/Routes/PublicRoute";
+import PrivateRoute from "./utils/Routes/PrivateRoute";
+
+import Layout from "./components/template/layout";
+
 // import PrivateRoute from "./components/routing/PrivateRoute";
 
 function App() {
@@ -16,12 +28,55 @@ function App() {
 
         <Route
           path={PageRoutePath.HOME}
-          element={<ApplicationPages.Home />}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.PRODUCTS}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Products />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.DETAIL_PRODUCTS}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <DetailProduct />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.CART}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Cart />
+              </Layout>
+            </PrivateRoute>
+          }
         />
 
         <Route
           path={PageRoutePath.LOGIN}
-          element={<ApplicationPages.Login />}
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
         />
 
         {/* <Route
@@ -31,7 +86,11 @@ function App() {
 
         <Route
           path={PageRoutePath.REGISTER}
-          element={<ApplicationPages.Register />}
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
         />
       </Routes>
     </BrowserRouter>
