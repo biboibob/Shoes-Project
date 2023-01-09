@@ -3,12 +3,18 @@ import TokenService from "./tokenService";
 //import ModalToken from "../../components/template/ModalToken";
 // import { useNavigate } from "react-router-dom";
 
+import { store } from "../../service/redux/store";
+import { removeUser } from "../../service/redux/slice/user";
+
+
+const { dispatch } = store;
+
 // tokenService
 const tokenService = TokenService.getService();
 let refreshTokenPromise;
 
 const AxiosInstance = axios.create({
-  //baseURL: process.env.REACT_APP_API_URL_DEV /*Dev Only*/,
+  // baseURL: process.env.REACT_APP_API_URL_DEV /*Dev Only*/,
   baseURL: process.env.REACT_APP_API_URL,  /*Production*/
   timeout: 31000,
   headers: {
@@ -41,6 +47,7 @@ AxiosInstance.interceptors.response.use(
       error.response.status === 403 &&
       originalRequest.url === "/authServer/refreshToken"
     ) {
+      dispatch(removeUser())
       return Promise.reject(error);
     }
     if (error.response.status === 403 && !originalRequest._retry) {

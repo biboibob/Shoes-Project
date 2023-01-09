@@ -1,10 +1,13 @@
 export const PageRoutePath = {
     //Auth
-    LOGIN: "/Login",
+    LOGIN: "/",
     REGISTER: "/Register",
 
     //App
-    HOME: "/Home"
+    HOME: "/Home",
+    PRODUCTS: "/Products",
+    DETAIL_PRODUCTS: "/Products/:id",
+    CART: "/Cart",
 }
 
 
@@ -14,5 +17,12 @@ export const APIRoutePath = {
     REFRESHTOKEN: "/authServer/refreshToken",
 
     USER: "/user",
-    EDIT_USER: "/user/editUser"
+    EDIT_USER: "/user/editUser",
+
+    // Home
+    HOME_INITIATE: "/home/HomeInitiate",
+
+    // Products
+    PRODUCTS: "/categories/GetShoesListCategory",
+    PRODUCTS_FILTER: "/categories/GetInitiateFilter"
 } 
