@@ -1,8 +1,6 @@
 import React, {
   useEffect,
   useState,
-  useRef,
-  useCallback,
   useMemo,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +34,7 @@ function Products() {
 
   /* Redux */
   let param = useLocation();
-  const ref = useRef();
+  
   const dispatch = useDispatch();
   const uiSelector = useSelector((state) => state.userInterface);
 
@@ -146,25 +144,6 @@ function Products() {
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
 
-  /* Handle if offer change */
-  // useEffect(() => {
-  //   const currForm = form;
-  //   for (var i = 0; i < data.offer.length; i++) {
-  //     currForm[data.offer[i].id] = {
-  //       value: false,
-  //       statusErr: false,
-  //       message: "",
-  //     };
-  //   }
-
-  //   setForm({
-  //     ...currForm,
-  //   });
-  //   setTmpForm({
-  //     ...currForm,
-  //   });
-  // }, [data.offer]);
-
   useEffect(() => {
     dispatch(skeletonToggle(true))
     Promise.all([api.getFilterInitiate()]).then(([res1]) => {
@@ -231,13 +210,13 @@ function Products() {
   useEffect(() => {
     if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
     dispatch(specificSkeletonToggle({shoesListCategory: true}))
-    getData(form, data);
-  }, [form]);
+    getData(form, data, search);
+  }, [form, search]);
 
   /* Handle New Shoe List Request With Debounce Technique */
   const getData = useMemo(
     () =>
-      _.debounce((newForm, newData) => {
+      _.debounce((newForm, newData, newSearch) => {
         const arrGender = [];
         const arrOffer = [];
 
@@ -258,6 +237,7 @@ function Products() {
         }
 
         const requestBody = {
+          search: newSearch,
           gender: arrGender,
           minPrice: parseInt(newForm.minPrice.value),
           maxPrice: parseInt(newForm.maxPrice.value),
