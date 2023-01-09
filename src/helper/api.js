@@ -10,17 +10,24 @@ export default class API {
   registerUser = (data) => {
     return Axios.post(APIRoutePath.USER, data);
   };
-  /* End Post Section */
 
+  getProductList = (data) => {
+    return Axios.post(APIRoutePath.PRODUCTS, data);
+  };
+  /* End Post Section */
+  
   /* Get Section */
   getAllUser = () => {
     return Axios.get(APIRoutePath.USER);
   };
-
+  
   homeInitiate = (data) => {
     return Axios.get(APIRoutePath.HOME_INITIATE, data);
   };
-
+  
+  getFilterInitiate = (data) => {
+    return Axios.get(APIRoutePath.PRODUCTS_FILTER, data);
+  };
   /* End Get Section */
 
   /* Patch Section */

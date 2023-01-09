@@ -343,6 +343,7 @@ function Home() {
         <div className="flex flex-col md:flex-row gap-3">
           {Object.keys(Model).map((val, idx) => (
             <div
+              className="cursor-pointer"
               key={idx}
               onClick={() =>
                 navigateTo(PageRoutePath.PRODUCTS, { category: val })

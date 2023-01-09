@@ -20,5 +20,9 @@ export const APIRoutePath = {
     EDIT_USER: "/user/editUser",
 
     // Home
-    HOME_INITIATE: "/home/HomeInitiate"
+    HOME_INITIATE: "/home/HomeInitiate",
+
+    // Products
+    PRODUCTS: "/categories/GetShoesListCategory",
+    PRODUCTS_FILTER: "/categories/GetInitiateFilter"
 } 
