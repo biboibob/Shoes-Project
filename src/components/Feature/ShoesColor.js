@@ -18,7 +18,7 @@ function ShoesColor({ colors, onChange, selected, name = "color" }) {
             return (
               <div
                 className={`w-[1.8rem] h-[1.8rem] md:w-[2rem] md:h-[2rem] rounded-full border-3 cursor-pointer ${
-                  val === selected ? "border-stone-400" : "border-white"
+                  selected.includes(val) ? "border-stone-400" : "border-white"
                 }`}
                 style={{ backgroundColor: val }}
                 key={idx}

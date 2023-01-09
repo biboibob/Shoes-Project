@@ -38,14 +38,14 @@ function CardShoes({ data }) {
             <div className="flex flex-col md:flex-row gap-2 md:gap-0 justify-between">
               <div className="flex flex-col md:gap-1">
                 <span className="text-xs md:text-base font-bold">
-                  Nike Air Max 97
+                  {val.shoes?.name}
                 </span>
                 <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">
-                  Men's Shoes
+                  {`${val.category?.category_name}'s  Shoes`}
                 </span>
               </div>
               <span className="text-sm md:text-xl text-primary-color font-bold">
-                $153
+                {`$${val.shoes?.price}`}
               </span>
             </div>
           </div>

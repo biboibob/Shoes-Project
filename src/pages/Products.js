@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -20,11 +20,17 @@ import { skeletonToggle } from "../service/redux/slice/ui";
 
 /* Dependencies */
 import _ from "lodash";
-import debounce from "lodash.debounce";
+
+// Service
+import API from "../helper/api";
+import { valueProcessing, JSXEventOffer } from "../utils";
 
 function Products() {
+  const api = new API();
+
   /* Redux */
   let param = useLocation();
+  const ref = useRef();
   const dispatch = useDispatch();
   const uiSelector = useSelector((state) => state.userInterface);
 
@@ -46,9 +52,9 @@ function Products() {
       "47",
       "48",
     ],
+    shoes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    offer: [],
   });
-
-  const [sample, setSample] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   /* Hook */
   const windowSize = useWindowSize();
@@ -71,7 +77,7 @@ function Products() {
       message: "",
     },
     size: {
-      value: 0,
+      value: [],
       statusErr: false,
       message: "",
     },
@@ -86,17 +92,7 @@ function Products() {
       message: "",
     },
     color: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
-    discount: {
-      value: false,
-      statusErr: false,
-      message: "",
-    },
-    latenightsale: {
-      value: false,
+      value: [],
       statusErr: false,
       message: "",
     },
@@ -120,7 +116,12 @@ function Products() {
       message: "",
     },
     size: {
-      value: 0,
+      value: [],
+      statusErr: false,
+      message: "",
+    },
+    color: {
+      value: [],
       statusErr: false,
       message: "",
     },
@@ -134,55 +135,159 @@ function Products() {
       statusErr: false,
       message: "",
     },
-    color: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
-    discount: {
-      value: false,
-      statusErr: false,
-      message: "",
-    },
-    latenightsale: {
-      value: false,
-      statusErr: false,
-      message: "",
-    },
   });
 
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
 
+  /* Handle If Form Change, Data Shoes List WIll Be Update */
   useEffect(() => {
     if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
-    onGetData();
+    getData();
   }, [form]);
+
+  /* Handle if offer change */
+  // useEffect(() => {
+  //   const currForm = form;
+  //   for (var i = 0; i < data.offer.length; i++) {
+  //     currForm[data.offer[i].id] = {
+  //       value: false,
+  //       statusErr: false,
+  //       message: "",
+  //     };
+  //   }
+
+  //   setForm({
+  //     ...currForm,
+  //   });
+  //   setTmpForm({
+  //     ...currForm,
+  //   });
+  // }, [data.offer]);
 
   useEffect(() => {
     dispatch(skeletonToggle(true));
+    Promise.all([api.getFilterInitiate()])
+      .then(([res1]) => {
+        const currForm = form;
+        const resFilter = res1.data.data;
 
-    for (var i = 0; i < Object.keys(form).length; i++) {
-      /* Check Value if Has State Category */
-      if (param.state.state.category) {
-        Object.keys(form).map((val) => {
-          if (val === param.state.state.category) {
-            setForm({
-              ...form,
-              [param.state.state.category]: {
-                ...form[param.state.state.category],
-                value: true,
-              },
+        /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
+        for (var i = 0; i < Object.keys(form).length; i++) {
+          /* Check Value if Has State Category */
+          if (param?.state?.state.category) {
+            Object.keys(form).map((val) => {
+              if (val === param.state.state.category) {
+                currForm[param.state.state.category].value = true;
+              }
             });
           }
-        });
-      } 
-    }
+        }
 
-    setTimeout(() => {
-      dispatch(skeletonToggle(false));
-    }, 2000);
+        /* Set Event Offer Data from API to Form State */
+        if (resFilter.getOfferList.length > 0) {
+          for (var i = 0; i < resFilter.getOfferList.length; i++) {
+            currForm[resFilter.getOfferList[i].id_sale] = {
+              value: false,
+              statusErr: false,
+              message: "",
+            };
+          }
+        }
+
+        setData({
+          ...data,
+          color: resFilter.colorOpt.map((val) => {
+            return val.color;
+          }),
+          /*Set Unique */
+          size: [
+            ...new Set(
+              resFilter.sizeOpt.map((val) => {
+                return Math.round(val.size);
+              })
+            ),
+          ],
+          offer: resFilter.getOfferList.map((val) => {
+            return {
+              id: val.id_sale,
+              label: val.sale_name,
+            };
+          }),
+        });
+        
+        setForm({
+          ...currForm,
+        });
+
+        setTmpForm({
+          ...currForm,
+        });
+      })
+      .finally(() => {
+        dispatch(skeletonToggle(false));
+      });
   }, []);
+
+  // const getInitiateFilter = () => {
+  //   api.getFilterInitiate().then((res) => {
+  //     const dataResponse = res.data.data;
+
+  //     setData({
+  //       ...data,
+  //       color: dataResponse.colorOpt.map((val) => {
+  //         return val.color;
+  //       }),
+  //       /*Set Unique */
+  //       size: [
+  //         ...new Set(
+  //           dataResponse.sizeOpt.map((val) => {
+  //             return Math.round(val.size);
+  //           })
+  //         ),
+  //       ],
+  //     });
+  //   });
+  // };
+
+  const getData = useCallback(
+    _.debounce(() => {
+      const arrGender = [];
+      const arrOffer = [];
+
+      /* Set Array Value From Object Bool (Set Gender and Offer) */
+      for (var i = 0; i < Object.keys(form).length; i++) {
+        const currentKey = Object.keys(form)[i];
+        if (
+          currentKey === "men" ||
+          currentKey === "women" ||
+          currentKey === "kids"
+        ) {
+          if (form[currentKey].value) arrGender.push(currentKey);
+        } else if (data.offer.some((val) => val.id === parseInt(currentKey))) {
+          if (form[currentKey].value) arrOffer.push(parseInt(currentKey));
+        }
+      }
+
+      const requestBody = {
+        gender: arrGender,
+        minPrice: parseInt(form.minPrice.value),
+        maxPrice: parseInt(form.maxPrice.value),
+        size: form.size.value,
+        color: form.color.value,
+        offer: arrOffer,
+      };
+
+      return api.getProductList(requestBody).then((res) => {
+        const dataResponse = res.data.data;
+        setData({
+          ...data,
+          shoes: dataResponse.getShoesList,
+        });
+      });
+    }),
+    [form]
+  );
 
   /* Handle on Change Value */
   const onHandleChange = (name, value) => {
@@ -190,8 +295,8 @@ function Products() {
       setTmpForm({
         ...tmpForm,
         [name]: {
-          value: value,
-          statusErr: false,
+          ...form[name],
+          value: valueProcessing(value, form[name].value),
         },
       });
     } else {
@@ -199,15 +304,15 @@ function Products() {
         ...form,
         [name]: {
           ...form[name],
-          value: value,
+          value: valueProcessing(value, form[name].value),
         },
       });
     }
   };
 
   const onGetData = () => {
-    console.log("Form", form);
-    console.log("Temporary Form", tmpForm);
+    // console.log("Form", form);
+    // console.log("Temporary Form", tmpForm);
   };
 
   const onApplyFilter = () => {
@@ -236,8 +341,8 @@ function Products() {
           />
           <Checkbox
             onChange={onHandleChange}
-            name={"kid"}
-            label={"Kids'"}
+            name={"kids"}
+            label={"Kid's"}
             value={form.kids.value}
           />
         </div>
@@ -272,16 +377,11 @@ function Products() {
         </div>
         <div className="FilterStyle">
           <span className="font-bold">Offer</span>
-          <Checkbox
-            onChange={onHandleChange}
-            name={"discount"}
-            label={"Discount's"}
-          />
-          <Checkbox
-            onChange={onHandleChange}
-            name={"latenightsale"}
-            label={"Late Night Sale"}
-          />
+          {data.offer.map((val, idx) => (
+            <div key={idx}>
+              {JSXEventOffer(val.id, val.label, form, onHandleChange)}
+            </div>
+          ))}
         </div>
       </div>
       <div className="flex flex-col gap-3 md:gap-4 md:border-y md:border-r border-gray-border basis-full md:basis-4/5 p-2 md:!p-5">
@@ -332,7 +432,7 @@ function Products() {
             />
           )}
         </div>
-        <CardCatalog data={sample} />
+        <CardCatalog data={data.shoes} />
       </div>
 
       {/* Handle Filter on Mobile Size  */}
@@ -357,7 +457,7 @@ function Products() {
               label={"Women's"}
             />
             <Checkbox onChange={onHandleChange} name={"men"} label={"Men's"} />
-            <Checkbox onChange={onHandleChange} name={"kid"} label={"Kids'"} />
+            <Checkbox onChange={onHandleChange} name={"kids"} label={"Kid's"} />
           </div>
           <div className="FilterStyle px-0">
             <span className="font-bold">Price Range</span>
@@ -392,16 +492,11 @@ function Products() {
           </div>
           <div className="FilterStyle px-0">
             <span className="font-bold">Offer</span>
-            <Checkbox
-              onChange={onHandleChange}
-              name={"discount"}
-              label={"Discount's"}
-            />
-            <Checkbox
-              onChange={onHandleChange}
-              name={"latenightsale"}
-              label={"Late Night Sale"}
-            />
+            {data.offer.map((val, idx) => (
+              <div key={idx}>
+                {JSXEventOffer(val.id, val.label, form, onHandleChange)}
+              </div>
+            ))}
           </div>
         </div>
         <div className="bg-white  bottom-0 inset-x-0 w-full p-3">

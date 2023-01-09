@@ -30,7 +30,7 @@ function ShoesSize({
                 className={`${className} ${
                   withBasis && style.SizingWidth
                 } text-sm md:text-base py-1 px-2 rounded-md cursor-pointer ${
-                  val === selected
+                  selected.includes(val)
                     ? "bg-red-pallete text-white"
                     : "bg-dark-gray"
                 }`}
