@@ -60,6 +60,8 @@ function Products() {
     offer: [],
   });
 
+  console.log("test");
+
   /* Hook */
   const windowSize = useWindowSize();
 
