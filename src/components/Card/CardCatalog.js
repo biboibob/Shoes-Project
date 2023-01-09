@@ -13,7 +13,6 @@ import JordanBlue from "../../assets/PNG/Shoes/Categories/Jordan/Jordan-Blue.png
 function CardShoes({ data }) {
   /* Redux */
   const uiSelector = useSelector((state) => state.userInterface);
-
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
   return (
@@ -21,7 +20,7 @@ function CardShoes({ data }) {
 
     // flex-basis: calc(calc(100% / 4) - 5rem);
 
-    !uiSelector.skeleton ? (
+    !uiSelector.specificSkeleton.shoesListCategory ? (
       /* Adding Flex auto in after will make it behave as grid */
       <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">
         {data.map((val, idx) => (
