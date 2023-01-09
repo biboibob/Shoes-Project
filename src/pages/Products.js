@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -16,7 +22,7 @@ import {
 import { useWindowSize } from "../hook";
 
 /* Redux Action */
-import { skeletonToggle } from "../service/redux/slice/ui";
+import { skeletonToggle, specificSkeletonToggle } from "../service/redux/slice/ui";
 
 /* Dependencies */
 import _ from "lodash";
@@ -140,12 +146,6 @@ function Products() {
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
 
-  /* Handle If Form Change, Data Shoes List WIll Be Update */
-  useEffect(() => {
-    if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
-    getData();
-  }, [form]);
-
   /* Handle if offer change */
   // useEffect(() => {
   //   const currForm = form;
@@ -166,127 +166,117 @@ function Products() {
   // }, [data.offer]);
 
   useEffect(() => {
-    dispatch(skeletonToggle(true));
-    Promise.all([api.getFilterInitiate()])
-      .then(([res1]) => {
-        const currForm = form;
-        const resFilter = res1.data.data;
+    dispatch(skeletonToggle(true))
+    Promise.all([api.getFilterInitiate()]).then(([res1]) => {
+      const currForm = form;
+      const resFilter = res1.data.data;
 
-        /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
-        for (var i = 0; i < Object.keys(form).length; i++) {
-          /* Check Value if Has State Category */
-          if (param?.state?.state.category) {
-            Object.keys(form).map((val) => {
-              if (val === param.state.state.category) {
-                currForm[param.state.state.category].value = true;
-              }
-            });
-          }
-        }
-
-        /* Set Event Offer Data from API to Form State */
-        if (resFilter.getOfferList.length > 0) {
-          for (var i = 0; i < resFilter.getOfferList.length; i++) {
-            currForm[resFilter.getOfferList[i].id_sale] = {
-              value: false,
-              statusErr: false,
-              message: "",
-            };
-          }
-        }
-
-        setData({
-          ...data,
-          color: resFilter.colorOpt.map((val) => {
-            return val.color;
-          }),
-          /*Set Unique */
-          size: [
-            ...new Set(
-              resFilter.sizeOpt.map((val) => {
-                return Math.round(val.size);
-              })
-            ),
-          ],
-          offer: resFilter.getOfferList.map((val) => {
-            return {
-              id: val.id_sale,
-              label: val.sale_name,
-            };
-          }),
-        });
-        
-        setForm({
-          ...currForm,
-        });
-
-        setTmpForm({
-          ...currForm,
-        });
-      })
-      .finally(() => {
-        dispatch(skeletonToggle(false));
-      });
-  }, []);
-
-  // const getInitiateFilter = () => {
-  //   api.getFilterInitiate().then((res) => {
-  //     const dataResponse = res.data.data;
-
-  //     setData({
-  //       ...data,
-  //       color: dataResponse.colorOpt.map((val) => {
-  //         return val.color;
-  //       }),
-  //       /*Set Unique */
-  //       size: [
-  //         ...new Set(
-  //           dataResponse.sizeOpt.map((val) => {
-  //             return Math.round(val.size);
-  //           })
-  //         ),
-  //       ],
-  //     });
-  //   });
-  // };
-
-  const getData = useCallback(
-    _.debounce(() => {
-      const arrGender = [];
-      const arrOffer = [];
-
-      /* Set Array Value From Object Bool (Set Gender and Offer) */
+      /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
       for (var i = 0; i < Object.keys(form).length; i++) {
-        const currentKey = Object.keys(form)[i];
-        if (
-          currentKey === "men" ||
-          currentKey === "women" ||
-          currentKey === "kids"
-        ) {
-          if (form[currentKey].value) arrGender.push(currentKey);
-        } else if (data.offer.some((val) => val.id === parseInt(currentKey))) {
-          if (form[currentKey].value) arrOffer.push(parseInt(currentKey));
+        /* Check Value if Has State Category */
+        if (param?.state?.state.category) {
+          Object.keys(form).map((val) => {
+            if (val === param.state.state.category) {
+              currForm[param.state.state.category].value = true;
+            }
+          });
         }
       }
 
-      const requestBody = {
-        gender: arrGender,
-        minPrice: parseInt(form.minPrice.value),
-        maxPrice: parseInt(form.maxPrice.value),
-        size: form.size.value,
-        color: form.color.value,
-        offer: arrOffer,
-      };
+      /* Set Event Offer Data from API to Form State */
+      if (resFilter.getOfferList.length > 0) {
+        for (var i = 0; i < resFilter.getOfferList.length; i++) {
+          currForm[resFilter.getOfferList[i].id_sale] = {
+            value: false,
+            statusErr: false,
+            message: "",
+          };
+        }
+      }
 
-      return api.getProductList(requestBody).then((res) => {
-        const dataResponse = res.data.data;
-        setData({
-          ...data,
-          shoes: dataResponse.getShoesList,
-        });
+      setData({
+        ...data,
+        color: resFilter.colorOpt.map((val) => {
+          return val.color;
+        }),
+        /*Set Unique */
+        size: [
+          ...new Set(
+            resFilter.sizeOpt.map((val) => {
+              return Math.round(val.size);
+            })
+          ),
+        ],
+        offer: resFilter.getOfferList.map((val) => {
+          return {
+            id: val.id_sale,
+            label: val.sale_name,
+          };
+        }),
       });
-    }),
-    [form]
+
+      setForm({
+        ...currForm,
+      });
+
+      setTmpForm({
+        ...currForm,
+      });
+    }).then(() => {
+      dispatch(skeletonToggle(false))
+    });
+  }, []);
+
+  /* Handle If Form Change, Data Shoes List WIll Be Update */
+  useEffect(() => {
+    if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
+    dispatch(specificSkeletonToggle({shoesListCategory: true}))
+    getData(form, data);
+  }, [form]);
+
+  /* Handle New Shoe List Request With Debounce Technique */
+  const getData = useMemo(
+    () =>
+      _.debounce((newForm, newData) => {
+        const arrGender = [];
+        const arrOffer = [];
+
+        /* Set Array Value From Object Bool (Set Gender and Offer) */
+        for (var i = 0; i < Object.keys(newForm).length; i++) {
+          const currentKey = Object.keys(newForm)[i];
+          if (
+            currentKey === "men" ||
+            currentKey === "women" ||
+            currentKey === "kids"
+          ) {
+            if (newForm[currentKey].value) arrGender.push(currentKey);
+          } else if (
+            data.offer.some((val) => val.id === parseInt(currentKey))
+          ) {
+            if (newForm[currentKey].value) arrOffer.push(parseInt(currentKey));
+          }
+        }
+
+        const requestBody = {
+          gender: arrGender,
+          minPrice: parseInt(newForm.minPrice.value),
+          maxPrice: parseInt(newForm.maxPrice.value),
+          size: newForm.size.value,
+          color: newForm.color.value,
+          offer: arrOffer,
+        };
+        
+        return api.getProductList(requestBody).then((res) => {
+          const dataResponse = res.data.data;
+          setData({
+            ...newData,
+            shoes: dataResponse.getShoesList,
+          });
+        }).then(() => {
+          dispatch(specificSkeletonToggle({shoesListCategory: false}))
+        })
+      }, 750),
+    []
   );
 
   /* Handle on Change Value */
@@ -310,13 +300,9 @@ function Products() {
     }
   };
 
-  const onGetData = () => {
-    // console.log("Form", form);
-    // console.log("Temporary Form", tmpForm);
-  };
-
   const onApplyFilter = () => {
     setForm({ ...tmpForm });
+    setToggleFilter(false);
   };
 
   return (
@@ -455,9 +441,20 @@ function Products() {
               onChange={onHandleChange}
               name={"women"}
               label={"Women's"}
+              value={tmpForm.women.value}
             />
-            <Checkbox onChange={onHandleChange} name={"men"} label={"Men's"} />
-            <Checkbox onChange={onHandleChange} name={"kids"} label={"Kid's"} />
+            <Checkbox
+              onChange={onHandleChange}
+              name={"men"}
+              label={"Men's"}
+              value={tmpForm.men.value}
+            />
+            <Checkbox
+              onChange={onHandleChange}
+              name={"kids"}
+              label={"Kid's"}
+              value={tmpForm.kids.value}
+            />
           </div>
           <div className="FilterStyle px-0">
             <span className="font-bold">Price Range</span>
@@ -494,7 +491,7 @@ function Products() {
             <span className="font-bold">Offer</span>
             {data.offer.map((val, idx) => (
               <div key={idx}>
-                {JSXEventOffer(val.id, val.label, form, onHandleChange)}
+                {JSXEventOffer(val.id, val.label, tmpForm, onHandleChange)}
               </div>
             ))}
           </div>
