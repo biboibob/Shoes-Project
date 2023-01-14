@@ -8,10 +8,13 @@
     background-color: white;
     padding: 1rem;
     border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+
     // gap: 20px;
 
     @include xl {
-        flex-basis: calc(calc(100% / 3) - .7rem) ;
+        flex-basis: calc(calc(100% / 3) - .5rem) ;
     }
 
     @include xxl {

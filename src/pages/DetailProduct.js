@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
+import Swal from "sweetalert2";
 
 //redux Action
 import { addNewShoes, removeAllCart } from "../service/redux/slice/cart";
@@ -19,7 +21,16 @@ import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
 /* Redux Action */
 import { skeletonToggle } from "../service/redux/slice/ui";
 
+// Service
+import { valueProcessing, Toast } from "../utils";
+import API from "../helper/api";
+import { PageRoutePath } from "../utils/config";
+
 function DetailProduct() {
+  const api = new API();
+  const navigate = useNavigate();
+  
+
   /* Redux */
   const dispatch = useDispatch();
   const cartSelector = useSelector((state) => state.cart);
@@ -55,8 +66,23 @@ function DetailProduct() {
       statusErr: false,
       message: "",
     },
+    description: {
+      value: "",
+      statusErr: false,
+      message: "",
+    },
+    category: {
+      value: "",
+      statusErr: false,
+      message: "",
+    },
     size: {
-      value: 41,
+      value: "",
+      statusErr: false,
+      message: "",
+    },
+    color: {
+      value: "",
       statusErr: false,
       message: "",
     },
@@ -70,54 +96,7 @@ function DetailProduct() {
       statusErr: false,
       message: "",
     },
-    color: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
-    size: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
-    addToCart: {
-      value: 1,
-      statusErr: false,
-      message: "",
-    },
-  });
 
-  const [form2, setForm2] = useState({
-    name: {
-      value: "NIKEu",
-      statusErr: false,
-      message: "",
-    },
-    size: {
-      value: 43,
-      statusErr: false,
-      message: "",
-    },
-    price: {
-      value: 110,
-      statusErr: false,
-      message: "",
-    },
-    discount: {
-      value: 120,
-      statusErr: false,
-      message: "",
-    },
-    color: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
-    size: {
-      value: 0,
-      statusErr: false,
-      message: "",
-    },
     addToCart: {
       value: 1,
       statusErr: false,
@@ -127,20 +106,100 @@ function DetailProduct() {
 
   useEffect(() => {
     dispatch(skeletonToggle(true));
-
+    getData();
     setTimeout(() => {
       dispatch(skeletonToggle(false));
     }, 2000);
   }, []);
 
-  const addShoesToCart = () => {
-    let obj = {};
+  const getData = () => {
+    const lastPath = window.location.pathname.substring(
+      window.location.pathname.lastIndexOf("/") + 1
+    );
 
-    Object.keys(form).map((val) => {
-      obj[val] = form[val].value;
+    const requestBody = {
+      id_shoes: parseInt(lastPath),
+    };
+
+    api.getDetailShoes(requestBody).then((res) => {
+      if (res.status === 200 && res.data.status) {
+        const dataResponse = res.data.data;
+
+        let updatedForm = form;
+
+        const updatedValue = {
+          name: dataResponse.shoesDetail.name,
+          price: dataResponse.shoesDetail.price,
+          description: dataResponse.shoesDetail.description,
+          category: dataResponse.categoryShoes.category.category_name,
+        };
+
+        for (const property in updatedValue) {
+          updatedForm = {
+            ...updatedForm,
+            [property]: {
+              ...updatedForm[property],
+              value: updatedValue[property],
+            },
+          };
+        }
+
+        setData({
+          ...data,
+          color: dataResponse.colorOpt.map((val) => {
+            return val.color;
+          }),
+          size: dataResponse.sizeOpt.map((val) => {
+            return val.size;
+          }),
+        });
+
+        setForm(updatedForm);
+      } else {
+      }
     });
+  };
 
-    dispatch(addNewShoes(obj));
+
+  const navigateTo = (Route) => {
+    navigate(`${Route}`);
+  };
+
+  const addShoesToCart = () => {
+    if (form.color.value === "" && form.size.value === "") {
+      Swal.fire({
+        title: "Select All Field",
+        text: "Color or Size option should be selected",
+        icon: "warning",
+        confirmButtonText: "Ok",
+      });
+    } else {
+      Swal.fire({
+        title: "Whoops! Hold on.",
+        text: "Have you cross check all selected option you made?",
+        icon: "info",
+        showDenyButton: true,
+        confirmButtonText: "Sure",
+        denyButtonText: `Nope`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let obj = {};
+
+          Object.keys(form).map((val) => {
+            obj[val] = form[val].value;
+          });
+
+          dispatch(addNewShoes(obj));
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Shoes successfully add to cart'
+          })
+
+          navigateTo(PageRoutePath.PRODUCTS);
+        }
+      });
+    }
   };
 
   /* Handle Change of Form */
@@ -166,25 +225,24 @@ function DetailProduct() {
               <div className="flex justify-between items-end">
                 <div className="flex flex-col">
                   <span className="grow text-soft-black text-sm md:text-base">
-                    Men's Shoes
+                    {form.category.value}
                   </span>
                   <span className="font-semibold md:font-black text-lg md:text-4xl text-soft-black">
-                    NIKE Metcon '8 By You
+                    {form.name.value}
                   </span>
                 </div>
 
                 <span className="text-soft-black flex md:hidden items-center text-xs">
-                  $<span className="text-lg font-black">160</span>
+                  $
+                  <span className="text-lg font-black">{form.price.value}</span>
                 </span>
               </div>
               <div className="md:text-gray-400 tracking-wider mt-3 md:mt-0 hidden md:flex">
-                The Nike Metcon 8 NBY allows you to add a little bling to your
-                everyday workout routines with chrome options on everything from
-                the Swoosh to the heel plate to shoelaces. Read More
+                {form.description.value}
               </div>
             </div>
             <div className="text-soft-black text-base font-black my-3 hidden md:block">
-              $<span className="text-4xl">160</span>
+              $<span className="text-4xl">{form.price.value}</span>
             </div>
           </>
         ) : (
@@ -217,9 +275,7 @@ function DetailProduct() {
             <div className="flex flex-col gap-2 md:gap-4 md:hidden">
               <span className="flex text-base font-bold">Description</span>
               <span className="text-sm text-gray-400 tracking-wider">
-                The Nike Metcon 8 NBY allows you to add a little bling to your
-                everyday workout routines with chrome options on everything from
-                the Swoosh to the heel plate to shoelaces. Read More
+                {form.description.value}
               </span>
             </div>
 
@@ -231,7 +287,7 @@ function DetailProduct() {
                 className={"flex justify-center text-center !p-2"}
                 size={data.size}
                 onChange={onHandleChange}
-                selected={form.size.value}
+                selected={[form.size.value]}
                 withBasis={true}
               />
             </div>
@@ -242,7 +298,7 @@ function DetailProduct() {
               <ShoesColor
                 colors={data.color}
                 onChange={onHandleChange}
-                selected={form.color.value}
+                selected={[form.color.value]}
               />
             </div>
           </>
@@ -257,7 +313,7 @@ function DetailProduct() {
                     className={"flex justify-center text-center !p-2"}
                     size={data.size}
                     onChange={onHandleChange}
-                    selected={form.size.value}
+                    selected={[form.size.value]}
                     withBasis={true}
                   />
                 </div>
@@ -267,14 +323,14 @@ function DetailProduct() {
                   <ShoesColor
                     colors={data.color}
                     onChange={onHandleChange}
-                    selected={form.color.value}
+                    selected={[form.color.value]}
                   />
                 </div>
               </>
             )}
           />
         )}
-        
+
         <div className="flex gap-2">
           {!uiSelector.skeleton ? (
             <button

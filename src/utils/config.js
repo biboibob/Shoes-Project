@@ -24,5 +24,8 @@ export const APIRoutePath = {
 
     // Products
     PRODUCTS: "/categories/GetShoesListCategory",
-    PRODUCTS_FILTER: "/categories/GetInitiateFilter"
+    PRODUCTS_FILTER: "/categories/GetInitiateFilter",
+
+    //Detail Shoes
+    DETAIL_SHOES: "/detailProduct"
 } 

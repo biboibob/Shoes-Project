@@ -12,8 +12,6 @@ function Layout({ children }) {
   const sideBar = useSelector((selector) => selector.userInterface.isSideBar);
   const location = useLocation();
 
- 
-
   useEffect(() => {
     // var elmnt = document.getElementById("DOMContainer");
     // elmnt.scrollTop = 0;

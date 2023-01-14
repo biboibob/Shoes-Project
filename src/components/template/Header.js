@@ -130,16 +130,18 @@ function Header() {
               onClick={() => handleNavigate(PageRoutePath.CART)}
             >
               <i className="fa-solid fa-cart-shopping text-soft-gray fa-sm"></i>
-              <span className="flex absolute h-6 w-6 top-[-.2rem] right-[-.5rem]">
-                <span
-                  className={`${
-                    totalCart.status && "animate-ping"
-                  } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
-                ></span>
-                <span className="relative inline-flex rounded-full h-6 w-6 bg-red-pallete text-white text-xs font-bold items-center justify-center">
-                  {totalCart.value}
+              {totalCart.value > 0 && (
+                <span className="flex absolute h-6 w-6 top-[-.2rem] right-[-.5rem]">
+                  <span
+                    className={`${
+                      totalCart.status && "animate-ping"
+                    } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
+                  ></span>
+                  <span className="relative inline-flex rounded-full h-6 w-6 bg-red-pallete text-white text-xs font-bold items-center justify-center">
+                    {totalCart.value}
+                  </span>
                 </span>
-              </span>
+              )}
             </div>
             <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon">
               <i className="fa-solid fa-heart text-soft-gray fa-sm"></i>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 /* Skeleton Library */
@@ -20,15 +20,25 @@ import { Navigation } from "swiper";
 //style
 import styles from "../../styles/components/CardShoes.module.scss";
 
+//Service
+import { PageRoutePath } from "../../utils/config";
+
 //asset
 import JordanBlue from "../../assets/PNG/Shoes/Categories/Jordan/Jordan-Blue.png";
 
 function CardShoes({ data, limit = 5 }) {
+  const navigate = useNavigate();
   const windowSize = useWindowSize();
   const uiSelector = useSelector((state) => state.userInterface);
 
   /* Use To Handle Skeleton */
   const dummy = [1, 2, 3, 4];
+
+
+  const navigateTo = (Route, id) => {
+    console.log(id)
+    navigate(`${Route}/${id}`);
+  };
 
   return (
     /* Layout Card */
@@ -46,7 +56,9 @@ function CardShoes({ data, limit = 5 }) {
           <SwiperSlide
             className={`${styles.cardWrapper} shadow-CardShadow`}
             key={idx}
+            onClick={() => navigateTo(PageRoutePath.PRODUCTS, val.id_shoes)}
           >
+      
             <div className={`${styles.ImageCard} relative`}>
               <img
                 src={JordanBlue}
@@ -54,8 +66,8 @@ function CardShoes({ data, limit = 5 }) {
               />
             </div>
             <div className="flex flex-col md:flex-row gap-1 md:gap-0 justify-between">
-              <div className="flex flex-col md:gap-1">
-                <span className="text-xs md:text-base font-bold">
+              <div className="flex flex-col overflow-hidden md:gap-1">
+                <span className="text-xs md:text-base font-bold truncate">
                   {val.shoes.name}
                 </span>
                 <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">
