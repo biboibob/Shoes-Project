@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /* Skeleton Library */
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -10,10 +11,20 @@ import styles from "../../styles/components/CardCatalog.module.scss";
 //asset
 import JordanBlue from "../../assets/PNG/Shoes/Categories/Jordan/Jordan-Blue.png";
 
+/* Util */
+import { PageRoutePath } from "../../utils/config";
+
 function CardShoes({ data }) {
+  const navigate = useNavigate();
+
   /* Redux */
   const uiSelector = useSelector((state) => state.userInterface);
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+  const navigateTo = (Route, id) => {
+    console.log(id)
+    navigate(`${Route}/${id}`);
+  };
 
   return (
     /* Layout Card */
@@ -26,6 +37,7 @@ function CardShoes({ data }) {
         {data.map((val, idx) => (
           <div
             className={`${styles.cardWrapper} shadow-CardShadow gap-3`}
+            onClick={() => navigateTo(PageRoutePath.PRODUCTS, val.id_shoes)}
             key={idx}
           >
             <div className={`${styles.ImageCard} relative`}>
@@ -34,9 +46,9 @@ function CardShoes({ data }) {
                 className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
               />
             </div>
-            <div className="flex flex-col md:flex-row gap-2 md:gap-0 justify-between">
-              <div className="flex flex-col md:gap-1">
-                <span className="text-xs md:text-base font-bold">
+            <div className="flex flex-col md:flex-row gap-2 md:!gap-6 justify-between">
+              <div className="flex flex-col md:gap-1 md:overflow-hidden">
+                <span className="text-xs md:text-base font-bold truncate">
                   {val.shoes?.name}
                 </span>
                 <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">

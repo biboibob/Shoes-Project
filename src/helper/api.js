@@ -14,6 +14,10 @@ export default class API {
   getProductList = (data) => {
     return Axios.post(APIRoutePath.PRODUCTS, data);
   };
+
+  getDetailShoes = (data) => {
+    return Axios.post(APIRoutePath.DETAIL_SHOES, data);
+  };
   /* End Post Section */
   
   /* Get Section */
