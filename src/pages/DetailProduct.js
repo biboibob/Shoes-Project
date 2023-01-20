@@ -14,6 +14,7 @@ import {
   ShoesColor,
   Quantity,
 } from "../components/index";
+import { Button } from "../components/custom";
 
 /* Asset */
 import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
@@ -29,7 +30,6 @@ import { PageRoutePath } from "../utils/config";
 function DetailProduct() {
   const api = new API();
   const navigate = useNavigate();
-  
 
   /* Redux */
   const dispatch = useDispatch();
@@ -104,6 +104,8 @@ function DetailProduct() {
     },
   });
 
+  const [readMore, setReadMore] = useState(true);
+
   useEffect(() => {
     dispatch(skeletonToggle(true));
     getData();
@@ -160,7 +162,6 @@ function DetailProduct() {
     });
   };
 
-
   const navigateTo = (Route) => {
     navigate(`${Route}`);
   };
@@ -192,9 +193,9 @@ function DetailProduct() {
           dispatch(addNewShoes(obj));
 
           Toast.fire({
-            icon: 'success',
-            title: 'Shoes successfully add to cart'
-          })
+            icon: "success",
+            title: "Shoes successfully add to cart",
+          });
 
           navigateTo(PageRoutePath.PRODUCTS);
         }
@@ -213,6 +214,10 @@ function DetailProduct() {
     });
   };
 
+  const onHandleToggleDescription = () => {
+    setReadMore(readMore ? false : true);
+  };
+
   return (
     <div className="flex flex-col md:flex-row container min-h-full">
       <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center md:sticky top-0">
@@ -224,22 +229,33 @@ function DetailProduct() {
             <div className="flex flex-col gap-1 md:gap-2.5">
               <div className="flex justify-between items-end">
                 <div className="flex flex-col">
-                  <span className="grow text-soft-black text-sm md:text-base">
-                    {form.category.value}
-                  </span>
                   <span className="font-semibold md:font-black text-lg md:text-4xl text-soft-black">
                     {form.name.value}
                   </span>
+                  <span className="grow text-dark-gray-3 text-sm md:text-base">
+                    {form.category.value}
+                  </span>
                 </div>
 
-                <span className="text-soft-black flex md:hidden items-center text-xs">
+                <span className="text-soft-black flex md:hidden items-center text-xs mb-auto">
                   $
                   <span className="text-lg font-black">{form.price.value}</span>
                 </span>
               </div>
-              <div className="md:text-gray-400 tracking-wider mt-3 md:mt-0 hidden md:flex">
+              <div
+                className={`md:text-gray-400 tracking-wider mt-3 md:mt-0 hidden md:flex ${
+                  readMore && "md:!line-clamp-3"
+                }`}
+              >
                 {form.description.value}
               </div>
+              <Button
+                className={
+                  "w-fit text-xs md:text-sm p-1 md:!p-2 hidden md:flex mt-2"
+                }
+                value={`${readMore ? "Read More" : "Read Less"}`}
+                onClick={onHandleToggleDescription}
+              />
             </div>
             <div className="text-soft-black text-base font-black my-3 hidden md:block">
               $<span className="text-4xl">{form.price.value}</span>
@@ -274,10 +290,20 @@ function DetailProduct() {
           <>
             <div className="flex flex-col gap-2 md:gap-4 md:hidden">
               <span className="flex text-base font-bold">Description</span>
-              <span className="text-sm text-gray-400 tracking-wider">
+              <span
+                className={`text-sm text-gray-400 tracking-wider ${
+                  readMore && "!line-clamp-3"
+                }`}
+              >
                 {form.description.value}
               </span>
             </div>
+
+            <Button
+              className={"w-fit text-xs p-1.5 flex md:hidden"}
+              value={`${readMore ? "Read More" : "Read Less"}`}
+              onClick={onHandleToggleDescription}
+            />
 
             <div className="flex flex-col gap-3">
               <span className="flex gap-1 text-base font-bold md:font-normal">

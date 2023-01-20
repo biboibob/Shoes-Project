@@ -13,7 +13,7 @@ import { addUser } from "../service/redux/slice/user";
 import { Input, Button } from "../components/custom";
 
 //asset
-import Nike from "../assets/PNG/Logo.png";
+import Nike from "../assets/PNG/LogoBlack.png";
 
 //scss
 import LoginStyle from "../styles/Login.module.scss";
@@ -86,26 +86,22 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col h-100 bg-gray-50">
+    <div className="flex justify-center h-100 items-center grow bg-white">
       <ToastContainer />
-      <div className="flex my-auto container px-0 shadow-2xl">
-        <div
-          className={`${LoginStyle.HomePhoto} hidden md:flex md:w-3/5 relative`}
-        >
-          <img
-            src={Nike}
-            width={70}
-            className="absolute top-5 left-5"
-            alt="logo"
-          />
-        </div>
-
-        <div className="flex flex-col bg-white w-full p-5 md:w-2/5">
-          <img src={Nike} width={100} className="flex mx-auto" alt="logo" />
-          <span className="text-center font-black my-3 text-2xl">
-            Your Sport Companion.
-          </span>
-          <div className="flex flex-col gap-1 my-5">
+      <div className="flex min-h-screen grow shadow-2xl">
+        <div className="flex flex-col bg-white w-full gap-4 p-4 md:!p-10 md:basis-2/5">
+          <div className="flex relative">
+            <img src={Nike} className="h-5 md:h-10 w-auto absolute" alt="logo" />
+          </div>
+          <div className="flex flex-col gap-1 mt-auto">
+            <span className="font-black text-soft-black-color text-2xl md:text-3xl">
+              Welcome Back!
+            </span>
+            <span className="text-dark-gray-4 text-sm md:text-base">
+              Let's Find Your Dream Shoes
+            </span>
+          </div>
+          <div className="flex flex-col gap-1">
             <Input
               label={"Username"}
               name={"Username"}
@@ -121,55 +117,35 @@ function Login() {
               onChange={onChangeForm}
               className="my-2"
             />
-            <span className="flex text-base mt-1">Forgot Password ?</span>
+            <span className="flex text-sm md:text-base mt-1">Forgot Password ?</span>
           </div>
 
           <Button
             value={"Login"}
             onClick={() => onHandleLogin()}
-            className="p-3"
+            className="p-2 md:p-3 mb-auto mt-3 !bg-soft-black-color"
           />
 
-          <hr className="mt-28 mb-3"></hr>
-
-          <span className="mx-auto">
-            Not A Member?{" "}
-            <span
-              className="font-bold"
-              onClick={() => onNavigate(PageRoutePath.REGISTER)}
-            >
-              Join Now!
+          <div className="flex flex-col items-center text-sm md:text-base">
+            <hr className="mb-3 w-full"></hr>
+            <span className="flex mx-auto gap-2">
+              Not A Member?
+              <span
+                className="font-bold"
+                onClick={() => onNavigate(PageRoutePath.REGISTER)}
+              >
+                Join Now
+              </span>
             </span>
-          </span>
+          </div>
         </div>
 
-        
+        <div
+          className={`${LoginStyle.HomePhoto} hidden md:flex md:basis-3/5 relative rounded-l-[5rem]`}
+        ></div>
       </div>
     </div>
   );
 }
-
-{
-  /* <Input
-label={"Username"}
-name={"Username"}
-value={form.UserName}
-onChange={onChangeForm}
-
-/>
-
-<Input
-label={"Password"}
-name={"Password"}
-value={form.Password}
-onChange={onChangeForm}
-/>
-
-<Button variant="contained" >
-Login
-</Button> */
-}
-
-// onClick={() => onNavigate(PageRoutePath.REGISTER)}
 
 export default Login;

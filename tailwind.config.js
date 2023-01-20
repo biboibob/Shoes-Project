@@ -31,8 +31,12 @@ module.exports = {
         "dark-gray": "#D9D9D9", 
         "dark-gray-2": "#F2F2F2",
         "dark-gray-3": "#B2B2B4",
-        "dark-gray-3": "#CDCDCD",
-        "purple-pallete": "#414E97"
+        "dark-gray-4": "#9D9A96",
+        "purple-pallete": "#414E97",
+
+        "soft-black-color": "#181A18",
+        "dark-gray-color": "#D3D3D3",
+        "gray-color": "#A49065",
       },
       transitionTimingFunction: {
         'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
