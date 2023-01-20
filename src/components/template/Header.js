@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector, useDebounce } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../../utils/config";
+import TokenService from "../../utils/Token/tokenService";
+import Swal from "sweetalert2";
 
+//Redux
 import { sideBarToggle } from "../../service/redux/slice/ui";
 import { removeUser } from "../../service/redux/slice/user";
 
@@ -11,15 +14,16 @@ import { useWindowScroll, usePrevious } from "../../hook/index";
 
 //component
 import Modal from "../custom/Modal";
+import { Button } from "../custom";
 
 //asset
-import Logo from "../../assets/PNG/Logo.png";
+import Logo from "../../assets/PNG/LogoBlack.png";
 
 function Header() {
   /* State */
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
+  const [userMenu, setUserMenu] = useState(false);
 
   const [totalCart, setTotalCart] = useState({
     /* Current Cart Total */
@@ -38,6 +42,10 @@ function Header() {
   /* Redux */
   const sideBar = useSelector((selector) => selector.userInterface.isSideBar);
   const cartSelector = useSelector((val) => val.cart.data);
+  const loginData = useSelector((state) => state.userInfo.loginData);
+
+  // tokenService
+  const tokenService = TokenService.getService();
 
   useEffect(() => {
     let curr = 0;
@@ -66,31 +74,44 @@ function Header() {
     };
   }, [totalCart.value]);
 
-  const handleShowModal = () => {
-    setShowModal(true);
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Confirmation",
+      text: `Are you sure want to Logout?`,
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onLogout();
+      }
+    });
   };
 
-  const handleCloseModal = () => {
+  const onLogout = () => {
     dispatch(removeUser());
-    setShowModal(false);
+    tokenService.clearToken();
     navigate(PageRoutePath.LOGIN);
   };
 
-  const handleNavigate = (Route) => {
-    navigate(Route);
+  const handleNavigate = (Route, state) => {
+    if (state) {
+      navigate(Route, {
+        state: {
+          state,
+        },
+      });
+    } else {
+      navigate(Route);
+    }
   };
+
+  const handleToggleUserMenu = () => {
+    setUserMenu(userMenu ? false : true);
+  };
+
   return (
     <>
-      <Modal
-        modalHeader={"Logout Modal"}
-        modalTitle={"Are You Sure Want To Logout?"}
-        modalDesc={
-          "Your data from browser will be erased and you'll redirect to login page"
-        }
-        showStatus={showModal}
-        onClick={() => handleCloseModal()}
-      />
-
       <div
         className={`flex items-center ${
           scrollWindow !== 0 && "shadow-headerShadow"
@@ -107,19 +128,25 @@ function Header() {
           <div className="flex gap-4">
             <span
               className="font-medium cursor-pointer"
-              onClick={() => handleNavigate(PageRoutePath.PRODUCTS)}
+              onClick={() =>
+                handleNavigate(PageRoutePath.PRODUCTS, { category: "men" })
+              }
             >
               Men
             </span>
             <span
               className="font-medium cursor-pointer"
-              onClick={() => handleNavigate(PageRoutePath.PRODUCTS)}
+              onClick={() =>
+                handleNavigate(PageRoutePath.PRODUCTS, { category: "women" })
+              }
             >
-              Woman
+              Women
             </span>
             <span
               className="font-medium cursor-pointer"
-              onClick={() => handleNavigate(PageRoutePath.PRODUCTS)}
+              onClick={() =>
+                handleNavigate(PageRoutePath.PRODUCTS, { category: "kids" })
+              }
             >
               Kids
             </span>
@@ -146,7 +173,10 @@ function Header() {
             <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon">
               <i className="fa-solid fa-heart text-soft-gray fa-sm"></i>
             </div>
-            <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon">
+            <div
+              className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon"
+              onClick={handleToggleUserMenu}
+            >
               <i className="fa-solid fa-user text-soft-gray fa-sm"></i>
             </div>
           </div>
@@ -180,6 +210,29 @@ function Header() {
               </span>
             </span>
           </i>
+        </div>
+
+        {/* Handle Menu User on Large Screen */}
+        <div
+          className={`${
+            userMenu ? "right-[7rem]" : "-right-[50rem]"
+          } transition-all p-3 rounded-lg hidden md:flex md:flex-col gap-2 fixed top-20 bg-white shadow-xl`}
+        >
+          <div className="flex gap-5">
+            <div className="flex flex-col basis-3/4">
+              <span className="text-lg font-bold">{loginData?.username}</span>
+              <span className="text-sm">{loginData?.email}</span>
+            </div>
+            <div className="bg-primary-color p-1 px-2 text-sm rounded-lg text-white h-fit basis-1/4">
+              {loginData?.role}
+            </div>
+          </div>
+          <hr className="mt-3"></hr>
+          <Button
+            value="Logout"
+            onClick={handleLogout}
+            className={"bg-red-500 p-1 !text-base"}
+          />
         </div>
       </div>
     </>

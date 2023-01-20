@@ -14,8 +14,8 @@ const tokenService = TokenService.getService();
 let refreshTokenPromise;
 
 const AxiosInstance = axios.create({
-  // baseURL: process.env.REACT_APP_API_URL_DEV /*Dev Only*/,
-  baseURL: process.env.REACT_APP_API_URL,  /*Production*/
+  baseURL: process.env.REACT_APP_API_URL_DEV /*Dev Only*/,
+  // baseURL: process.env.REACT_APP_API_URL,  /*Production*/
   timeout: 31000,
   headers: {
     Accept: "application/json",
