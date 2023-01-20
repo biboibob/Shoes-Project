@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect , useState} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../config";
@@ -8,20 +8,26 @@ import jwt_decode from "jwt-decode";
 const PublicRoute = ({ children }) => {
   const navigate = useNavigate();
   const loginData = useSelector((state) => state.userInfo.loginData);
+  const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
+    setAllowed(false)
+    const accessToken = TokenService.getService().getAccessToken();
+    
     if (
-      loginData !== null &&
+      accessToken && loginData !== null &&
       new Date(
         jwt_decode(TokenService.getService().getAccessToken()).exp * 1000
       ) > new Date()
     ) {
       navigate(PageRoutePath.HOME);
+    } else {
+      setAllowed(true)
     }
 
     const Interval = setInterval(() => {
       if (
-        loginData !== null &&
+        accessToken && loginData !== null &&
         new Date(
           jwt_decode(TokenService.getService().getAccessToken()).exp * 1000
         ) > new Date()
@@ -35,7 +41,7 @@ const PublicRoute = ({ children }) => {
     };
   }, [loginData]);
 
-  return children;
+  return allowed && children;
 };
 
 export default PublicRoute;
