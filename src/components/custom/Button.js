@@ -11,7 +11,7 @@ function Button({ className, value, onClick }) {
   return !uiSelector.skeleton ? (
     <button
       className={`${className} bg-primary-color rounded-md text-white font-bold text-base md:text-lg w-full`}
-      onClick={() => onClick()}
+      onClick={onClick}
     >
       {value}
     </button>
