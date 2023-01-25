@@ -10,6 +10,7 @@ import {
   ShoesColor,
   PriceRange,
   CardCatalog,
+  FullPanel,
 } from "../components/index";
 
 /* Hook */
@@ -266,6 +267,11 @@ function Products() {
               ...newData,
               shoes: dataResponse.getShoesList,
             });
+
+            setSort({
+              status: false,
+              value: "",
+            });
           })
           .then(() => {
             dispatch(specificSkeletonToggle({ shoesListCategory: false }));
@@ -310,8 +316,8 @@ function Products() {
   const setValueSort = (e, val) => {
     e.stopPropagation();
     setSort({
-      ...sort,
       value: val,
+      status: false,
     });
   };
 
@@ -426,7 +432,7 @@ function Products() {
                 <div
                   className={`${
                     sort.status ? "max-w-lg" : "max-w-0"
-                  } transition-all z-50 duration-500 overflow-x-hidden box-border rounded-lg block right-0 gap-2 absolute top-10 bg-white shadow-2xl`}
+                  } transition-all  z-50 duration-500 overflow-x-hidden box-border rounded-lg block right-0 gap-2 absolute top-10 bg-white shadow-2xl`}
                 >
                   <div className="flex flex-col w-max p-2 gap-2.5">
                     {data.sort.map((val, idx) => (
@@ -459,21 +465,18 @@ function Products() {
       </div>
 
       {/* Handle Filter on Mobile Size  */}
-      <div
-        className={`${toggleFilter ? "left-0" : "-left-full"} ${
-          windowSize[0] > 768 && "hidden"
-        } inset-y-0 z-[9999] bg-white fixed flex flex-col h-full w-full transition-all duration-500 p-4`}
+      <FullPanel
+        contentClassName={"gap-3"}
+     
+        onToggle={toggleFilter}
+        onHide={() => setToggleFilter(false)}
       >
         <div className="flex justify-between items-center">
           <span className="font-bold">Filter</span>
-          <i
-            className="fa-solid fa-circle-xmark fa-lg"
-            onClick={() => setToggleFilter(false)}
-          ></i>
         </div>
-        <div className="flex-auto overscroll-y-auto overflow-y-auto min-h-0">
+        <div className="flex-auto overscroll-y-auto min-h-0">
           <div className="FilterStyle px-0">
-            <span className="font-bold">Gender</span>
+            <span className="text-sm font-bold">Gender</span>
             <Checkbox
               onChange={onHandleChange}
               name={"women"}
@@ -494,7 +497,7 @@ function Products() {
             />
           </div>
           <div className="FilterStyle px-0">
-            <span className="font-bold">Price Range</span>
+            <span className="text-sm font-bold">Price Range</span>
             <PriceRange
               name={"minPrice"}
               label={"Min"}
@@ -507,7 +510,7 @@ function Products() {
             />
           </div>
           <div className="FilterStyle px-0">
-            <span className="font-bold">Size</span>
+            <span className="text-sm font-bold">Size</span>
             <ShoesSize
               size={data.size}
               name={"size"}
@@ -516,7 +519,7 @@ function Products() {
             />
           </div>
           <div className="FilterStyle px-0">
-            <span className="font-bold">Color</span>
+            <span className="text-sm font-bold">Color</span>
             <ShoesColor
               colors={data.color}
               name={"color"}
@@ -525,7 +528,7 @@ function Products() {
             />
           </div>
           <div className="FilterStyle px-0">
-            <span className="font-bold">Offer</span>
+            <span className="text-sm font-bold">Offer</span>
             {data.offer.map((val, idx) => (
               <div key={idx}>
                 {JSXEventOffer(val.id, val.label, tmpForm, onHandleChange)}
@@ -533,14 +536,15 @@ function Products() {
             ))}
           </div>
         </div>
-        <div className="bg-white  bottom-0 inset-x-0 w-full p-3">
+
+        <div className="bg-white text-sm bottom-0 inset-x-0 w-full">
           <Button
             value={"Apply"}
             onClick={onApplyFilter}
             className="!bg-soft-green p-2 mt-2"
           />
         </div>
-      </div>
+      </FullPanel>
     </div>
   );
 }
