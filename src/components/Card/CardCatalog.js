@@ -81,7 +81,7 @@ function CardShoes({ data, sort }) {
                   className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
                 />
               </div>
-              <div className="flex flex-col md:flex-row gap-2 md:!gap-6 justify-between">
+              <div className="flex flex-col md:flex-row gap-2 md:!gap-2 justify-between">
                 <div className="flex flex-col md:gap-1 md:overflow-hidden">
                   <span className="text-xs md:text-base font-bold truncate">
                     {val.shoes?.name}
@@ -90,7 +90,7 @@ function CardShoes({ data, sort }) {
                     {`${val.category?.category_name}'s  Shoes`}
                   </span>
                 </div>
-                <span className="text-sm md:text-xl text-primary-color font-bold">
+                <span className="text-sm md:text-base text-primary-color font-bold">
                   {`$${val.shoes?.price}`}
                 </span>
               </div>

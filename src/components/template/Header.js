@@ -172,11 +172,11 @@ function Header() {
                 </span>
               )}
             </div>
-            <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon">
+            <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon cursor-pointer">
               <i className="fa-solid fa-heart text-soft-gray fa-sm"></i>
             </div>
             <div
-              className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] relative shadow-headerIcon"
+              className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] relative shadow-headerIcon cursor-pointer"
               onClick={handleToggleUserMenu}
             >
               <i className="fa-solid fa-user text-soft-gray fa-sm"></i>
