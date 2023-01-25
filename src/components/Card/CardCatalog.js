@@ -14,7 +14,7 @@ import JordanBlue from "../../assets/PNG/Shoes/Categories/Jordan/Jordan-Blue.png
 /* Util */
 import { PageRoutePath } from "../../utils/config";
 
-function CardShoes({ data }) {
+function CardShoes({ data, sort }) {
   const navigate = useNavigate();
 
   /* Redux */
@@ -22,7 +22,7 @@ function CardShoes({ data }) {
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
   const navigateTo = (Route, id) => {
-    console.log(id)
+    console.log(id);
     navigate(`${Route}/${id}`);
   };
 
@@ -34,33 +34,68 @@ function CardShoes({ data }) {
     !uiSelector.specificSkeleton.shoesListCategory ? (
       /* Adding Flex auto in after will make it behave as grid */
       <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">
-        {data.map((val, idx) => (
-          <div
-            className={`${styles.cardWrapper} shadow-CardShadow gap-3`}
-            onClick={() => navigateTo(PageRoutePath.PRODUCTS, val.id_shoes)}
-            key={idx}
-          >
-            <div className={`${styles.ImageCard} relative`}>
-              <img
-                src={JordanBlue}
-                className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
-              />
-            </div>
-            <div className="flex flex-col md:flex-row gap-2 md:!gap-6 justify-between">
-              <div className="flex flex-col md:gap-1 md:overflow-hidden">
-                <span className="text-xs md:text-base font-bold truncate">
-                  {val.shoes?.name}
-                </span>
-                <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">
-                  {`${val.category?.category_name}'s  Shoes`}
+        {data
+          .sort((a, b) => {
+            if (sort.value.length > 0) {
+              switch (sort.value) {
+                case "Highest Price":
+                  return b.shoes.price - a.shoes.price;
+                case "Lowest Price":
+                  return a.shoes.price - b.shoes.price;
+                case "Shoes Name Desc":
+                  if (b.shoes.name < a.shoes.name) {
+                    return -1;
+                  }
+                  if (b.shoes.name > a.shoes.name) {
+                    return 1;
+                  }
+                  return 0;
+                case "Shoes Name Asc":
+                  if (a.shoes.name < b.shoes.name) {
+                    return -1;
+                  }
+                  if (a.shoes.name > b.shoes.name) {
+                    return 1;
+                  }
+                  return 0;
+                case "Category":
+                  if (a.category.category_name < b.category?.category_name) {
+                    return -1;
+                  }
+                  if (a.category?.category_name > b.category?.category_name) {
+                    return 1;
+                  }
+                  return 0;
+              }
+            }
+          })
+          .map((val, idx) => (
+            <div
+              className={`${styles.cardWrapper} shadow-CardShadow gap-3`}
+              onClick={() => navigateTo(PageRoutePath.PRODUCTS, val.id_shoes)}
+              key={idx}
+            >
+              <div className={`${styles.ImageCard} relative`}>
+                <img
+                  src={JordanBlue}
+                  className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
+                />
+              </div>
+              <div className="flex flex-col md:flex-row gap-2 md:!gap-6 justify-between">
+                <div className="flex flex-col md:gap-1 md:overflow-hidden">
+                  <span className="text-xs md:text-base font-bold truncate">
+                    {val.shoes?.name}
+                  </span>
+                  <span className="text-[0.625rem] md:text-xs font-lighter text-dark-gray-3">
+                    {`${val.category?.category_name}'s  Shoes`}
+                  </span>
+                </div>
+                <span className="text-sm md:text-xl text-primary-color font-bold">
+                  {`$${val.shoes?.price}`}
                 </span>
               </div>
-              <span className="text-sm md:text-xl text-primary-color font-bold">
-                {`$${val.shoes?.price}`}
-              </span>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     ) : (
       <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">

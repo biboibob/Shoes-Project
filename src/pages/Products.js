@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
@@ -20,7 +16,10 @@ import {
 import { useWindowSize } from "../hook";
 
 /* Redux Action */
-import { skeletonToggle, specificSkeletonToggle } from "../service/redux/slice/ui";
+import {
+  skeletonToggle,
+  specificSkeletonToggle,
+} from "../service/redux/slice/ui";
 
 /* Dependencies */
 import _ from "lodash";
@@ -34,7 +33,7 @@ function Products() {
 
   /* Redux */
   let param = useLocation();
-  
+
   const dispatch = useDispatch();
   const uiSelector = useSelector((state) => state.userInterface);
 
@@ -58,6 +57,13 @@ function Products() {
     ],
     shoes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     offer: [],
+    sort: [
+      "Highest Price",
+      "Lowest Price",
+      "Shoes Name Asc",
+      "Shoes Name Desc",
+      "Category",
+    ],
   });
 
   /* Hook */
@@ -141,75 +147,81 @@ function Products() {
     },
   });
 
+  const [sort, setSort] = useState({
+    status: false,
+    value: "",
+  });
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
 
   useEffect(() => {
-    dispatch(skeletonToggle(true))
-    Promise.all([api.getFilterInitiate()]).then(([res1]) => {
-      const currForm = form;
-      const resFilter = res1.data.data;
+    dispatch(skeletonToggle(true));
+    Promise.all([api.getFilterInitiate()])
+      .then(([res1]) => {
+        const currForm = form;
+        const resFilter = res1.data.data;
 
-      /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
-      for (var i = 0; i < Object.keys(form).length; i++) {
-        /* Check Value if Has State Category */
-        if (param?.state?.state.category) {
-          Object.keys(form).map((val) => {
-            if (val === param.state.state.category) {
-              currForm[param.state.state.category].value = true;
-            }
-          });
+        /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
+        for (var i = 0; i < Object.keys(form).length; i++) {
+          /* Check Value if Has State Category */
+          if (param?.state?.state.category) {
+            Object.keys(form).map((val) => {
+              if (val === param.state.state.category) {
+                currForm[param.state.state.category].value = true;
+              }
+            });
+          }
         }
-      }
 
-      /* Set Event Offer Data from API to Form State */
-      if (resFilter.getOfferList.length > 0) {
-        for (var i = 0; i < resFilter.getOfferList.length; i++) {
-          currForm[resFilter.getOfferList[i].id_sale] = {
-            value: false,
-            statusErr: false,
-            message: "",
-          };
+        /* Set Event Offer Data from API to Form State */
+        if (resFilter.getOfferList.length > 0) {
+          for (var i = 0; i < resFilter.getOfferList.length; i++) {
+            currForm[resFilter.getOfferList[i].id_sale] = {
+              value: false,
+              statusErr: false,
+              message: "",
+            };
+          }
         }
-      }
 
-      setData({
-        ...data,
-        color: resFilter.colorOpt.map((val) => {
-          return val.color;
-        }),
-        /*Set Unique */
-        size: [
-          ...new Set(
-            resFilter.sizeOpt.map((val) => {
-              return Math.round(val.size);
-            })
-          ),
-        ],
-        offer: resFilter.getOfferList.map((val) => {
-          return {
-            id: val.id_sale,
-            label: val.sale_name,
-          };
-        }),
-      });
+        setData({
+          ...data,
+          color: resFilter.colorOpt.map((val) => {
+            return val.color;
+          }),
+          /*Set Unique */
+          size: [
+            ...new Set(
+              resFilter.sizeOpt.map((val) => {
+                return Math.round(val.size);
+              })
+            ),
+          ],
+          offer: resFilter.getOfferList.map((val) => {
+            return {
+              id: val.id_sale,
+              label: val.sale_name,
+            };
+          }),
+        });
 
-      setForm({
-        ...currForm,
-      });
+        setForm({
+          ...currForm,
+        });
 
-      setTmpForm({
-        ...currForm,
+        setTmpForm({
+          ...currForm,
+        });
+      })
+      .then(() => {
+        dispatch(skeletonToggle(false));
       });
-    }).then(() => {
-      dispatch(skeletonToggle(false))
-    });
   }, []);
 
   /* Handle If Form Change, Data Shoes List WIll Be Update */
   useEffect(() => {
     if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
-    dispatch(specificSkeletonToggle({shoesListCategory: true}))
+    dispatch(specificSkeletonToggle({ shoesListCategory: true }));
     getData(form, data, search);
   }, [form, search]);
 
@@ -245,16 +257,19 @@ function Products() {
           color: newForm.color.value,
           offer: arrOffer,
         };
-        
-        return api.getProductList(requestBody).then((res) => {
-          const dataResponse = res.data.data;
-          setData({
-            ...newData,
-            shoes: dataResponse.getShoesList,
+
+        return api
+          .getProductList(requestBody)
+          .then((res) => {
+            const dataResponse = res.data.data;
+            setData({
+              ...newData,
+              shoes: dataResponse.getShoesList,
+            });
+          })
+          .then(() => {
+            dispatch(specificSkeletonToggle({ shoesListCategory: false }));
           });
-        }).then(() => {
-          dispatch(specificSkeletonToggle({shoesListCategory: false}))
-        })
       }, 750),
     []
   );
@@ -283,6 +298,21 @@ function Products() {
   const onApplyFilter = () => {
     setForm({ ...tmpForm });
     setToggleFilter(false);
+  };
+
+  const onToggleSort = () => {
+    setSort({
+      ...sort,
+      status: sort.status ? false : true,
+    });
+  };
+
+  const setValueSort = (e, val) => {
+    e.stopPropagation();
+    setSort({
+      ...sort,
+      value: val,
+    });
   };
 
   return (
@@ -385,9 +415,36 @@ function Products() {
                 <i className="fa-solid fa-filter fa-xs"></i>
                 <span>Filter</span>
               </div>
-              <div className="flex items-center gap-2 text-xs md:text-base">
+              <div
+                className="flex relative items-center gap-2 text-xs md:text-base cursor-pointer"
+                onClick={onToggleSort}
+              >
                 <i className="fa-solid fa-sort fa-xs"></i>
                 <span>Sort</span>
+
+                {/* Handle Sort */}
+                <div
+                  className={`${
+                    sort.status ? "max-w-lg" : "max-w-0"
+                  } transition-all z-50 duration-500 overflow-x-hidden box-border rounded-lg block right-0 gap-2 absolute top-10 bg-white shadow-2xl`}
+                >
+                  <div className="flex flex-col w-max p-2 gap-2.5">
+                    {data.sort.map((val, idx) => (
+                      <span
+                        key={idx}
+                        onClick={(e) => setValueSort(e, val)}
+                        className={`${
+                          val === sort.value
+                            ? "bg-primary-color text-white p-2 rounded-lg"
+                            : "p-2"
+                        }`}
+                      >
+                        {val}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {/* End Sort */}
               </div>
             </>
           ) : (
@@ -398,7 +455,7 @@ function Products() {
             />
           )}
         </div>
-        <CardCatalog data={data.shoes} />
+        <CardCatalog data={data.shoes} sort={sort} />
       </div>
 
       {/* Handle Filter on Mobile Size  */}

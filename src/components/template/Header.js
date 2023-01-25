@@ -74,7 +74,8 @@ function Header() {
     };
   }, [totalCart.value]);
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.stopPropagation();
     Swal.fire({
       title: "Confirmation",
       text: `Are you sure want to Logout?`,
@@ -106,7 +107,8 @@ function Header() {
     }
   };
 
-  const handleToggleUserMenu = () => {
+  const handleToggleUserMenu = (e) => {
+    e.stopPropagation();
     setUserMenu(userMenu ? false : true);
   };
 
@@ -115,7 +117,7 @@ function Header() {
       <div
         className={`flex items-center ${
           scrollWindow !== 0 && "shadow-headerShadow"
-        } transition-all duration-700 bg-soft-gray-2 px-4 py-3 sticky top-0 z-[9999]`}
+        } transition-all duration-700 bg-soft-gray-2 px-4 py-3 sticky top-0 z-[99]`}
       >
         {/* Large Screen Handle */}
         <div className="container hidden ml-auto items-center justify-between lg:flex">
@@ -174,10 +176,38 @@ function Header() {
               <i className="fa-solid fa-heart text-soft-gray fa-sm"></i>
             </div>
             <div
-              className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon"
+              className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] relative shadow-headerIcon"
               onClick={handleToggleUserMenu}
             >
               <i className="fa-solid fa-user text-soft-gray fa-sm"></i>
+
+              {/* Handle Menu User on Large Screen */}
+              <div
+                className={`${
+                  userMenu ? "max-w-xs" : "max-w-0"
+                } transition-all duration-500 overflow-x-hidden box-border rounded-lg hidden md:block right-0 gap-2 absolute top-16 bg-white shadow-xl`}
+              >
+                <div className="flex flex-col p-3">
+                  <div className="flex gap-5">
+                    <div className="flex flex-col basis-3/4">
+                      <span className="text-lg font-bold">
+                        {loginData?.username}
+                      </span>
+                      <span className="text-sm">{loginData?.email}</span>
+                    </div>
+                    <div className="bg-primary-color p-1 px-2 text-sm rounded-lg text-white h-fit basis-1/4">
+                      {loginData?.role}
+                    </div>
+                  </div>
+                  <hr className="mt-3"></hr>
+                  <Button
+                    value="Logout"
+                    onClick={handleLogout}
+                    className={"bg-red-500 p-1 !text-base"}
+                  />
+                </div>
+              </div>
+              {/* End Handle User Menu */}
             </div>
           </div>
         </div>
@@ -210,29 +240,6 @@ function Header() {
               </span>
             </span>
           </i>
-        </div>
-
-        {/* Handle Menu User on Large Screen */}
-        <div
-          className={`${
-            userMenu ? "right-[7rem]" : "-right-[50rem]"
-          } transition-all p-3 rounded-lg hidden md:flex md:flex-col gap-2 fixed top-20 bg-white shadow-xl`}
-        >
-          <div className="flex gap-5">
-            <div className="flex flex-col basis-3/4">
-              <span className="text-lg font-bold">{loginData?.username}</span>
-              <span className="text-sm">{loginData?.email}</span>
-            </div>
-            <div className="bg-primary-color p-1 px-2 text-sm rounded-lg text-white h-fit basis-1/4">
-              {loginData?.role}
-            </div>
-          </div>
-          <hr className="mt-3"></hr>
-          <Button
-            value="Logout"
-            onClick={handleLogout}
-            className={"bg-red-500 p-1 !text-base"}
-          />
         </div>
       </div>
     </>
