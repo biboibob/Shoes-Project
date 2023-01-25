@@ -220,8 +220,8 @@ function DetailProduct() {
 
   return (
     <div className="flex flex-col md:flex-row container min-h-full">
-      <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center md:sticky top-0">
-        <ShoesPreview asset={ShoesFeatured} />
+      <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center">
+        <ShoesPreview className={"sticky top-14"} asset={ShoesFeatured} />
       </div>
       <div className="flex flex-col basis-1/2 px-[1.25rem] py-2 md:py-[3.125rem] gap-6">
         {!uiSelector.skeleton ? (
@@ -251,7 +251,7 @@ function DetailProduct() {
               </div>
               <Button
                 className={
-                  "w-fit text-xs md:text-sm p-1 md:!p-2 hidden md:flex mt-2"
+                  "!w-fit !text-sm p-1 md:!p-2 hidden md:flex mt-2"
                 }
                 value={`${readMore ? "Read More" : "Read Less"}`}
                 onClick={onHandleToggleDescription}
@@ -300,7 +300,7 @@ function DetailProduct() {
             </div>
 
             <Button
-              className={"w-fit text-xs p-1.5 flex md:hidden"}
+              className={"!w-fit !text-xs p-1.5 flex md:hidden"}
               value={`${readMore ? "Read More" : "Read Less"}`}
               onClick={onHandleToggleDescription}
             />

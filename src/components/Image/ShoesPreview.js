@@ -40,7 +40,7 @@ function ShoesPreview({ asset, className, responsive }) {
 
   return !uiSelector.skeleton ? (
     <div
-      className={`${className} flex justify-evenly my-3 items-center ${
+      className={`${className} flex justify-evenly h-fit my-3 items-center ${
         responsive ? "flex-row md:!flex-col" : "flex-col"
       } `}
     >
