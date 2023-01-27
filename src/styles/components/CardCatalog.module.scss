@@ -1,25 +1,11 @@
 @import "../index.scss";
  
 .cardWrapper {
-    display: flex;
-    flex-direction: column;
-    flex-basis: calc(calc(100% / 2) - .5rem) ;
-    // flex-wrap: wrap;
     background-color: white;
     padding: 1rem;
     border-radius: 10px;
     cursor: pointer;
     overflow: hidden;
-
-    // gap: 20px;
-
-    @include xl {
-        flex-basis: calc(calc(100% / 3) - .5rem) ;
-    }
-
-    @include xxl {
-        flex-basis: calc(calc(100% / 4) - .7rem) ;
-    }
 }
 
 .ImageCard {

@@ -33,7 +33,7 @@ function CardShoes({ data, sort }) {
 
     !uiSelector.specificSkeleton.shoesListCategory ? (
       /* Adding Flex auto in after will make it behave as grid */
-      <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem]">
         {data
           .sort((a, b) => {
             if (sort.value.length > 0) {
@@ -81,7 +81,7 @@ function CardShoes({ data, sort }) {
                   className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
                 />
               </div>
-              <div className="flex flex-col md:flex-row gap-2 md:!gap-2 justify-between">
+              <div className="flex flex-col md:flex-row gap-2 md:!gap-2 justify-between mt-3">
                 <div className="flex flex-col md:gap-1 md:overflow-hidden">
                   <span className="text-xs md:text-base font-bold truncate">
                     {val.shoes?.name}
@@ -98,14 +98,14 @@ function CardShoes({ data, sort }) {
           ))}
       </div>
     ) : (
-      <div className="flex flex-wrap gap-[.7rem] justify-between after:flex-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem]">
         {dummy.map((val, idx) => (
           <Skeleton
             key={idx}
             wrapper={() => (
               <>
                 <div className="rounded-lg animate-pulse bg-dark-gray h-52 w-full"></div>
-                <div className="flex animate-pulse w-full gap-2 ">
+                <div className="flex animate-pulse w-full gap-2 mt-3">
                   <div className="flex flex-col basis-3/4 gap-2">
                     <div className="rounded-lg bg-dark-gray h-3" />
                     <div className="rounded-lg bg-dark-gray h-3 w-1/2" />
