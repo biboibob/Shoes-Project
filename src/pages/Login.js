@@ -43,12 +43,11 @@ function Login() {
       [name]: value,
     };
 
-    //console.log("Form Change", updatedForm);
-
     setForm(updatedForm);
   };
 
-  const onHandleLogin = () => {
+  const onHandleLogin = (e) => {
+    e.preventDefault();
     const validateEmptyArray = Object.values(form).includes("");
 
     if (validateEmptyArray) {
@@ -91,50 +90,58 @@ function Login() {
       <div className="flex min-h-screen grow shadow-2xl">
         <div className="flex flex-col bg-white w-full gap-4 p-4 md:!p-10 md:basis-2/5">
           <div className="flex relative">
-            <img src={Nike} className="h-5 md:h-10 w-auto absolute" alt="logo" />
-          </div>
-          <div className="flex flex-col gap-1 mt-auto">
-            <span className="font-black text-soft-black-color text-2xl md:text-3xl">
-              Welcome Back!
-            </span>
-            <span className="text-dark-gray-4 text-sm md:text-base">
-              Let's Find Your Dream Shoes
-            </span>
-          </div>
-          <div className="flex flex-col gap-1">
-            <Input
-              label={"Username"}
-              name={"Username"}
-              value={form.UserName}
-              onChange={onChangeForm}
-              className="my-2"
+            <img
+              src={Nike}
+              className="h-5 md:h-10 w-auto absolute"
+              alt="logo"
             />
-            <Input
-              type="password"
-              label={"Password"}
-              name={"Password"}
-              value={form.Password}
-              onChange={onChangeForm}
-              className="my-2"
-            />
-            <span className="flex text-sm md:text-base mt-1">Forgot Password ?</span>
           </div>
+          <form onSubmit={onHandleLogin} className="flex flex-col gap-2 my-auto">
+            <div className="flex flex-col gap-1">
+              <span className="font-black text-soft-black-color text-2xl md:text-3xl">
+                Welcome Back!
+              </span>
+              <span className="text-dark-gray-4 text-sm md:text-base">
+                Let's Find Your Dream Shoes
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Input
+                label={"Username"}
+                name={"Username"}
+                value={form.UserName}
+                onChange={onChangeForm}
+                className="my-2"
+              />
+              <Input
+                type="password"
+                label={"Password"}
+                name={"Password"}
+                value={form.Password}
+                onChange={onChangeForm}
+                className="my-2"
+              />
+              <span className="flex text-sm md:text-base mt-1">
+                Forgot Password ?
+              </span>
+            </div>
 
-          <Button
-            value={"Login"}
-            onClick={() => onHandleLogin()}
-            className="p-2 md:p-3 mb-auto mt-3 !bg-soft-black-color"
-          />
+            <Button
+              value={"Sign In"}
+              type={"submit"}
+              className="p-2 md:p-3 mt-3 !bg-soft-black-color"
+            />
+          </form>
 
           <div className="flex flex-col items-center text-sm md:text-base">
             <hr className="mb-3 w-full"></hr>
             <span className="flex mx-auto gap-2">
               Not A Member?
               <span
-                className="font-bold"
+                className="font-bold cursor-pointer"
                 onClick={() => onNavigate(PageRoutePath.REGISTER)}
               >
-                Join Now
+                Sign Up
               </span>
             </span>
           </div>

@@ -167,7 +167,7 @@ function DetailProduct() {
   };
 
   const addShoesToCart = () => {
-    if (form.color.value === "" && form.size.value === "") {
+    if (form.color.value === "" || form.size.value === "") {
       Swal.fire({
         title: "Select All Field",
         text: "Color or Size option should be selected",

@@ -21,6 +21,10 @@ function Cart() {
   const cartSelector = useSelector((state) => state.cart);
   const [form, setForm] = useState([]);
 
+  // State Handle Checkbox
+  const [selectedList, setSelectedList] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
   useEffect(() => {
     const newArr = cartSelector.data.map((val) => {
       let obj = {};
@@ -58,6 +62,31 @@ function Cart() {
     dispatch(removeItem(val));
   };
 
+  const onHandleCheckBox = (value) => {
+    if (selectedList.some((selectedVal) => selectedVal === value)) {
+      const indexVal = selectedList.indexOf(value);
+      setSelectedList(
+        selectedList.filter((val, idx) => idx !== indexVal && val)
+      );
+    } else {
+      setSelectedList([...selectedList, ...[value]]);
+    }
+  };
+
+  const onHandleCheckboxSelectAll = () => {
+    if (selectAll === true) {
+      setSelectedList([]);
+      setSelectAll(false);
+    } else {
+      setSelectAll(true);
+      setSelectedList(
+        form.map((val) => {
+          return val.name.value;
+        })
+      );
+    }
+  };
+
   return (
     <div className="flex container min-h-full mt-3 gap-3">
       <div className="basis-full md:basis-2/3 flex flex-col gap-3">
@@ -65,25 +94,42 @@ function Cart() {
           Cart
         </span>
         <div className="flex items-center justify-between">
-          <Checkbox name={"SelectAll"} label={"Select All"} />
+          <Checkbox
+            name={"SelectAll"}
+            label={"Select All"}
+            value={selectAll}
+            onChange={onHandleCheckboxSelectAll}
+          />
           <div className="flex items-center gap-2 text-sm md:text-base">
             <i className="fa-solid fa-trash-can"></i>
-            <span>Delete All</span>
+            <span>Delete Selected</span>
           </div>
         </div>
         <div className="border-t-4 border-dark-gray-2"></div>
-
         {form.map((val, idx) => (
           <div className="flex flex-col gap-3" key={idx}>
             <div className="flex gap-2">
-              <Checkbox noLabel={true} />
+              <Checkbox
+                noLabel={true}
+                value={selectedList.some(
+                  (valSome) => valSome === val.name.value
+                )}
+                onChange={() => onHandleCheckBox(val.name.value)}
+              />
               <img className="h-16 w-16 md:h-24 md:w-24" />
               <div className="flex flex-col ml-2">
                 <span className="text-sm md:text-xl font-semibold">
                   {val.name.value}
                 </span>
-                <span className="text-xs md:text-sm">
-                  {val.size.value} EU - {val.color.value}
+                <span className="flex gap-2 text-xs md:text-sm">
+                  <span className="py-1 px-2 bg-white border text-[0.7rem] rounded-md">
+                    {val.size.value} - EU
+                  </span>
+                  <span
+                    className={`h-auto py-1 px-2 text-[0.7rem] rounded-md bg-[${val.color.value.toLowerCase()}]`}
+                  >
+                    {val.color.value}
+                  </span>
                 </span>
                 <span className="font-black mt-2 text-sm md:text-base">
                   ${val.price.value}
