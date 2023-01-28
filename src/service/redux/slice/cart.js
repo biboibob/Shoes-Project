@@ -21,12 +21,19 @@ export const cartSlice = createSlice({
   reducers: {
     addNewShoes: (state, action) => {
       const shoesInState = state.data.find(
-        (val) => val.name === action.payload.name
+        (val) =>
+          val.name === action.payload.name &&
+          val.color === action.payload.color &&
+          val.size === action.payload.size
       );
 
       if (shoesInState) {
         state.data = state.data.map((val) => {
-          if (val.name === action.payload.name) {
+          if (
+            val.name === action.payload.name &&
+            val.color === action.payload.color &&
+            val.size === action.payload.size
+          ) {
             val.addToCart += action.payload.addToCart;
           }
           return val;
@@ -36,8 +43,19 @@ export const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
-      const indexShoe = state.data.findIndex((val) => val.name === action.payload);
-      state.data.splice(indexShoe, 1);
+      // Action In Form Of Array and Received Index
+
+      state.data = state.data.filter((val, idx) => {
+        const result = action.payload.some((valFind) => valFind === idx);
+      
+        if (!result) {
+          return val;
+        }
+      });
+      // action.payload.map((valMap) => {
+      //   // const indexShoe = state.data.findIndex((val) => val.name === valMap);
+      //   state.data.splice(valMap, 1);
+      // });
     },
     removeAllCart: (state, action) => {
       state.data = [];

@@ -96,12 +96,16 @@ function DetailProduct() {
       statusErr: false,
       message: "",
     },
-
     addToCart: {
       value: 1,
       statusErr: false,
       message: "",
     },
+    id: {
+      value: null,
+      statusErr: false,
+      message: "",
+    }
   });
 
   const [readMore, setReadMore] = useState(true);
@@ -134,6 +138,7 @@ function DetailProduct() {
           price: dataResponse.shoesDetail.price,
           description: dataResponse.shoesDetail.description,
           category: dataResponse.categoryShoes.category.category_name,
+          id: dataResponse.shoesDetail.id_shoes,
         };
 
         for (const property in updatedValue) {
