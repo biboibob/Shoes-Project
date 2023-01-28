@@ -163,59 +163,6 @@ function Register() {
           className={`${LoginStyle.HomePhoto} hidden md:flex md:basis-3/5 relative rounded-l-[5rem]`}
         ></div>
       </div>
-
-      {/* <div className="flex flex-col m-auto w-3/12 shadow-2xl">
-        <h1 className="text-center text-2xl font-bold bg-primary-color text-white p-3">
-          Register Page
-        </h1>
-        <div className="flex flex-col px-10 py-6 gap-5">
-          <FormField
-            label={"Username"}
-            name={"Username"}
-            value={form.Username}
-            onChange={onChangeForm}
-            vertical={true}
-          />
-
-          <FormField
-            label={"Email"}
-            name={"Email"}
-            value={form.Email}
-            onChange={onChangeForm}
-            vertical={true}
-          />
-
-          <FormField
-            label={"Password"}
-            name={"Password"}
-            value={form.Password}
-            onChange={onChangeForm}
-            vertical={true}
-          />
-
-          <FormField
-            label={"Confirm Password"}
-            name={"ConfirmPassword"}
-            value={form.ConfirmPassword}
-            onChange={onChangeForm}
-            vertical={true}
-          />
-
-          <Button variant="contained" onClick={() => onHandleRegister()}>
-            Register
-          </Button>
-
-          <span className="text-center mt-5">
-            Already Has Account?{" "}
-            <span
-              onClick={() => navigate(PageRoutePath.LOGIN)}
-              className="font-bold hover:text-primary-color hover:cursor-pointer"
-            >
-              Login
-            </span>
-          </span>
-        </div>
-      </div> */}
     </>
   );
 }

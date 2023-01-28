@@ -84,9 +84,6 @@ AxiosInstance.interceptors.response.use(
       //       return AxiosInstance.request(originalRequest);
       //     }
       //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
 
       // ******* End ****** //
     }

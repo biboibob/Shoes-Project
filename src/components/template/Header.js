@@ -172,9 +172,7 @@ function Header() {
                 </span>
               )}
             </div>
-            <div className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] shadow-headerIcon cursor-pointer">
-              <i className="fa-solid fa-heart text-soft-gray fa-sm"></i>
-            </div>
+
             <div
               className="flex flex-col justify-center rounded-[60px] px-[.8em] py-[1.2em] relative shadow-headerIcon cursor-pointer"
               onClick={handleToggleUserMenu}
@@ -229,16 +227,18 @@ function Header() {
             className="fa-solid fa-cart-shopping relative"
             onClick={() => handleNavigate(PageRoutePath.CART)}
           >
-            <span className="flex absolute h-4 w-4 top-[-.7rem] right-[-.6rem]">
-              <span
-                className={`${
-                  totalCart.status && "animate-ping"
-                } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
-              ></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-red-pallete text-white text-[.5rem] font-bold items-center justify-center">
-                {totalCart.value}
+            {totalCart.value > 0 && (
+              <span className="flex absolute h-4 w-4 top-[-.7rem] right-[-.6rem]">
+                <span
+                  className={`${
+                    totalCart.status && "animate-ping"
+                  } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
+                ></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-red-pallete text-white text-[.5rem] font-bold items-center justify-center">
+                  {totalCart.value}
+                </span>
               </span>
-            </span>
+            )}
           </i>
         </div>
       </div>

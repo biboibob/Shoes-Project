@@ -36,7 +36,6 @@ function CardShoes({ data, limit = 5 }) {
 
 
   const navigateTo = (Route, id) => {
-    console.log(id)
     navigate(`${Route}/${id}`);
   };
 
