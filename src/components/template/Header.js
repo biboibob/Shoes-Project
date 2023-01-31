@@ -197,7 +197,7 @@ function Header() {
                       {loginData?.role}
                     </div>
                   </div>
-                  <hr className="mt-3"></hr>
+                  <hr className="my-3"></hr>
                   <Button
                     value="Logout"
                     onClick={handleLogout}

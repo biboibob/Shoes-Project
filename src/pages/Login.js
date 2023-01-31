@@ -14,6 +14,7 @@ import { Input, Button } from "../components/custom";
 
 //asset
 import Nike from "../assets/PNG/LogoBlack.png";
+import LoadingSpin  from "../assets/SVG/LoadingSpin.svg";
 
 //scss
 import LoginStyle from "../styles/Login.module.scss";
@@ -28,7 +29,7 @@ function Login() {
   //redux
   const dispatch = useDispatch();
 
-  const [boolRegister, setBoolboolRegister] = useState(false);
+  const [boolLogin, setBoolLogin] = useState(false);
 
   const [form, setForm] = useState({
     Username: "",
@@ -58,6 +59,7 @@ function Login() {
   };
 
   const onLogin = () => {
+    setBoolLogin(true);
     const params = {
       username: form.Username,
       password: form.Password,
@@ -77,7 +79,10 @@ function Login() {
           toast.info(res.data.message);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setBoolLogin(false);
+      });
   };
 
   const onNavigate = (val, data) => {
@@ -96,7 +101,10 @@ function Login() {
               alt="logo"
             />
           </div>
-          <form onSubmit={onHandleLogin} className="flex flex-col gap-2 my-auto">
+          <form
+            onSubmit={onHandleLogin}
+            className="flex flex-col gap-2 my-auto"
+          >
             <div className="flex flex-col gap-1">
               <span className="font-black text-soft-black-color text-2xl md:text-3xl">
                 Welcome Back!
@@ -127,9 +135,15 @@ function Login() {
             </div>
 
             <Button
-              value={"Sign In"}
+              disabled={boolLogin}
+              value={
+                <span className="relative flex items-center">
+                  <img src={LoadingSpin} className={`h-auto w-7 ${!boolLogin && "hidden"}`} alt="loading" />
+                  Login
+                </span>
+              }
               type={"submit"}
-              className="p-2 md:p-3 mt-3 !bg-soft-black-color"
+              className="p-2 md:p-3 mt-3 !bg-soft-black-color justify-center flex"
             />
           </form>
 

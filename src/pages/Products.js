@@ -131,11 +131,6 @@ function Products() {
       statusErr: false,
       message: "",
     },
-    color: {
-      value: [],
-      statusErr: false,
-      message: "",
-    },
     minPrice: {
       value: 0,
       statusErr: false,
@@ -143,6 +138,11 @@ function Products() {
     },
     maxPrice: {
       value: 0,
+      statusErr: false,
+      message: "",
+    },
+    color: {
+      value: [],
       statusErr: false,
       message: "",
     },
@@ -155,12 +155,20 @@ function Products() {
   const [search, setSearch] = useState("");
   const [toggleFilter, setToggleFilter] = useState(false);
 
+  //To Prevent Initiate Render on UseEffect, we use this state
+  const [boolFilter, setBoolFilter] = useState(false);
+
   useEffect(() => {
+    getInitiateFilter();
+  }, []);
+
+  const getInitiateFilter = () => {
     dispatch(skeletonToggle(true));
-    Promise.all([api.getFilterInitiate()])
-      .then(([res1]) => {
+    return api
+      .getFilterInitiate()
+      .then((res) => {
         const currForm = form;
-        const resFilter = res1.data.data;
+        const resFilter = res.data.data;
 
         /* If There's Gender Category argument on navigate state, it will immediately change the value Form of Gender*/
         for (var i = 0; i < Object.keys(form).length; i++) {
@@ -216,14 +224,17 @@ function Products() {
       })
       .then(() => {
         dispatch(skeletonToggle(false));
+        setBoolFilter(true);
       });
-  }, []);
+  };
 
   /* Handle If Form Change, Data Shoes List WIll Be Update */
   useEffect(() => {
     if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
     dispatch(specificSkeletonToggle({ shoesListCategory: true }));
-    getData(form, data, search);
+    if (boolFilter) {
+      getData(form, data, search);
+    }
   }, [form, search]);
 
   /* Handle New Shoe List Request With Debounce Technique */
@@ -273,7 +284,8 @@ function Products() {
               value: "",
             });
           })
-          .then(() => {
+          .then(() => {})
+          .finally(() => {
             dispatch(specificSkeletonToggle({ shoesListCategory: false }));
           });
       }, 750),
@@ -467,7 +479,6 @@ function Products() {
       {/* Handle Filter on Mobile Size  */}
       <FullPanel
         contentClassName={"gap-3"}
-     
         onToggle={toggleFilter}
         onHide={() => setToggleFilter(false)}
       >
