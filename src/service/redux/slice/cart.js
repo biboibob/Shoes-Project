@@ -13,6 +13,7 @@ const initialState = {
     //     Note: ""
     // }
   ],
+  onAllowSummary: false,
 };
 
 export const cartSlice = createSlice({
@@ -47,7 +48,7 @@ export const cartSlice = createSlice({
 
       state.data = state.data.filter((val, idx) => {
         const result = action.payload.some((valFind) => valFind === idx);
-      
+
         if (!result) {
           return val;
         }
@@ -60,10 +61,34 @@ export const cartSlice = createSlice({
     removeAllCart: (state, action) => {
       state.data = [];
     },
+    onAllowSummaryReducer: (state, action) => {
+      state.onAllowSummary = action.payload;
+    },
+    onSelectShoesOnCart: (state, action) => {
+      state.data[action.payload.index].onSelected = action.payload.value;
+    },
+    onSelectAllShoesOnCart: (state, action) => {
+      if (action.payload === false) {
+        state.data.map((_, idx) => {
+          state.data[idx].onSelected = false;
+        });
+      } else {
+        state.data.map((_, idx) => {
+          state.data[idx].onSelected = true;
+        });
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNewShoes, removeAllCart, removeItem } = cartSlice.actions;
+export const {
+  addNewShoes,
+  removeAllCart,
+  removeItem,
+  onAllowSummaryReducer,
+  onSelectShoesOnCart,
+  onSelectAllShoesOnCart
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

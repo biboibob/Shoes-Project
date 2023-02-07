@@ -105,6 +105,11 @@ function DetailProduct() {
       value: null,
       statusErr: false,
       message: "",
+    },
+    onSelected: {
+      value: false,
+      statusErr: false,
+      message: "",
     }
   });
 

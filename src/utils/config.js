@@ -8,6 +8,7 @@ export const PageRoutePath = {
     PRODUCTS: "/Products",
     DETAIL_PRODUCTS: "/Products/:id",
     CART: "/Cart",
+    SUMMARY: "/Summary",
 }
 
 

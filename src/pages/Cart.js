@@ -14,6 +14,9 @@ import {
   addNewShoes,
   removeAllCart,
   removeItem,
+  onSelectShoesOnCart,
+  onSelectAllShoesOnCart,
+  onAllowSummaryReducer,
 } from "../service/redux/slice/cart";
 
 //Service
@@ -72,8 +75,13 @@ function Cart() {
   }, [selectedList, form]);
 
   useEffect(() => {
-    const newArr = cartSelector.data.map((val) => {
+    let tmpSelectedList = [];
+    const newArr = cartSelector.data.map((val, idx) => {
       let obj = {};
+
+      if (val.onSelected) {
+        tmpSelectedList.push(idx);
+      }
 
       Object.keys(val).map((objMap) => {
         obj[objMap] = {
@@ -85,7 +93,7 @@ function Cart() {
 
       return obj;
     });
-
+    setSelectedList(tmpSelectedList);
     setForm(newArr);
   }, [cartSelector]);
 
@@ -130,8 +138,10 @@ function Cart() {
     if (selectedList.some((selectedVal) => selectedVal === value)) {
       const indexVal = selectedList.indexOf(value);
       setSelectedList(selectedList.filter((_, idx) => idx !== indexVal));
+      dispatch(onSelectShoesOnCart({ index: value, value: false }));
     } else {
       setSelectedList([...selectedList, ...[value]]);
+      dispatch(onSelectShoesOnCart({ index: value, value: true }));
     }
   };
 
@@ -139,7 +149,9 @@ function Cart() {
     if (selectAll === true) {
       setSelectedList([]);
       setSelectAll(false);
+      dispatch(onSelectAllShoesOnCart(false));
     } else {
+      dispatch(onSelectAllShoesOnCart(true));
       setSelectAll(true);
       setSelectedList(
         form.map((val, idx) => {
@@ -149,8 +161,8 @@ function Cart() {
     }
   };
 
-  const handleNavigate = (Route) => {
-    navigate(`${Route}`);
+  const handleNavigate = (Route, state) => {
+    navigate(`${Route}`, { state: state });
   };
 
   const onHandleBuy = () => {
@@ -160,6 +172,8 @@ function Cart() {
         title: "Please Select Some Shoes To Proceed",
       });
     } else {
+      dispatch(onAllowSummaryReducer(true));
+      handleNavigate(PageRoutePath.SUMMARY, totalPrice);
     }
   };
 
@@ -292,7 +306,7 @@ function Cart() {
               <span className="font-bold">${totalPrice.totalPrice}</span>
             </div>
             <Button
-              value={"Buy"}
+              value={"Proceed"}
               className="!bg-soft-green p-2 mt-2"
               onClick={onHandleBuy}
             />

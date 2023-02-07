@@ -25,6 +25,7 @@ module.exports = {
         "green-pallete": "#A0E77D",
         "soft-green" : "#6BC689",
         "blue-pallete": "#82B6D9",
+        "dark-blue-pallete": "#6e9ab7",
         "soft-black": "#181A18",
         "soft-gray": "#505153",
         "soft-gray-2": "#F9F9F9",
@@ -37,6 +38,9 @@ module.exports = {
         "soft-black-color": "#181A18",
         "dark-gray-color": "#D3D3D3",
         "gray-color": "#A49065",
+
+        "soft-yellow": "#FEFAE7",
+        "yellow": "#FBECB5"
       },
       transitionTimingFunction: {
         'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
