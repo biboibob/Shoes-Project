@@ -12,7 +12,7 @@ function Button({ className, value, onClick, type, disabled }) {
     <button
       disabled={disabled}
       type={type ? type : "button"}
-      className={`${className} ${disabled && "opacity-50"} bg-primary-color rounded-md text-white font-bold text-base md:text-lg w-full`}
+      className={`${className} ${disabled && "opacity-50"} bg-soft-black rounded-md text-white font-bold text-base md:text-lg w-full`}
       onClick={onClick}
     >
       {value}

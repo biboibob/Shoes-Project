@@ -18,6 +18,7 @@ export const APIRoutePath = {
     REFRESHTOKEN: "/authServer/refreshToken",
 
     USER: "/user",
+    DETAIL_USER: "/user/detailUser",
     EDIT_USER: "/user/editUser",
 
     // Home
@@ -28,5 +29,10 @@ export const APIRoutePath = {
     PRODUCTS_FILTER: "/categories/GetInitiateFilter",
 
     //Detail Shoes
-    DETAIL_SHOES: "/detailProduct"
+    DETAIL_SHOES: "/detailProduct",
+
+    //Summary 
+    GET_PROVINCE: "/Summary/getProvince",
+    GET_CITY: "/Summary/getCity",
+    GET_COUR_OPTION: "/Summary/getShippingOption"
 } 

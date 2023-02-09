@@ -1,37 +1,43 @@
 import React from "react";
+import Form from "react-bootstrap/Form";
 
-function textField(props) {
+function comboBox(props) {
   const {
     label,
     value,
     className,
     onChange,
     name,
-    type = "text",
-    size = "md",
+    disabled,
     mandatory,
     error,
     message,
-    disabled,
-    noLabel,
-    vertical = false,
+    option,
+    size = "md",
   } = props;
 
   return (
     <>
-      <input
-        type={type}
-        label={noLabel ? "" : label}
+      <Form.Select
+        onChange={onChange}
         name={name}
+        value={value}
         disabled={disabled}
-        placeholder={`${label} ${mandatory ? "*" : ""}`}
+        data-mandatory={mandatory || false}
+        aria-label="Default select example"
         className={`${className} !text-${size} md:text-base p-2.5 md:p-3 rounded-md ${
           disabled ? "!bg-dark-gray-3" : "bg-transparent"
         } text-soft-black placeholder-soft-black border-2 border-soft-black outline-0 w-full`}
-        value={value}
-        data-mandatory={mandatory || false}
-        onChange={onChange}
-      />
+      >
+        <option
+          hidden
+          label={`${label}
+          ${mandatory && " *"}`}
+        />
+        {option.map((val, idx) => (
+          <option value={val.value} label={val.label} key={idx}/>
+        ))}
+      </Form.Select>
       <span className={`${error ? "block" : "hidden"} text-red-pallete`}>
         {message}
       </span>
@@ -39,4 +45,4 @@ function textField(props) {
   );
 }
 
-export default textField;
+export default comboBox;

@@ -18,6 +18,15 @@ export default class API {
   getDetailShoes = (data) => {
     return Axios.post(APIRoutePath.DETAIL_SHOES, data);
   };
+
+  getCity = (data) => {
+    return Axios.post(APIRoutePath.GET_CITY, data);
+  };
+
+  getCourierOption = (data) => {
+    return Axios.post(APIRoutePath.GET_COUR_OPTION, data);
+  };
+  
   /* End Post Section */
   
   /* Get Section */
@@ -32,6 +41,16 @@ export default class API {
   getFilterInitiate = (data) => {
     return Axios.get(APIRoutePath.PRODUCTS_FILTER, data);
   };
+
+  getProvince = (data) => {
+    return Axios.get(APIRoutePath.GET_PROVINCE);
+  };
+
+  getDetailUser = () => {
+    return Axios.get(APIRoutePath.DETAIL_USER);
+  };
+
+
   /* End Get Section */
 
   /* Patch Section */

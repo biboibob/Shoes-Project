@@ -1,6 +1,7 @@
 /* Component */
 import Swal from "sweetalert2";
 import { Checkbox } from "../components/custom/index";
+import * as Constants from "./Constant";
 
 export const valueProcessing = (value, state) => {
   if (Array.isArray(state)) {
@@ -34,10 +35,10 @@ export const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000,
   customClass: {
-    zIndex: 9999999
+    zIndex: 9999999,
   },
   showClass: {
-    zIndex: 9999999
+    zIndex: 9999999,
   },
   timerProgressBar: true,
   didOpen: (toast) => {
@@ -45,3 +46,69 @@ export const Toast = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
+export const MandatoryCheck = (e, state) => {
+  let flagStatus = {
+    flagOfMandatory: false,
+    flagOfEmail: false,
+  };
+  let formDataMandatory = [];
+
+  for (var i = 0; i < e.target.elements.length; i++) {
+    if (
+      e.target.elements[i].tagName.toLowerCase() === "input" ||
+      e.target.elements[i].tagName.toLowerCase() === "textarea" ||
+      e.target.elements[i].tagName.toLowerCase() === "select"
+    ) {
+      if (e.target.elements[i].dataset.mandatory === "true") {
+        formDataMandatory.push({
+          name: e.target.elements[i].name,
+          value: e.target.elements[i].value,
+        });
+      }
+    }
+  }
+
+  for (const key in state) {
+    const matched = formDataMandatory.find((val) => val.name === key);
+
+    if (matched) {
+      if (matched.value.length > 0) {
+        state = {
+          ...state,
+          [key]: {
+            ...state[key],
+            statusErr: false,
+            message: Constants.MESSAGE.REQUIRED,
+          },
+        };
+      } else {
+        //if input mandatory and input is email
+        flagStatus.flagOfMandatory = true;
+        state = {
+          ...state,
+          [key]: {
+            ...state[key],
+            statusErr: true,
+            message: Constants.MESSAGE.REQUIRED,
+          },
+        };
+      }
+    }
+  }
+
+  return {
+    message: flagStatus.flagOfMandatory && Constants.MESSAGE.ALL_REQUIRED,
+    flag: Object.values(flagStatus).some((val) => val === true),
+    state,
+  };
+};
+
+
+export const Capitalize = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const IDRToUSD = (number) => {
+  return number / 16000
+}

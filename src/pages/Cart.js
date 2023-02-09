@@ -54,16 +54,21 @@ function Cart() {
           if (result) return val;
         })
         .map((val) => {
-          return val.price.value * val.addToCart.value;
+          return {
+            totalQuantityprice: val.price.value * val.addToCart.value,
+            quantity: val.addToCart.value,
+          };
         });
 
       setTotalPrice({
         ...totalPrice,
         totalPrice:
           selectedResult.length === 1
-            ? selectedResult[0]
-            : selectedResult.reduce((a, b) => a + b),
-        quantity: selectedList.length,
+            ? selectedResult[0].totalQuantityprice
+            : selectedResult.reduce(
+                (a, b) => a.totalQuantityprice + b.totalQuantityprice
+              ),
+        quantity: selectedResult.reduce((a, b) => a.quantity + b.quantity),
       });
     } else {
       setTotalPrice({

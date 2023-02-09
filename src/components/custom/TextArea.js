@@ -9,17 +9,17 @@ function textField(props) {
     name,
     type = "text",
     size = "md",
-    mandatory,
-    error,
-    message,
     disabled,
     noLabel,
+    mandatory = false,
+    error,
+    message,
     vertical = false,
   } = props;
 
   return (
     <>
-      <input
+      <textarea
         type={type}
         label={noLabel ? "" : label}
         name={name}

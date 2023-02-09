@@ -1,13 +1,17 @@
 import Button from "./Button"
-import Modal from "./Modal"
+import ModalComp from "./Modal"
 import Input from "./Input"
+import TextArea from "./TextArea"
+import ComboBox from "./InputComboBox"
 import Card from "./Card"
 import Checkbox from "./Checkbox"
 
 export {
     Button,
-    Modal,
+    ModalComp,
     Input,
+    TextArea,
+    ComboBox,
     Card,
     Checkbox
 }
