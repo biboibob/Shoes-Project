@@ -19,7 +19,7 @@ function ModalComp({ modalTitle, status, onHide, children, size = "md" }) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header className="border-b-0 px-5 py-4">
+        <Modal.Header className="border-b-0 px-4 md:px-5 py-3 md:py-4">
           {modalTitle && (
             <Modal.Title id="contained-modal-title-vcenter">
               <span className="text-lg font-semibold">{modalTitle}</span>
@@ -32,7 +32,7 @@ function ModalComp({ modalTitle, status, onHide, children, size = "md" }) {
             icon={faClose}
           />
         </Modal.Header>
-        <Modal.Body className="px-5 py-4">{children}</Modal.Body>
+        <Modal.Body className="px-4 md:px-5 py-3 md:py-4">{children}</Modal.Body>
       </Modal>
     </>
   );

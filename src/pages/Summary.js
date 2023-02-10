@@ -606,14 +606,16 @@ function Summary() {
         onHide={onHandleModalToggle}
         size={"lg"}
         modalTitle={
-          <div className="flex text-soft-black items-baseline gap-3">
+          <div className="flex text-soft-black md:items-baseline gap-3">
             <div className="relative grow mr-5">
-              <i className="fa-regular fa-flag fa-lg absolute top-0" />
+              <i className="fa-regular fa-flag md:fa-lg absolute top-2 md:top-0" />
             </div>
 
             <div className="flex flex-col">
-              <span className="font-semibold">Add Address</span>
-              <span className="text-dark-gray-3 font-light text-sm">
+              <span className="text-sm md:text-base font-semibold">
+                Add Address
+              </span>
+              <span className="text-dark-gray-3 font-light text-xs md:text-sm">
                 Add Your Personal Address Below For Our Shipping Requirement
               </span>
             </div>
@@ -735,13 +737,15 @@ function Summary() {
         onHide={onHandleModalToggleShipping}
         size={"md"}
         modalTitle={
-          <div className="flex text-soft-black items-baseline gap-3">
+          <div className="flex text-soft-black md:items-baseline gap-3">
             <div className="relative grow mr-5">
-              <i className="fa-solid fa-truck fa-lg absolute top-0" />
+              <i className="fa-solid fa-truck md:fa-lg absolute top-2 md:top-0" />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold">Delivery Type</span>
-              <span className="text-dark-gray-3 font-light text-sm">
+              <span className="text-sm md:text-base font-semibold">
+                Delivery Type
+              </span>
+              <span className="text-dark-gray-3 font-light text-xs md:text-sm">
                 Choose the delivery suit for you
               </span>
             </div>
@@ -765,14 +769,16 @@ function Summary() {
                   onClick={() => onHandleChangeDeliveryType(val)}
                 >
                   <div className="flex flex-col">
-                    <span className="font-bold text-base">{val.service}</span>
-                    <span className="text-xs">
+                    <span className="font-bold text-sm md:text-base">
+                      {val.service}
+                    </span>
+                    <span className="text-[0.6rem] md:text-xs">
                       Estimation Arrival :{" "}
                       {val.cost[0].etd.replace(/HARI/g, "")} Days
                     </span>
                   </div>
 
-                  <span className="font-black">
+                  <span className="font-black text-sm md:text-base">
                     ${IDRToUSD(val.cost[0].value)}
                   </span>
                 </div>
@@ -781,7 +787,7 @@ function Summary() {
             <Button
               value="Choose"
               type="submit"
-              className={"!text-base py-2 mt-3"}
+              className={"!text-sm md:!text-base py-2 mt-3"}
             />
           </form>
         </div>
@@ -789,40 +795,42 @@ function Summary() {
 
       <div className="flex container min-h-full mt-3 gap-3">
         <div className="basis-full md:basis-2/3 flex flex-col gap-4">
-          <span className="text-2xl font-bold">Order Overview</span>
+          <span className="text-lg md:text-2xl font-bold">Order Overview</span>
 
           {/* Summary Order */}
           <div className="flex flex-col gap-2">
-            <span className="text-lg font-bold">Summary Order</span>
-            <span className="text-gray-400">
+            <span className="text-base md:text-lg font-bold">
+              Summary Order
+            </span>
+            <span className="text-sm md:text-base text-gray-400">
               Please Cross-check your order and select the shipping before doing
               payment for best exprience.
             </span>
-            <Card className="flex flex-col px-4 py-3 gap-3">
+            <Card className="flex flex-col px-3 md:px-4 py-3 gap-3">
               {cartSelector.data
                 .filter((val) => val.onSelected)
                 .map((val, idx, arr) => (
                   <React.Fragment key={idx}>
                     <div className="flex gap-3">
-                      <img className="h-auto w-24 " />
+                      <img className="h-14 md:h-auto w-14 md:w-24" />
                       <div className="flex flex-col grow">
-                        <span>{val.name}</span>
-                        <span className="text-gray-400 text-sm">
+                        <span className="text-sm md:text-base">{val.name}</span>
+                        <span className="text-gray-400 text-xs md:text-sm">
                           {val.category}
                         </span>
-                        <span className="flex items-center h-fit gap-2 mt-4 ">
+                        <span className="flex text-xs md:text-sm items-center h-fit gap-1 mt-4 ">
                           {val.size} EU -
                           <span
-                            className="flex h-5 w-5 rounded-full"
+                            className="flex h-3 w-3 md:h-5 md:w-5 rounded-full"
                             style={{ backgroundColor: val.color.toLowerCase() }}
                           ></span>
                         </span>
                       </div>
                       <div className="flex flex-col gap-1 items-end">
-                        <span className=" text-lg font-black">
+                        <span className="text-sm md:text-lg font-black">
                           ${val.price}
                         </span>
-                        <span className=" text-sm text-gray-400">
+                        <span className="text-xs md:text-sm text-gray-400">
                           Qty : {val.addToCart}
                         </span>
                       </div>
@@ -830,7 +838,7 @@ function Summary() {
                     <div
                       className={`${
                         idx === arr.length - 1 ? "hidden" : "flex"
-                      } border-b border-soft-gray-3`}
+                      } border-b border-soft-gray-3 my-2`}
                     />
                   </React.Fragment>
                 ))}
@@ -839,28 +847,30 @@ function Summary() {
 
           {/* Address Section */}
           <div className="flex flex-col gap-2">
-            <span className="text-lg font-bold">Address Detail</span>
+            <span className="text-base md:text-lg font-bold">
+              Address Detail
+            </span>
             {selectedAddress.receiver.value !== "" ? (
               <>
-                <Card className="flex flex-col px-4 py-3 gap-3">
-                  <span className="font-bold">
+                <Card className="flex flex-col px-3 md:px-4 py-3 gap-3">
+                  <span className="text-sm md:text-base font-bold">
                     {selectedAddress.receiver.value}
                   </span>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-sm text-gray-400">
+                  <div className="flex flex-col gap-1 md:gap-2">
+                    <span className="text-xs md:text-sm text-gray-400">
                       {selectedAddress.addressDetail.value},
                       {selectedAddress.city_name.value},
                       {selectedAddress.province_name.value},
                       {selectedAddress.postalCode.value}
                     </span>
-                    <span className="italic text-sm text-gray-400">
+                    <span className="italic text-xs md:text-sm text-gray-400">
                       {selectedAddress.phone.value}
                     </span>
                   </div>
                   {selectedAddress.addressNote.value.length > 0 && (
                     <div className="flex flex-col gap-2">
-                      <span className="text-sm">Extra Note :</span>
-                      <span className="flex p-3 text-sm bg-blue-pallete text-white rounded-lg border-2 border-dark-blue-pallete">
+                      <span className="text-xs md:text-sm">Extra Note :</span>
+                      <span className="flex p-2 md:p-3 text-xs md:text-sm bg-blue-pallete text-white rounded-lg border-2 border-dark-blue-pallete">
                         {selectedAddress.addressNote.value}
                       </span>
                     </div>
@@ -873,13 +883,13 @@ function Summary() {
                 />
               </>
             ) : (
-              <Card className="flex flex-col p-5 gap-3 items-center">
-                <span className="font-base text-xl text-dark-gray-3">
+              <Card className="flex flex-col py-4 px-2 md:p-5 gap-3 items-center">
+                <span className="font-base text-center text-sm md:text-xl text-dark-gray-3">
                   Where Should We Send Your Shoe?
                 </span>
                 <Button
                   value={
-                    <div className="flex  items-center justify-center gap-2 text-sm text-white">
+                    <div className="flex  items-center justify-center gap-2 text-xs md:text-sm text-white">
                       <i className="fa-solid fa-house"></i>
                       <span>Add Address</span>
                     </div>
@@ -894,42 +904,44 @@ function Summary() {
           {/* Available Shipping */}
           {selectedAddress.receiver.value.length > 0 && (
             <div className="flex flex-col gap-2">
-              <span className="text-lg font-bold">
+              <span className="text-base md:text-lg font-bold">
                 Available Shipping - Domestic
               </span>
 
               {courOpt.map((val, idx) => (
                 <Card
-                  className="flex px-4 py-3 gap-4 items-center cursor-pointer"
+                  className="flex px-4 py-3 gap-3 md:gap-4 items-center cursor-pointer"
                   onClick={() => onHandleChangeCour(val)}
                   key={idx}
                 >
-                  <div className="flex basis-1/6 justify-center">
-                    <img src={val?.logo} className="w-auto h-7" />
+                  <div className="flex md:basis-1/6 justify-center">
+                    <img src={val?.logo} className="w-10 md:w-12 h-auto" />
                   </div>
                   <div className="flex flex-col grow gap-2">
-                    <span className="text-base font-black">
+                    <span className="text-sm md:text-base font-black">
                       {val?.code.toUpperCase()}
                     </span>
                     {val.name === selectedCour.name && (
                       <div className="flex flex-col gap-1">
-                        <span className="text-gray-400 text-sm">
+                        <span className="text-gray-400 text-xs md:text-sm">
                           Choose Delivery Type :
                         </span>
                         <div
-                          className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-3 py-2 justify-between items-center gap-5 w-fit"
+                          className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-2 md:px-3 py-1 md:py-2 justify-between items-center gap-2 md:gap-5 w-fit"
                           onClick={onHandleModalToggleShipping}
                         >
-                          <div className="flex flex-col  gap-1">
+                          <div className="flex flex-col grow gap-1">
                             <span className="text-xs font-black">
                               {selectedCour.type.name}
                             </span>
-                            <span className="text-xs ">
+                            <span className="text-[0.6rem] md:text-xs">
                               Estimation Arrival :{" "}
                               {selectedCour.type.ETA.replace(/HARI/g, "")} Days
                             </span>
                           </div>
-                          <span className="text-xs">Change</span>
+                          <span className="text-[0.6rem] md:text-xs font-semibold">
+                            Change
+                          </span>
                         </div>
                       </div>
                     )}
@@ -948,6 +960,36 @@ function Summary() {
               ))}
             </div>
           )}
+
+          {/* Handle Summary in Mobile View */}
+          <div className="md:hidden flex flex-col gap-1">
+            <span className="font-black text-base md:text-xl mb-2">Summary</span>
+            <div className="flex justify-between text-sm md:text-base">
+              <span>Total Price ({totalPrice.quantity} Items)</span>
+              <span>${totalPrice.totalPrice}</span>
+            </div>
+            <div className="flex justify-between text-sm md:text-base">
+              <span>Total Discount</span>
+              <span>-</span>
+            </div>
+            {selectedCour.type.price !== "" && (
+              <div className="flex justify-between text-sm md:text-base">
+                <span>Shipping Cost</span>
+                <span>${selectedCour.type.price}</span>
+              </div>
+            )}
+            <hr className="mt-4"></hr>
+            <div className="flex justify-between text-sm md:text-base my-2 !font-bold">
+              <span className="font-bold">Total Price</span>
+              <span className="font-bold">
+                $
+                {selectedCour.type.price !== ""
+                  ? totalPrice.totalPrice + selectedCour.type.price
+                  : totalPrice.totalPrice}
+              </span>
+            </div>
+            <Button value={"Buy"} className="!bg-soft-green p-2 mt-2 !text-sm md:!text-base" />
+          </div>
         </div>
 
         {/* Handle Summary in Web View */}

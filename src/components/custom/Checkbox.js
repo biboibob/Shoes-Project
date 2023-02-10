@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 /* Skeleton Library */
 import Skeleton from "react-loading-skeleton";
 
-function Checkbox({ onChange, label, name, noLabel, value = false, type = "checkbox", swapPlacement }) {
+function Checkbox({ onChange, label, name, noLabel, value = false, type = "checkbox", swapPlacement, className }) {
   const uiSelector = useSelector((state) => state.userInterface);
 
   return !uiSelector.skeleton ? (
@@ -16,7 +16,7 @@ function Checkbox({ onChange, label, name, noLabel, value = false, type = "check
       checked={value}
       id={`${name}`}
       label={`${noLabel ? "" : label}`}
-      className={"text-sm md:text-base m-0"}
+      className={`${className ? className : ""}text-sm md:text-base m-0`}
       onChange={(e) => onChange && onChange(name, e.target.checked)}
     />
   ) : (
