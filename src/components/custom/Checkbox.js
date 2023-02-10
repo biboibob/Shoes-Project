@@ -17,7 +17,7 @@ function Checkbox({ onChange, label, name, noLabel, value = false, type = "check
       id={`${name}`}
       label={`${noLabel ? "" : label}`}
       className={"text-sm md:text-base m-0"}
-      onChange={(e) => onChange &&  onChange(name, e.target.checked)}
+      onChange={(e) => onChange && onChange(name, e.target.checked)}
     />
   ) : (
     <Skeleton

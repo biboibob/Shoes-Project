@@ -65,10 +65,11 @@ function Cart() {
         totalPrice:
           selectedResult.length === 1
             ? selectedResult[0].totalQuantityprice
-            : selectedResult.reduce(
-                (a, b) => a.totalQuantityprice + b.totalQuantityprice
-              ),
-        quantity: selectedResult.reduce((a, b) => a.quantity + b.quantity),
+            : selectedResult.reduce((a, b) => a + b.totalQuantityprice, 0),
+        quantity:
+          selectedResult.length === 1
+            ? selectedResult[0].quantity
+            : selectedResult.reduce((a, b) => a + b.quantity, 0),
       });
     } else {
       setTotalPrice({

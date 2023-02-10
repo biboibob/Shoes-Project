@@ -231,12 +231,17 @@ function Summary() {
     } else {
       setTotalPrice(location.state);
       getDetailUser();
-      getCourierOption();
     }
     return () => {
       dispatch(onAllowSummaryReducer(false));
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedAddress.receiver.value.length > 0) {
+      getCourierOption();
+    }
+  }, [selectedAddress.receiver.value]);
 
   //Handle City Option
   useEffect(() => {
@@ -576,6 +581,17 @@ function Summary() {
           icon: "success",
           title: data.content,
         });
+
+        setSelectedCour({
+          code: "",
+          name: "",
+          type: {
+            name: "",
+            description: "",
+            ETA: "",
+            price: "",
+          },
+        });
         onHandleModalToggle();
         getDetailUser();
         getCourierOption();
@@ -803,8 +819,12 @@ function Summary() {
                         </span>
                       </div>
                       <div className="flex flex-col gap-1 items-end">
-                      <span className=" text-lg font-black">${val.price}</span>
-                      <span className=" text-sm text-gray-400">Qty : {val.addToCart}</span>
+                        <span className=" text-lg font-black">
+                          ${val.price}
+                        </span>
+                        <span className=" text-sm text-gray-400">
+                          Qty : {val.addToCart}
+                        </span>
                       </div>
                     </div>
                     <div
@@ -872,60 +892,62 @@ function Summary() {
           </div>
 
           {/* Available Shipping */}
-          <div className="flex flex-col gap-2">
-            <span className="text-lg font-bold">
-              Available Shipping - Domestic
-            </span>
+          {selectedAddress.receiver.value.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <span className="text-lg font-bold">
+                Available Shipping - Domestic
+              </span>
 
-            {courOpt.map((val, idx) => (
-              <Card
-                className="flex px-4 py-3 gap-4 items-center cursor-pointer"
-                onClick={() => onHandleChangeCour(val)}
-                key={idx}
-              >
-                <div className="flex basis-1/6 justify-center">
-                  <img src={val?.logo} className="w-auto h-7" />
-                </div>
-                <div className="flex flex-col grow gap-2">
-                  <span className="text-base font-black">
-                    {val?.code.toUpperCase()}
-                  </span>
-                  {val.name === selectedCour.name && (
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400 text-sm">
-                        Choose Delivery Type :
-                      </span>
-                      <div className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-3 py-2 justify-between items-center gap-5 w-fit">
-                        <div className="flex flex-col text-xs gap-1">
-                          <span>{selectedCour.type.name}</span>
-                          <span className="font-light">
-                            Estimation Arrival :{" "}
-                            {selectedCour.type.ETA.replace(/HARI/g, "")} Days
-                          </span>
-                        </div>
-                        <span
-                          className="font-bold text-xs"
+              {courOpt.map((val, idx) => (
+                <Card
+                  className="flex px-4 py-3 gap-4 items-center cursor-pointer"
+                  onClick={() => onHandleChangeCour(val)}
+                  key={idx}
+                >
+                  <div className="flex basis-1/6 justify-center">
+                    <img src={val?.logo} className="w-auto h-7" />
+                  </div>
+                  <div className="flex flex-col grow gap-2">
+                    <span className="text-base font-black">
+                      {val?.code.toUpperCase()}
+                    </span>
+                    {val.name === selectedCour.name && (
+                      <div className="flex flex-col gap-1">
+                        <span className="text-gray-400 text-sm">
+                          Choose Delivery Type :
+                        </span>
+                        <div
+                          className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-3 py-2 justify-between items-center gap-5 w-fit"
                           onClick={onHandleModalToggleShipping}
                         >
-                          Change
-                        </span>
+                          <div className="flex flex-col  gap-1">
+                            <span className="text-xs font-black">
+                              {selectedCour.type.name}
+                            </span>
+                            <span className="text-xs ">
+                              Estimation Arrival :{" "}
+                              {selectedCour.type.ETA.replace(/HARI/g, "")} Days
+                            </span>
+                          </div>
+                          <span className="text-xs">Change</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-                <Checkbox
-                  value={val?.name === selectedCour.name}
-                  swapPlacement={true}
-                  label={`$${
-                    val?.name === selectedCour.name
-                      ? selectedCour.type.price
-                      : val.price
-                  }`}
-                  type="radio"
-                />
-              </Card>
-            ))}
-          </div>
+                    )}
+                  </div>
+                  <Checkbox
+                    value={val?.name === selectedCour.name}
+                    swapPlacement={true}
+                    label={`$${
+                      val?.name === selectedCour.name
+                        ? selectedCour.type.price
+                        : val.price
+                    }`}
+                    type="radio"
+                  />
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Handle Summary in Web View */}
@@ -953,7 +975,7 @@ function Summary() {
                 $
                 {selectedCour.type.price !== ""
                   ? totalPrice.totalPrice + selectedCour.type.price
-                  : totalPrice.totalPrice}{" "}
+                  : totalPrice.totalPrice}
               </span>
             </div>
             <Button value={"Buy"} className="!bg-soft-green p-2 mt-2" />

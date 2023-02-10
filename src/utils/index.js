@@ -104,11 +104,10 @@ export const MandatoryCheck = (e, state) => {
   };
 };
 
-
 export const Capitalize = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 export const IDRToUSD = (number) => {
-  return number / 16000
-}
+  return parseFloat((number / 16000).toFixed(1));
+};
