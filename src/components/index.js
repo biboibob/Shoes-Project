@@ -7,6 +7,7 @@ import PriceRange from "./Feature/PriceRange";
 import CardCatalog from "./Card/CardCatalog";
 import Quantity from "./Feature/QuantityItem";
 import FullPanel from "./Panel/FullPanel";
+import Loading from "./Loading/Loading";
 
 export {
   CardShoes,
@@ -18,4 +19,5 @@ export {
   PriceRange,
   Quantity,
   FullPanel,
+  Loading
 };

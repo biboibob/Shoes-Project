@@ -164,6 +164,7 @@ function DetailProduct() {
           size: dataResponse.sizeOpt.map((val) => {
             return val.size;
           }),
+          image: dataResponse.shoesPreview
         });
 
         setForm(updatedForm);
@@ -231,7 +232,7 @@ function DetailProduct() {
   return (
     <div className="flex flex-col md:flex-row container min-h-full">
       <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center">
-        <ShoesPreview className={"sticky top-14"} asset={ShoesFeatured} />
+        <ShoesPreview className={"sticky top-14"} asset={data.image} />
       </div>
       <div className="flex flex-col basis-1/2 px-[1.25rem] py-2 md:py-[3.125rem] gap-6">
         {!uiSelector.skeleton ? (

@@ -6,7 +6,8 @@ const initialState = {
   specificSkeleton: {
     shoesListCategory: false,
     shoesCatalog: false,
-  }
+  },
+  isLoading: false,
 };
 
 export const userInterfaceSlice = createSlice({
@@ -22,14 +23,21 @@ export const userInterfaceSlice = createSlice({
     specificSkeletonToggle: (state, action) => {
       state.specificSkeleton = {
         ...state.specificSkeleton,
-        ...action.payload
+        ...action.payload,
       };
-    }
+    },
+    loadingToggle: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { sideBarToggle, skeletonToggle, specificSkeletonToggle } = userInterfaceSlice.actions;
-
+export const {
+  sideBarToggle,
+  skeletonToggle,
+  specificSkeletonToggle,
+  loadingToggle,
+} = userInterfaceSlice.actions;
 
 export default userInterfaceSlice.reducer;

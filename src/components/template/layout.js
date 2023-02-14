@@ -7,6 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Footer from "./Footer";
 import Header from "./Header";
 import SideBar from "./sideBar";
+import Loading from "../Loading/Loading";
 
 function Layout({ children }) {
   const sideBar = useSelector((selector) => selector.userInterface.isSideBar);
@@ -19,12 +20,12 @@ function Layout({ children }) {
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-col relative bg-soft-gray-2 min-h-screen" >
+    <Loading>
       <div
         className={`w-100 min-h-screen flex flex-col transition-all ease-out-expo relative`}
       >
         <Header />
-        <main className="flex flex-col grow bg-soft-gray-2" >{children}</main>
+        <main className="flex flex-col grow bg-soft-gray-2">{children}</main>
         <Footer />
       </div>
 
@@ -33,7 +34,7 @@ function Layout({ children }) {
           sideBar ? "left-0" : "-left-full "
         } fixed w-full h-full bg-white inset-y-0 z-[9999] duration-500 transition-all flex flex-col overscroll-y-contain p-4 gap-3`}
       />
-    </div>
+    </Loading>
   );
 }
 

@@ -76,7 +76,7 @@ function CardShoes({ data, sort }) {
             >
               <div className={`${styles.ImageCard} relative`}>
                 <img
-                  src={JordanBlue}
+                  src={val.shoes?.image[0]?.URL}
                   className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
                 />
               </div>

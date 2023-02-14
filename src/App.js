@@ -15,8 +15,6 @@ import PrivateRoute from "./utils/Routes/PrivateRoute";
 
 import Layout from "./components/template/layout";
 
-// import PrivateRoute from "./components/routing/PrivateRoute";
-
 function App() {
   return (
     <BrowserRouter>
@@ -75,7 +73,7 @@ function App() {
           path={PageRoutePath.SUMMARY}
           element={
             <PrivateRoute>
-             <Layout>
+              <Layout>
                 <Summary />
               </Layout>
             </PrivateRoute>

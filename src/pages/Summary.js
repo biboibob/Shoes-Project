@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 /* redux Action */
 import { onAllowSummaryReducer } from "../service/redux/slice/cart";
+import { loadingToggle } from "../service/redux/slice/ui";
 
 /* Component */
 import {
@@ -227,7 +228,7 @@ function Summary() {
 
   useEffect(() => {
     if (!cartSelector.onAllowSummary) {
-      //   handleNavigate(PageRoutePath.CART);
+      handleNavigate(PageRoutePath.CART);
     } else {
       setTotalPrice(location.state);
       getDetailUser();
@@ -246,7 +247,47 @@ function Summary() {
   //Handle City Option
   useEffect(() => {
     if (form.province.value !== "") {
-      api.getCity({ province: `${form.province.value}` }).then((res) => {
+      getCity();
+    }
+  }, [form.province.value]);
+
+  const getCourierOption = () => {
+    // Get Total Shoes
+
+    let curr = cartSelector.data
+      .filter((val) => val.onSelected)
+      .reduce((a, b) => a + b.addToCart, 0);
+
+    return api
+      .getCourierOption({
+        // We Assume All Shoes has same Weight as 276g
+        totalWeight: 276 * curr,
+      })
+      .then((res) => {
+        const data = res.data;
+        if (data.status === 200) {
+          setCourOpt(
+            data.data.data.map((val) => {
+              if (val.code === "jne") {
+                val.logo = JNE;
+              } else if (val.code === "tiki") {
+                val.logo = TIKI;
+              } else if (val.code === "pos") {
+                val.logo = POS;
+              }
+              val.price = IDRToUSD(val.costs[0].cost[0].value);
+              return val;
+            })
+          );
+        }
+      });
+  };
+
+  const getCity = () => {
+    dispatch(loadingToggle(true));
+    api
+      .getCity({ province: `${form.province.value}` })
+      .then((res) => {
         if (res.status === 200 && res.data.status) {
           const data = res.data.data;
           setForm({
@@ -272,41 +313,79 @@ function Summary() {
           });
         } else {
         }
-      });
-    }
-  }, [form.province.value]);
-
-  const getCourierOption = () => {
-    // Get Total Shoes
-    let curr = 0;
-
-    cartSelector.data.map((val) => {
-      curr += val.addToCart;
-    });
-
-    return api
-      .getCourierOption({
-        // We Assume All Shoes has same Weight as 276g
-        totalWeight: 276 * curr,
       })
-      .then((res) => {
-        const data = res.data;
-        if (data.status === 200) {
-          setCourOpt(
-            data.data.data.map((val) => {
-              if (val.code === "jne") {
-                val.logo = JNE;
-              } else if (val.code === "tiki") {
-                val.logo = TIKI;
-              } else if (val.code === "pos") {
-                val.logo = POS;
-              }
-              val.price = IDRToUSD(val.costs[0].cost[0].value);
-              return val;
-            })
-          );
-        }
+      .finally(() => {
+        dispatch(loadingToggle(false));
       });
+  };
+
+  const getProvince = () => {
+    if (!toggleModalAddress) {
+      dispatch(loadingToggle(true));
+      api
+        .getProvince()
+        .then((res) => {
+          const data = res.data.data;
+
+          if (
+            form.province.option.length === 0 &&
+            selectedAddress.receiver.value.length === 0
+          ) {
+            setForm({
+              ...form,
+              province: {
+                ...form.province,
+                option: data.province.results.map((res) => {
+                  return {
+                    value: res.province_id,
+                    label: res.province,
+                  };
+                }),
+              },
+            });
+          } else if (selectedAddress.receiver.value.length > 0) {
+            setForm({
+              receiver: {
+                ...form.receiver,
+                value: selectedAddress.receiver.value,
+              },
+              addressDetail: {
+                ...form.addressDetail,
+                value: selectedAddress.addressDetail.value,
+              },
+              addressNote: {
+                ...form.addressNote,
+                value: selectedAddress.addressNote.value,
+              },
+              phone: {
+                ...form.phone,
+                value: selectedAddress.phone.value,
+              },
+              city: {
+                ...form.city,
+                value: selectedAddress.city.value,
+              },
+              postalCode: {
+                ...form.postalCode,
+                value: selectedAddress.postalCode.value,
+              },
+              province: {
+                ...form.province,
+                value: selectedAddress.province.value,
+                option: data.province.results.map((res) => {
+                  return {
+                    value: res.province_id,
+                    label: res.province,
+                  };
+                }),
+              },
+            });
+          }
+        })
+        .finally(() => {
+          dispatch(loadingToggle(false));
+        });
+    }
   };
 
   const getDetailUser = () => {
@@ -456,67 +535,7 @@ function Summary() {
   const onHandleModalToggle = () => {
     setToggleModalAddress(toggleModalAddress ? false : true);
 
-    if (
-      !toggleModalAddress &&
-      form.province.option.length === 0 &&
-      selectedAddress.receiver.value.length === 0
-    ) {
-      api.getProvince().then((res) => {
-        const data = res.data.data;
-        setForm({
-          ...form,
-          province: {
-            ...form.province,
-            option: data.province.results.map((res) => {
-              return {
-                value: res.province_id,
-                label: res.province,
-              };
-            }),
-          },
-        });
-      });
-    } else if (selectedAddress.receiver.value.length > 0) {
-      api.getProvince().then((res) => {
-        const data = res.data.data;
-        setForm({
-          receiver: {
-            ...form.receiver,
-            value: selectedAddress.receiver.value,
-          },
-          addressDetail: {
-            ...form.addressDetail,
-            value: selectedAddress.addressDetail.value,
-          },
-          addressNote: {
-            ...form.addressNote,
-            value: selectedAddress.addressNote.value,
-          },
-          phone: {
-            ...form.phone,
-            value: selectedAddress.phone.value,
-          },
-          city: {
-            ...form.city,
-            value: selectedAddress.city.value,
-          },
-          postalCode: {
-            ...form.postalCode,
-            value: selectedAddress.postalCode.value,
-          },
-          province: {
-            ...form.province,
-            value: selectedAddress.province.value,
-            option: data.province.results.map((res) => {
-              return {
-                value: res.province_id,
-                label: res.province,
-              };
-            }),
-          },
-        });
-      });
-    }
+    getProvince();
   };
 
   const onHandleModalToggleShipping = (e) => {
@@ -927,7 +946,7 @@ function Summary() {
                           Choose Delivery Type :
                         </span>
                         <div
-                          className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-2 md:px-3 py-1 md:py-2 justify-between items-center gap-2 md:gap-5 w-fit"
+                          className="flex bg-soft-yellow border-2 border-yellow rounded-lg px-2 md:px-3 py-1 md:py-2 justify-between items-center gap-2 md:!gap-5 w-fit"
                           onClick={onHandleModalToggleShipping}
                         >
                           <div className="flex flex-col grow gap-1">
@@ -963,7 +982,9 @@ function Summary() {
 
           {/* Handle Summary in Mobile View */}
           <div className="md:hidden flex flex-col gap-1">
-            <span className="font-black text-base md:text-xl mb-2">Summary</span>
+            <span className="font-black text-base md:text-xl mb-2">
+              Summary
+            </span>
             <div className="flex justify-between text-sm md:text-base">
               <span>Total Price ({totalPrice.quantity} Items)</span>
               <span>${totalPrice.totalPrice}</span>
@@ -988,7 +1009,10 @@ function Summary() {
                   : totalPrice.totalPrice}
               </span>
             </div>
-            <Button value={"Buy"} className="!bg-soft-green p-2 mt-2 !text-sm md:!text-base" />
+            <Button
+              value={"Buy"}
+              className="!bg-soft-green p-2 mt-2 !text-sm md:!text-base"
+            />
           </div>
         </div>
 

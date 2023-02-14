@@ -23,13 +23,11 @@ function ShoesPreview({ asset, className, responsive }) {
   });
 
   useEffect(() => {
-    const arr = Object.entries(asset);
-
     setSelected({
-      src: arr[3][1],
-      index: 3,
+      src: asset[0]?.URL,
+      index: 0,
     });
-  }, []);
+  }, [asset]);
 
   const onHandleSelect = (val, idx) => {
     setSelected({
@@ -40,7 +38,7 @@ function ShoesPreview({ asset, className, responsive }) {
 
   return !uiSelector.skeleton ? (
     <div
-      className={`${className} flex justify-evenly h-fit my-3 items-center ${
+      className={`${className} flex justify-evenly h-fit my-3 gap-3 items-center ${
         responsive ? "flex-row md:!flex-col" : "flex-col"
       } `}
     >
@@ -53,16 +51,16 @@ function ShoesPreview({ asset, className, responsive }) {
           responsive ? "flex-col md:flex-row" : "flex-row"
         } gap-3 justify-center`}
       >
-        {Object.keys(asset).map((val, idx) => (
+        {asset.map((val, idx) => (
           <div key={idx}>
             <Card
-              onClick={() => onHandleSelect(asset[val], idx)}
+              onClick={() => onHandleSelect(val?.URL, idx)}
               className={`border-2 cursor-pointer ${
                 idx === selected.index ? "border-black" : "border-white"
               }`}
             >
               <img
-                src={asset[val]}
+                src={val?.URL}
                 className="max-w-[3rem] md:max-w-[5rem] h-auto"
               />
             </Card>
@@ -72,12 +70,12 @@ function ShoesPreview({ asset, className, responsive }) {
     </div>
   ) : (
     <Skeleton
-    containerClassName={`${className} flex animate-pulse gap-4 justify-evenly h-full my-3 items-center ${
+    containerClassName={`${className} flex animate-pulse gap-4 h-full my-3 items-center ${
         responsive ? "flex-row md:!flex-col" : "flex-col"
       } `}
       wrapper={() => (
         <>
-          <div className="w-[10rem] md:w-[25rem] bg-dark-gray h-52 md:h-full rounded-xl"></div>
+          <div className="w-[10rem] md:w-[25rem] bg-dark-gray h-52 md:h-80 rounded-xl"></div>
           <div
             className={`flex ${
               responsive ? "flex-col md:flex-row" : "flex-row"

@@ -86,15 +86,18 @@ function Home() {
   };
 
   useEffect(() => {
-    dispatch(skeletonToggle(true));
+    // dispatch(skeletonToggle(true));
 
-    Promise.all([getData()])
-      .then(() => {
-        dispatch(skeletonToggle(false));
-      })
-      .catch(() => {
-        dispatch(skeletonToggle(false));
-      });
+    getData()
+    
+    // Promise.all([getData()])
+    //   .then(() => {
+     
+    //     dispatch(skeletonToggle(false));
+    //   })
+    //   .catch(() => {
+    //     dispatch(skeletonToggle(false));
+    //   });
   }, []);
 
   const getData = () => {
@@ -117,6 +120,8 @@ function Home() {
         }),
       });
 
+      
+
       setPopular(popular);
       setNewRelease(newRelease);
     });
@@ -130,6 +135,8 @@ function Home() {
     });
   };
 
+  
+
   return (
     <div className="flex flex-col container my-3 md:my-5">
       <section className="flex flex-col gap-5 md:gap-0 mt-3 md:my-5 md:flex-row order-[2] md:order-first">
@@ -138,11 +145,11 @@ function Home() {
             Featured
           </span>
 
-          <ShoesPreview
+          {/* <ShoesPreview
             asset={ShoesFeatured}
             responsive={true}
             className={"md:hidden"}
-          />
+          /> */}
 
           {!uiSelector.skeleton ? (
             <>
@@ -258,7 +265,7 @@ function Home() {
           </div>
         </div>
         <div className="hidden md:flex flex-col w-100 md:w-50 items-center mx-auto">
-          <ShoesPreview asset={ShoesFeatured} />
+          {/* <ShoesPreview asset={ShoesFeatured} /> */}
         </div>
       </section>
       <section className="flex flex-col my-2 md:!my-4 order-first  md:order-[2]">
