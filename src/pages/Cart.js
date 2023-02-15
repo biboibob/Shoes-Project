@@ -64,8 +64,8 @@ function Cart() {
         ...totalPrice,
         totalPrice:
           selectedResult.length === 1
-            ? selectedResult[0].totalQuantityprice
-            : selectedResult.reduce((a, b) => a + b.totalQuantityprice, 0),
+            ? selectedResult[0].totalQuantityprice.toFixed(2)
+            : selectedResult.reduce((a, b) => a + b.totalQuantityprice, 0).toFixed(2),
         quantity:
           selectedResult.length === 1
             ? selectedResult[0].quantity
@@ -214,7 +214,9 @@ function Cart() {
                   value={selectedList.some((valSome) => valSome === idx)}
                   onChange={() => onHandleCheckBox(idx)}
                 />
-                <img className="h-16 w-16 md:h-24 md:w-24" />
+           
+                <img className="h-auto w-16 md:w-28 object-contain mb-auto border-soft-black border p-2 rounded-lg" src={val.asset.value.URL} />
+          
                 <div className="flex flex-col ml-2 gap-2 grow">
                   <span
                     className="text-sm md:text-lg cursor-pointer"

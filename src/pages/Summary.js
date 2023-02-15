@@ -831,7 +831,7 @@ function Summary() {
                 .map((val, idx, arr) => (
                   <React.Fragment key={idx}>
                     <div className="flex gap-3">
-                      <img className="h-14 md:h-auto w-14 md:w-24" />
+                      <img className="h-auto w-14 md:w-24 object-contain mb-auto border-soft-black border p-2 rounded-lg" src={val.asset.URL} />
                       <div className="flex flex-col grow">
                         <span className="text-sm md:text-base">{val.name}</span>
                         <span className="text-gray-400 text-xs md:text-sm">

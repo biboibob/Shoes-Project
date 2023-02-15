@@ -27,7 +27,7 @@ import _ from "lodash";
 
 // Service
 import API from "../helper/api";
-import { valueProcessing, JSXEventOffer } from "../utils";
+import { valueProcessing, JSXEventOffer, colorClassification } from "../utils";
 
 function Products() {
   const api = new API();
@@ -161,9 +161,6 @@ function Products() {
   //To Prevent Initiate Render on UseEffect, we use this state
   const [boolFilter, setBoolFilter] = useState(false);
 
-  //Hook Previous
-  const prevForm = usePrevious(form);
-
   useEffect(() => {
     getInitiateFilter();
   }, []);
@@ -201,9 +198,11 @@ function Products() {
 
         setData({
           ...data,
-          color: resFilter.colorOpt.map((val) => {
-            return val.color;
-          }),
+          color: colorClassification(
+            resFilter.colorOpt.map((val) => {
+              return val.color;
+            })
+          ),
           /*Set Unique */
           size: [
             ...new Set(
@@ -243,13 +242,6 @@ function Products() {
       getData(form, data, search);
     }
   }, [form, search]);
-
-  //Handle InfiniteScroll Get More Data
-  // useEffect(() => {
-  //   if (data.shoes.length > 0) {
-  //     fetchMore(form, data, search);
-  //   }
-  // }, [data.offset]);
 
   const fetchMore = (currOffset) => {
     const arrGender = [];
@@ -368,7 +360,12 @@ function Products() {
         ...tmpForm,
         [name]: {
           ...form[name],
-          value: valueProcessing(value, form[name].value),
+          value: valueProcessing(
+            name === "color"
+              ? data.color.find((val) => val.palette === value).colors
+              : value,
+            form[name].value
+          ),
         },
       });
     } else {
@@ -376,7 +373,12 @@ function Products() {
         ...form,
         [name]: {
           ...form[name],
-          value: valueProcessing(value, form[name].value),
+          value: valueProcessing(
+            name === "color"
+              ? data.color.find((val) => val.palette === value).colors
+              : value,
+            form[name].value
+          ),
         },
       });
     }
@@ -453,9 +455,23 @@ function Products() {
         <div className="FilterStyle">
           <span className="font-bold">Color</span>
           <ShoesColor
-            colors={data.color}
+            colors={data.color.map((val) => {
+              return val.palette;
+            })}
             onChange={onHandleChange}
-            selected={form.color.value}
+            selected={[
+              ...new Set(
+                form.color.value.map((val) => {
+                  const selectedColor = data.color.find((res) => {
+                    if (res.colors.includes(val)) {
+                      return res;
+                    }
+                  });
+
+                  return selectedColor.palette;
+                })
+              ),
+            ]}
           />
         </div>
         <div className="FilterStyle">
@@ -604,7 +620,19 @@ function Products() {
               colors={data.color}
               name={"color"}
               onChange={onHandleChange}
-              selected={tmpForm.color.value}
+              selected={[
+                ...new Set(
+                  tmpForm.color.value.map((val) => {
+                    const selectedColor = data.color.find((res) => {
+                      if (res.colors.includes(val)) {
+                        return res;
+                      }
+                    });
+            
+                    return selectedColor.palette;
+                  })
+                ),
+              ]}
             />
           </div>
           <div className="FilterStyle px-0">

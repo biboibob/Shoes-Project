@@ -1,16 +1,28 @@
 /* Component */
 import Swal from "sweetalert2";
 import { Checkbox } from "../components/custom/index";
+import ColorClassifier from "color-classifier"
 import * as Constants from "./Constant";
 
 export const valueProcessing = (value, state) => {
   if (Array.isArray(state)) {
     const tmpStateArr = state;
-    if (!tmpStateArr.includes(value)) {
-      tmpStateArr.push(value);
+    if(Array.isArray(value)) {
+      value.map((result) => {
+        if (!tmpStateArr.includes(result)) {
+          tmpStateArr.push(result);
+        } else {
+          const indexOf = tmpStateArr.indexOf(result);
+          tmpStateArr.splice(indexOf, 1);
+        }
+      })
     } else {
-      const indexOf = tmpStateArr.indexOf(value);
-      tmpStateArr.splice(indexOf, 1);
+      if (!tmpStateArr.includes(value)) {
+        tmpStateArr.push(value);
+      } else {
+        const indexOf = tmpStateArr.indexOf(value);
+        tmpStateArr.splice(indexOf, 1);
+      }
     }
     return tmpStateArr;
   } else {
@@ -111,3 +123,11 @@ export const Capitalize = (str) => {
 export const IDRToUSD = (number) => {
   return parseFloat((number / 16000).toFixed(1));
 };
+
+
+export const colorClassification = (val) => {
+  const colorClassifier = new ColorClassifier();
+  const results = colorClassifier.classifyFromArray(val, "hex");
+  return results
+};
+

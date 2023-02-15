@@ -110,7 +110,13 @@ function DetailProduct() {
       value: false,
       statusErr: false,
       message: "",
+    },
+    asset: {
+      value: [],
+      statusErr: false,
+      message: ""
     }
+
   });
 
   const [readMore, setReadMore] = useState(true);
@@ -148,6 +154,7 @@ function DetailProduct() {
           description: dataResponse.shoesDetail.description,
           category: dataResponse.categoryShoes.category.category_name,
           id: dataResponse.shoesDetail.id_shoes,
+          asset: dataResponse.shoesPreview.find((val) => val.type === "display")
         };
 
         for (const property in updatedValue) {
@@ -168,7 +175,7 @@ function DetailProduct() {
           size: dataResponse.sizeOpt.map((val) => {
             return val.size;
           }),
-          image: dataResponse.shoesPreview
+          image: dataResponse.shoesPreview.filter((val) => val.type !== "display")
         });
 
         setForm(updatedForm);
