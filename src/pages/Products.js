@@ -42,6 +42,7 @@ function Products() {
   const [data, setData] = useState({
     limit: 10,
     offset: 0,
+    hasMoreData: true,
     color: ["#414E97", "#555"],
     image: [],
     size: [
@@ -244,39 +245,39 @@ function Products() {
   }, [form, search]);
 
   //Handle InfiniteScroll Get More Data
-  useEffect(() => {
-    if (data.shoes.length > 0) {
-      fetchMore(form, data, search);
-    }
-  }, [data.offset]);
+  // useEffect(() => {
+  //   if (data.shoes.length > 0) {
+  //     fetchMore(form, data, search);
+  //   }
+  // }, [data.offset]);
 
-  const fetchMore = (newForm, newData, newSearch) => {
+  const fetchMore = (currOffset) => {
     const arrGender = [];
     const arrOffer = [];
 
     /* Set Array Value From Object Bool (Set Gender and Offer) */
-    for (var i = 0; i < Object.keys(newForm).length; i++) {
-      const currentKey = Object.keys(newForm)[i];
+    for (var i = 0; i < Object.keys(form).length; i++) {
+      const currentKey = Object.keys(form)[i];
       if (
         currentKey === "men" ||
         currentKey === "women" ||
         currentKey === "kids"
       ) {
-        if (newForm[currentKey].value) arrGender.push(currentKey);
+        if (form[currentKey].value) arrGender.push(currentKey);
       } else if (data.offer.some((val) => val.id === parseInt(currentKey))) {
-        if (newForm[currentKey].value) arrOffer.push(parseInt(currentKey));
+        if (form[currentKey].value) arrOffer.push(parseInt(currentKey));
       }
     }
 
     const requestBody = {
-      limit: newData.limit,
-      offset: newData.offset,
-      search: newSearch,
+      limit: data.limit,
+      offset: currOffset ? currOffset : data.offset,
+      search: search,
       gender: arrGender,
-      minPrice: parseInt(newForm.minPrice.value),
-      maxPrice: parseInt(newForm.maxPrice.value),
-      size: newForm.size.value,
-      color: newForm.color.value,
+      minPrice: parseInt(form.minPrice.value),
+      maxPrice: parseInt(form.maxPrice.value),
+      size: form.size.value,
+      color: form.color.value,
       offer: arrOffer,
     };
 
@@ -285,10 +286,12 @@ function Products() {
       .then((res) => {
         const dataResponse = res.data.data;
 
-        setData({
-          ...newData,
-          shoes: [...newData.shoes, ...dataResponse.getShoesList],
-        });
+        setData(() => ({
+          ...data,
+          hasMoreData: dataResponse.getShoesList.length > 0 ? true : false,
+          offset: currOffset,
+          shoes: [...data.shoes, ...dataResponse.getShoesList],
+        }));
 
         setSort({
           status: false,
@@ -322,8 +325,8 @@ function Products() {
         }
 
         const requestBody = {
-          limit: newData.limit,
-          offset: newData.offset,
+          limit: 10,
+          offset: 0,
           search: newSearch,
           gender: arrGender,
           minPrice: parseInt(newForm.minPrice.value),
@@ -341,6 +344,7 @@ function Products() {
             setData({
               ...newData,
               offset: 0,
+              hasMoreData: true,
               shoes: dataResponse.getShoesList,
             });
 
@@ -538,7 +542,7 @@ function Products() {
             />
           )}
         </div>
-        <CardCatalog data={data} onFetch={setData} sort={sort} />
+        <CardCatalog data={data} onFetch={fetchMore} sort={sort} />
       </div>
 
       {/* Handle Filter on Mobile Size  */}

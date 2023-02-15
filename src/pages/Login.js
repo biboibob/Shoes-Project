@@ -14,7 +14,7 @@ import { Input, Button } from "../components/custom";
 
 //asset
 import Nike from "../assets/PNG/LogoBlack.png";
-import LoadingSpin  from "../assets/SVG/LoadingSpin.svg";
+import LoadingSpin from "../assets/SVG/LoadingSpin.svg";
 
 //scss
 import LoginStyle from "../styles/Login.module.scss";
@@ -92,16 +92,15 @@ function Login() {
   return (
     <div className="flex justify-center h-100 items-center grow bg-white">
       <ToastContainer />
-      
-      <div className="flex min-h-screen grow shadow-2xl">
-        <div className="flex flex-col bg-white w-full gap-4 p-4 md:!p-10 md:basis-2/5">
-          <div className="flex relative">
-            <img
-              src={Nike}
-              className="h-5 md:h-10 w-auto absolute"
-              alt="logo"
-            />
-          </div>
+
+      <div className="flex h-full grow shadow-2xl">
+        <div className="flex flex-col relative bg-white w-full p-4 md:!p-10 md:basis-2/5">
+          <img
+            src={Nike}
+            className="h-5 md:h-10 w-auto absolute top-10"
+            alt="logo"
+          />
+
           <form
             onSubmit={onHandleLogin}
             className="flex flex-col gap-2 my-auto"
@@ -139,7 +138,11 @@ function Login() {
               disabled={boolLogin}
               value={
                 <span className="relative flex items-center">
-                  <img src={LoadingSpin} className={`h-auto w-7 ${!boolLogin && "hidden"}`} alt="loading" />
+                  <img
+                    src={LoadingSpin}
+                    className={`h-auto w-7 ${!boolLogin && "hidden"}`}
+                    alt="loading"
+                  />
                   Login
                 </span>
               }

@@ -32,14 +32,8 @@ function CardShoes({ data, sort, onFetch }) {
   };
 
   const onFetchMore = () => {
-    onFetch((curr) => ({
-      ...data,
-      offset: curr.offset + data.limit,
-    }));
+    onFetch(data.offset + data.limit);
   };
-
-  //Hook Checking if previous value of Shoes
-  const prevDataShoes = usePrevious(data.shoes);
 
   const loadSkeleton = (arr) => {
     return arr.map((val, idx) => (
@@ -72,7 +66,7 @@ function CardShoes({ data, sort, onFetch }) {
       <InfiniteScroll
         dataLength={data?.shoes?.length}
         next={onFetchMore}
-        hasMore={prevDataShoes?.length === data?.shoes?.length ? false : true}
+        hasMore={data.hasMoreData}
         loader={loadSkeleton(dummyInfiniteScroll)}
         className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem]"
       >
