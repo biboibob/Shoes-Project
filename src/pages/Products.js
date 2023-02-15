@@ -14,7 +14,7 @@ import {
 } from "../components/index";
 
 /* Hook */
-import { useWindowSize } from "../hook";
+import { usePrevious, useWindowSize } from "../hook";
 
 /* Redux Action */
 import {
@@ -40,6 +40,8 @@ function Products() {
 
   /* Test Data */
   const [data, setData] = useState({
+    limit: 10,
+    offset: 0,
     color: ["#414E97", "#555"],
     image: [],
     size: [
@@ -56,7 +58,7 @@ function Products() {
       "47",
       "48",
     ],
-    shoes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    shoes: [],
     offer: [],
     sort: [
       "Highest Price",
@@ -158,6 +160,9 @@ function Products() {
   //To Prevent Initiate Render on UseEffect, we use this state
   const [boolFilter, setBoolFilter] = useState(false);
 
+  //Hook Previous
+  const prevForm = usePrevious(form);
+
   useEffect(() => {
     getInitiateFilter();
   }, []);
@@ -231,11 +236,67 @@ function Products() {
   /* Handle If Form Change, Data Shoes List WIll Be Update */
   useEffect(() => {
     if (!_.isEqual(form, tmpForm)) setTmpForm({ ...form });
+
     dispatch(specificSkeletonToggle({ shoesListCategory: true }));
     if (boolFilter) {
       getData(form, data, search);
     }
   }, [form, search]);
+
+  //Handle InfiniteScroll Get More Data
+  useEffect(() => {
+    if (data.shoes.length > 0) {
+      fetchMore(form, data, search);
+    }
+  }, [data.offset]);
+
+  const fetchMore = (newForm, newData, newSearch) => {
+    const arrGender = [];
+    const arrOffer = [];
+
+    /* Set Array Value From Object Bool (Set Gender and Offer) */
+    for (var i = 0; i < Object.keys(newForm).length; i++) {
+      const currentKey = Object.keys(newForm)[i];
+      if (
+        currentKey === "men" ||
+        currentKey === "women" ||
+        currentKey === "kids"
+      ) {
+        if (newForm[currentKey].value) arrGender.push(currentKey);
+      } else if (data.offer.some((val) => val.id === parseInt(currentKey))) {
+        if (newForm[currentKey].value) arrOffer.push(parseInt(currentKey));
+      }
+    }
+
+    const requestBody = {
+      limit: newData.limit,
+      offset: newData.offset,
+      search: newSearch,
+      gender: arrGender,
+      minPrice: parseInt(newForm.minPrice.value),
+      maxPrice: parseInt(newForm.maxPrice.value),
+      size: newForm.size.value,
+      color: newForm.color.value,
+      offer: arrOffer,
+    };
+
+    return api
+      .getProductList(requestBody)
+      .then((res) => {
+        const dataResponse = res.data.data;
+
+        setData({
+          ...newData,
+          shoes: [...newData.shoes, ...dataResponse.getShoesList],
+        });
+
+        setSort({
+          status: false,
+          value: "",
+        });
+      })
+      .then(() => {});
+  };
 
   /* Handle New Shoe List Request With Debounce Technique */
   const getData = useMemo(
@@ -261,6 +322,8 @@ function Products() {
         }
 
         const requestBody = {
+          limit: newData.limit,
+          offset: newData.offset,
           search: newSearch,
           gender: arrGender,
           minPrice: parseInt(newForm.minPrice.value),
@@ -274,8 +337,10 @@ function Products() {
           .getProductList(requestBody)
           .then((res) => {
             const dataResponse = res.data.data;
+
             setData({
               ...newData,
+              offset: 0,
               shoes: dataResponse.getShoesList,
             });
 
@@ -473,7 +538,7 @@ function Products() {
             />
           )}
         </div>
-        <CardCatalog data={data.shoes} sort={sort} />
+        <CardCatalog data={data} onFetch={setData} sort={sort} />
       </div>
 
       {/* Handle Filter on Mobile Size  */}

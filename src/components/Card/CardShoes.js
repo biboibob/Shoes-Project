@@ -62,7 +62,7 @@ function CardShoes({ data, limit = 5 }) {
              
               <img
                 src={val.shoes.image.find(val => val.type === "display")?.URL}
-                className="absolute z-99 inset-0 m-auto -rotate-[20deg] h-auto w-44"
+                className="absolute z-99 inset-0 m-auto -rotate-[20deg] h-auto w-28 md:w-32 lg:w-44"
               />
             </div>
             <div className="flex flex-col md:flex-row gap-1 md:gap-0 justify-between">

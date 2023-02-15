@@ -86,18 +86,15 @@ function Home() {
   };
 
   useEffect(() => {
-    // dispatch(skeletonToggle(true));
-
-    getData()
+    dispatch(skeletonToggle(true));
     
-    // Promise.all([getData()])
-    //   .then(() => {
-     
-    //     dispatch(skeletonToggle(false));
-    //   })
-    //   .catch(() => {
-    //     dispatch(skeletonToggle(false));
-    //   });
+    Promise.all([getData()])
+      .then(() => {
+        dispatch(skeletonToggle(false));
+      })
+      .catch(() => {
+        dispatch(skeletonToggle(false));
+      });
   }, []);
 
   const getData = () => {
