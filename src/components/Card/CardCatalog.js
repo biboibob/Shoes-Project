@@ -114,7 +114,7 @@ function CardShoes({ data, sort, onFetch }) {
               <div className={`${styles.ImageCard} relative`}>
                 <img
                   src={val.shoes?.image[0]?.URL}
-                  className="absolute z-99 inset-0 m-auto -rotate-[20deg]"
+                  className="absolute z-99 inset-0 m-auto -rotate-[20deg] h-auto w-28 md:w-36"
                 />
               </div>
               <div className="flex flex-col md:flex-row gap-2 md:!gap-2 justify-between mt-3">

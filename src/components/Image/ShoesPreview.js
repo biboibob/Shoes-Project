@@ -44,7 +44,7 @@ function ShoesPreview({ asset, className, responsive }) {
     >
       <img
         src={selected.src}
-        className={"max-w-[15rem] md:max-w-[30rem] h-auto"}
+        className={"max-w-[15rem] md:max-w-[30rem] h-auto rounded-lg"}
       />
       <div
         className={`flex ${
@@ -55,13 +55,13 @@ function ShoesPreview({ asset, className, responsive }) {
           <div key={idx}>
             <Card
               onClick={() => onHandleSelect(val?.URL, idx)}
-              className={`border-2 cursor-pointer ${
+              className={`border-2 cursor-pointer rounded-lg ${
                 idx === selected.index ? "border-black" : "border-white"
               }`}
             >
               <img
                 src={val?.URL}
-                className="max-w-[3rem] md:max-w-[5rem] h-auto"
+                className="max-w-[3rem] md:max-w-[5rem] h-auto rounded-lg"
               />
             </Card>
           </div>
@@ -75,7 +75,7 @@ function ShoesPreview({ asset, className, responsive }) {
       } `}
       wrapper={() => (
         <>
-          <div className="w-[10rem] md:w-[25rem] bg-dark-gray h-52 md:h-80 rounded-xl"></div>
+          <div className="w-[10rem] md:w-[25rem] grow bg-dark-gray h-52 md:h-80 rounded-xl"></div>
           <div
             className={`flex ${
               responsive ? "flex-col md:flex-row" : "flex-row"

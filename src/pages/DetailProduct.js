@@ -117,10 +117,14 @@ function DetailProduct() {
 
   useEffect(() => {
     dispatch(skeletonToggle(true));
-    getData();
-    setTimeout(() => {
+
+    Promise.all([getData()])
+    .then(() => {
       dispatch(skeletonToggle(false));
-    }, 2000);
+    })
+    .catch(() => {
+      dispatch(skeletonToggle(false));
+    });
   }, []);
 
   const getData = () => {
@@ -276,7 +280,7 @@ function DetailProduct() {
           <Skeleton
             wrapper={() => (
               <>
-                <div className="flex flex-col gap-1 md:gap-2.5 animate-pulse">
+                <div className="flex flex-col mt-3 gap-1 md:gap-2.5 animate-pulse">
                   <div className="flex justify-between items-end">
                     <div className="flex flex-col grow gap-2">
                       <span className="grow bg-dark-gray h-3 w-1/2 md:w-1/4 rounded-lg" />

@@ -87,7 +87,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(skeletonToggle(true));
-    
+
     Promise.all([getData()])
       .then(() => {
         dispatch(skeletonToggle(false));
@@ -111,13 +111,11 @@ function Home() {
         color: featured.colorOpt.map((val) => {
           return val.color;
         }),
-        image: [],
+        image: featured.detailShoes.shoes.image,
         size: featured.sizeOpt.map((val) => {
           return val.size;
         }),
       });
-
-      
 
       setPopular(popular);
       setNewRelease(newRelease);
@@ -132,21 +130,22 @@ function Home() {
     });
   };
 
-  
-
   return (
     <div className="flex flex-col container my-3 md:my-5">
       <section className="flex flex-col gap-5 md:gap-0 mt-3 md:my-5 md:flex-row order-[2] md:order-first">
         <div className="flex flex-col relative bg-white shadow-CardShadow md:shadow-none rounded-lg md:!bg-inherit w-100 md:w-50 p-3 md:p-0">
-          <span className="block md:hidden font-semibold absolute top-0 left-0 bg-red-pallete text-white px-3.5 py-1.5 rounded-tl-lg rounded-br-lg">
-            Featured
-          </span>
 
-          {/* <ShoesPreview
-            asset={ShoesFeatured}
+          {!uiSelector.skeleton && (
+            <span className="block md:hidden font-semibold absolute top-0 left-0 bg-red-pallete text-white px-3.5 py-1.5 rounded-tl-lg rounded-br-lg">
+              Featured
+            </span>
+          )}
+
+          <ShoesPreview
+            asset={featured.image}
             responsive={true}
-            className={"md:hidden"}
-          /> */}
+            className={"md:hidden mt-4"}
+          />
 
           {!uiSelector.skeleton ? (
             <>
@@ -166,7 +165,7 @@ function Home() {
           ) : (
             <Skeleton
               wrapper={() => (
-                <div className="flex flex-col gap-2 animate-pulse my-4 md:my-0">
+                <div className="flex flex-col gap-2 animate-pulse my-1 md:my-0">
                   <span className="h-5 md:h-10 rounded-lg bg-dark-gray w-3/4" />
 
                   <div className="flex-col gap-2 my-3 hidden md:flex">
@@ -262,7 +261,7 @@ function Home() {
           </div>
         </div>
         <div className="hidden md:flex flex-col w-100 md:w-50 items-center mx-auto">
-          {/* <ShoesPreview asset={ShoesFeatured} /> */}
+          <ShoesPreview asset={featured.image} />
         </div>
       </section>
       <section className="flex flex-col my-2 md:!my-4 order-first  md:order-[2]">

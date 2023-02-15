@@ -40,7 +40,7 @@ function Products() {
 
   /* Test Data */
   const [data, setData] = useState({
-    limit: 10,
+    limit: 13,
     offset: 0,
     hasMoreData: true,
     color: ["#414E97", "#555"],
@@ -325,7 +325,7 @@ function Products() {
         }
 
         const requestBody = {
-          limit: 10,
+          limit: 13,
           offset: 0,
           search: newSearch,
           gender: arrGender,
