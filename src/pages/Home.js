@@ -86,13 +86,18 @@ function Home() {
   };
 
   useEffect(() => {
-    
+    dispatch(skeletonToggle(true));
 
-   getData();
+    Promise.all([getData()])
+      .then(() => {
+        dispatch(skeletonToggle(false));
+      })
+      .catch(() => {
+        dispatch(skeletonToggle(false));
+      });
   }, []);
 
   const getData = () => {
-    dispatch(skeletonToggle(true));
     return api.homeInitiate().then((res) => {
       const featured = res.data.data.featured;
       const newRelease = res.data.data.newRelease;
@@ -114,8 +119,6 @@ function Home() {
 
       setPopular(popular);
       setNewRelease(newRelease);
-    }).finally(() => {
-      dispatch(skeletonToggle(false));
     });
   };
 
@@ -131,7 +134,6 @@ function Home() {
     <div className="flex flex-col container my-3 md:my-5">
       <section className="flex flex-col gap-5 md:gap-0 mt-3 md:my-5 md:flex-row order-[2] md:order-first">
         <div className="flex flex-col relative bg-white shadow-CardShadow md:shadow-none rounded-lg md:!bg-inherit w-100 md:w-50 p-3 md:p-0">
-
           {!uiSelector.skeleton && (
             <span className="block md:hidden font-semibold absolute top-0 left-0 bg-red-pallete text-white px-3.5 py-1.5 rounded-tl-lg rounded-br-lg">
               Featured
