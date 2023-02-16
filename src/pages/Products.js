@@ -450,6 +450,10 @@ function Products() {
             size={data.size}
             onChange={onHandleChange}
             selected={form.size.value}
+            width = {{
+              sm: "2",
+              xl: "4"
+            }}
           />
         </div>
         <div className="FilterStyle">
@@ -612,6 +616,9 @@ function Products() {
               name={"size"}
               onChange={onHandleChange}
               selected={tmpForm.size.value}
+              width = {{
+                sm: "3",
+              }}
             />
           </div>
           <div className="FilterStyle px-0">

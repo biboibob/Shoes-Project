@@ -90,10 +90,10 @@ function Login() {
   };
 
   return (
-    <div className="flex justify-center h-100 items-center grow bg-white">
+    <div className="flex flex-col justify-center h-100 items-center grow bg-white">
       <ToastContainer />
 
-      <div className="flex h-full grow shadow-2xl">
+      <div className="flex h-full w-full grow shadow-2xl">
         <div className="flex flex-col relative bg-white w-full p-4 md:!p-10 md:basis-2/5">
           <img
             src={Nike}

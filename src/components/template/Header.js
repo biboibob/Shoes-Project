@@ -7,7 +7,9 @@ import Swal from "sweetalert2";
 
 //Redux
 import { sideBarToggle } from "../../service/redux/slice/ui";
-import { removeUser } from "../../service/redux/slice/user";
+import { resetUI } from "../../service/redux/slice/ui";
+import { resetCart } from "../../service/redux/slice/cart";
+import { resetUser } from "../../service/redux/slice/user";
 
 //Hook
 import { useWindowScroll, usePrevious } from "../../hook/index";
@@ -90,8 +92,10 @@ function Header() {
   };
 
   const onLogout = () => {
-    dispatch(removeUser());
     tokenService.clearToken();
+    dispatch(resetUI())
+    dispatch(resetCart())
+    dispatch(resetUser())
     navigate(PageRoutePath.LOGIN);
   };
 

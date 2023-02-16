@@ -239,12 +239,10 @@ function DetailProduct() {
     setReadMore(readMore ? false : true);
   };
 
-  console.log(uiSelector.skeleton);
-
   return (
     <div className="flex flex-col md:flex-row container min-h-full">
       <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center">
-        <ShoesPreview className={"sticky top-14 h-72"} asset={data.image} />
+        <ShoesPreview className={"sticky top-14"} asset={data.image} />
       </div>
       <div className="flex flex-col basis-1/2 px-[1.25rem] py-2 md:py-[3.125rem] gap-6">
         {!uiSelector.skeleton ? (

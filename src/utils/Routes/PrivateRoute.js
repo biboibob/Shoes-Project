@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../config";
 import TokenService from "../../utils/Token/tokenService";
 import jwt_decode from "jwt-decode";
 
+// Redux Action
+import { resetUI } from "../../service/redux/slice/ui";
+import { resetCart } from "../../service/redux/slice/cart";
+import { resetUser } from "../../service/redux/slice/user";
+
 
 const PrivateRoute = ({children}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loginData = useSelector((state) => state.userInfo.loginData);
   const [allowed, setAllowed] = useState(false);
 
@@ -21,6 +27,9 @@ const PrivateRoute = ({children}) => {
     // token is expired coincidentally.
 
     if (!accessToken || loginData === null || new Date((jwt_decode(TokenService.getService().getAccessToken()).exp * 1000) + 60000) < new Date()) {
+      dispatch(resetUI())
+      dispatch(resetCart())
+      dispatch(resetUser())
       navigate(PageRoutePath.LOGIN);
     } else {
       setAllowed(true)

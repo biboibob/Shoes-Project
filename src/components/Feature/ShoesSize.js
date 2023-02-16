@@ -5,16 +5,16 @@ import { useSelector } from "react-redux";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-// Style
-import style from "../../styles/components/ShoesSize.module.scss";
-
 function ShoesSize({
   size,
   onChange,
   selected,
   name = "size",
   className,
-  withBasis,
+  width = {
+    sm: "3",
+    xl: "5"
+  }
 }) {
   /* Redux */
   const uiSelector = useSelector((state) => state.userInterface);
@@ -22,14 +22,13 @@ function ShoesSize({
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className={`grid grid-cols-${width.sm} xl:grid-cols-${width.xl} gap-2 p-1`}>
       {!uiSelector.skeleton
         ? size.map((val, idx) => {
             return (
               <div
-                className={`${className} ${
-                  withBasis && style.SizingWidth
-                } text-sm md:text-base py-1 px-2 rounded-md cursor-pointer ${
+                className={`${className}
+                text-sm md:text-base py-1 px-2 text-center rounded-md cursor-pointer ${
                   selected.includes(val)
                     ? "bg-red-pallete text-white"
                     : "bg-dark-gray"
@@ -46,7 +45,7 @@ function ShoesSize({
             <Skeleton
               key={idx}
               wrapper={() => (
-                <div className="animate-pulse h-10 w-10 bg-dark-gray" />
+                <div className="animate-pulse h-10 w-auto bg-dark-gray" />
               )}
             />
           ))}

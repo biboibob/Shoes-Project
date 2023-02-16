@@ -29,6 +29,7 @@ export const userInterfaceSlice = createSlice({
     loadingToggle: (state, action) => {
       state.isLoading = action.payload;
     },
+    resetUI: () => initialState,
   },
 });
 
@@ -38,6 +39,7 @@ export const {
   skeletonToggle,
   specificSkeletonToggle,
   loadingToggle,
+  resetUI,
 } = userInterfaceSlice.actions;
 
 export default userInterfaceSlice.reducer;

@@ -1,17 +1,22 @@
 import { useEffect , useState} from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../config";
 import TokenService from "../../utils/Token/tokenService";
 import jwt_decode from "jwt-decode";
 
+// Redux Action
+import { skeletonToggle } from "../../service/redux/slice/ui";
+
 const PublicRoute = ({ children }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loginData = useSelector((state) => state.userInfo.loginData);
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
     setAllowed(false)
+    dispatch(skeletonToggle(false))
     const accessToken = TokenService.getService().getAccessToken();
     
     if (

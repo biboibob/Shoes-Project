@@ -14,10 +14,11 @@ export const counterSlice = createSlice({
     removeUser: (state, action) => {
       state.loginData = null;
     },
+    resetUser: () => initialState,
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addUser, removeUser } = counterSlice.actions;
+export const { addUser, removeUser, resetUser } = counterSlice.actions;
 
 export default counterSlice.reducer;

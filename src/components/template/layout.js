@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -11,11 +11,10 @@ import Loading from "../Loading/Loading";
 
 function Layout({ children }) {
   const sideBar = useSelector((selector) => selector.userInterface.isSideBar);
+
   const location = useLocation();
 
   useEffect(() => {
-    // var elmnt = document.getElementById("DOMContainer");
-    // elmnt.scrollTop = 0;
     window.scrollTo({ top: 0 });
   }, [location.pathname]);
 

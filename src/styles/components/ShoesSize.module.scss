@@ -1,9 +1,0 @@
-@import "../index.scss";
-
-.SizingWidth {
-    flex-basis: calc(calc(99%/3) - .2rem);
-
-    @include xl {
-        flex-basis: calc(calc(100% / 6) - .2rem);
-    }
-}

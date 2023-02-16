@@ -78,6 +78,7 @@ export const cartSlice = createSlice({
         });
       }
     },
+    resetCart: () => initialState,
   },
 });
 
@@ -88,7 +89,8 @@ export const {
   removeItem,
   onAllowSummaryReducer,
   onSelectShoesOnCart,
-  onSelectAllShoesOnCart
+  onSelectAllShoesOnCart,
+  resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

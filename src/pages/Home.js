@@ -86,18 +86,13 @@ function Home() {
   };
 
   useEffect(() => {
-    dispatch(skeletonToggle(true));
+    
 
-    Promise.all([getData()])
-      .then(() => {
-        dispatch(skeletonToggle(false));
-      })
-      .catch(() => {
-        dispatch(skeletonToggle(false));
-      });
+   getData();
   }, []);
 
   const getData = () => {
+    dispatch(skeletonToggle(true));
     return api.homeInitiate().then((res) => {
       const featured = res.data.data.featured;
       const newRelease = res.data.data.newRelease;
@@ -119,6 +114,8 @@ function Home() {
 
       setPopular(popular);
       setNewRelease(newRelease);
+    }).finally(() => {
+      dispatch(skeletonToggle(false));
     });
   };
 
