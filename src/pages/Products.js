@@ -617,7 +617,9 @@ function Products() {
           <div className="FilterStyle px-0">
             <span className="text-sm font-bold">Color</span>
             <ShoesColor
-              colors={data.color}
+              colors={data.color.map((val) => {
+                return val.palette;
+              })}
               name={"color"}
               onChange={onHandleChange}
               selected={[
@@ -628,7 +630,7 @@ function Products() {
                         return res;
                       }
                     });
-            
+
                     return selectedColor.palette;
                   })
                 ),

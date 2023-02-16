@@ -68,7 +68,7 @@ function CardShoes({ data, sort, onFetch }) {
         next={onFetchMore}
         hasMore={data.hasMoreData}
         loader={loadSkeleton(dummyInfiniteScroll)}
-        className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem]"
+        className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem] p-1"
       >
         {data.shoes
           .sort((a, b) => {

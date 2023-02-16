@@ -114,23 +114,14 @@ function DetailProduct() {
     asset: {
       value: [],
       statusErr: false,
-      message: ""
-    }
-
+      message: "",
+    },
   });
 
   const [readMore, setReadMore] = useState(true);
 
   useEffect(() => {
-    dispatch(skeletonToggle(true));
-
-    Promise.all([getData()])
-    .then(() => {
-      dispatch(skeletonToggle(false));
-    })
-    .catch(() => {
-      dispatch(skeletonToggle(false));
-    });
+    getData()
   }, []);
 
   const getData = () => {
@@ -142,7 +133,9 @@ function DetailProduct() {
       id_shoes: parseInt(lastPath),
     };
 
-    api.getDetailShoes(requestBody).then((res) => {
+    dispatch(skeletonToggle(true));
+
+    return api.getDetailShoes(requestBody).then((res) => {
       if (res.status === 200 && res.data.status) {
         const dataResponse = res.data.data;
 
@@ -154,7 +147,9 @@ function DetailProduct() {
           description: dataResponse.shoesDetail.description,
           category: dataResponse.categoryShoes.category.category_name,
           id: dataResponse.shoesDetail.id_shoes,
-          asset: dataResponse.shoesPreview.find((val) => val.type === "display")
+          asset: dataResponse.shoesPreview.find(
+            (val) => val.type === "display"
+          ),
         };
 
         for (const property in updatedValue) {
@@ -175,12 +170,16 @@ function DetailProduct() {
           size: dataResponse.sizeOpt.map((val) => {
             return val.size;
           }),
-          image: dataResponse.shoesPreview.filter((val) => val.type !== "display")
+          image: dataResponse.shoesPreview.filter(
+            (val) => val.type !== "display"
+          ),
         });
 
         setForm(updatedForm);
       } else {
       }
+    }).then(() => {
+      dispatch(skeletonToggle(false));
     });
   };
 
@@ -240,10 +239,12 @@ function DetailProduct() {
     setReadMore(readMore ? false : true);
   };
 
+  console.log(uiSelector.skeleton);
+
   return (
     <div className="flex flex-col md:flex-row container min-h-full">
       <div className="basis-1/2 px-[2.5rem] py-2 md:py-[3.125rem] flex justify-center">
-        <ShoesPreview className={"sticky top-14"} asset={data.image} />
+        <ShoesPreview className={"sticky top-14 h-72"} asset={data.image} />
       </div>
       <div className="flex flex-col basis-1/2 px-[1.25rem] py-2 md:py-[3.125rem] gap-6">
         {!uiSelector.skeleton ? (
@@ -272,9 +273,7 @@ function DetailProduct() {
                 {form.description.value}
               </div>
               <Button
-                className={
-                  "!w-fit !text-sm p-1 md:!p-2 hidden md:flex mt-2"
-                }
+                className={"!w-fit !text-sm p-1 md:!p-2 hidden md:flex mt-2"}
                 value={`${readMore ? "Read More" : "Read Less"}`}
                 onClick={onHandleToggleDescription}
               />
@@ -287,19 +286,14 @@ function DetailProduct() {
           <Skeleton
             wrapper={() => (
               <>
-                <div className="flex flex-col mt-3 gap-1 md:gap-2.5 animate-pulse">
+                <div className="flex flex-col my-3 gap-1 md:gap-2.5 animate-pulse">
                   <div className="flex justify-between items-end">
                     <div className="flex flex-col grow gap-2">
                       <span className="grow bg-dark-gray h-3 w-1/2 md:w-1/4 rounded-lg" />
-                      <span className="h-5 bg-dark-gray w-2/3 rounded-lg" />
+                      <span className="h-10 bg-dark-gray w-2/3 rounded-lg" />
                     </div>
 
                     <span className="h-5 bg-dark-gray w-16 rounded-lg md:hidden" />
-                  </div>
-                  <div className="my-4 flex gap-2 flex-col">
-                    <span className="h-2 bg-dark-gray w-full rounded-lg hidden md:flex" />
-                    <span className="h-2 bg-dark-gray w-3/4 rounded-lg hidden md:flex" />
-                    <span className="h-2 bg-dark-gray w-2/4 rounded-lg hidden md:flex" />
                   </div>
                 </div>
                 <div className="h-3 bg-dark-gray w-1/4 rounded-lg hidden md:flex" />
@@ -355,7 +349,7 @@ function DetailProduct() {
             containerClassName="flex flex-col gap-5"
             wrapper={() => (
               <>
-                <div className="flex flex-col gap-2 md:gap-4  animate-pulse">
+                <div className="flex flex-col gap-2 md:gap-4 animate-pulse">
                   <span className="h-3 bg-dark-gray rounded-lg w-1/4" />
                   <ShoesSize
                     className={"flex justify-center text-center !p-2"}
