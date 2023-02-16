@@ -11,18 +11,32 @@ function ShoesSize({
   selected,
   name = "size",
   className,
-  width = {
-    sm: "3",
-    xl: "5"
-  }
+  gridClassName
 }) {
   /* Redux */
   const uiSelector = useSelector((state) => state.userInterface);
 
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  // const gridCols = (val) => {
+  //   switch (val) {
+  //     case "1":
+  //       return "grid-cols-1";
+  //     case "2":
+  //       return "grid-cols-2";
+  //     case "3":
+  //       return "grid-cols-3";
+  //     case "4":
+  //       return "grid-cols-4";
+  //     case "5":
+  //       return "grid-cols-5";
+  //   }
+  // };
+
   return (
-    <div className={`grid grid-cols-${width.sm} xl:grid-cols-${width.xl} gap-2 p-1`}>
+    <div
+      className={`grid ${gridClassName} grid-cols-2 lg:grid-cols-4 gap-2 p-1`}
+    >
       {!uiSelector.skeleton
         ? size.map((val, idx) => {
             return (

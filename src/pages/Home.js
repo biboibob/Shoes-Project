@@ -241,6 +241,7 @@ function Home() {
                 size={featured.size}
                 onChange={onHandleChange}
                 selected={selected.size}
+                gridClassName={"grid-cols-2 lg:grid-cols-3"}
               />
             </div>
           </div>

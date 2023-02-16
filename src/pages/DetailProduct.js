@@ -328,7 +328,8 @@ function DetailProduct() {
                 size={data.size}
                 onChange={onHandleChange}
                 selected={[form.size.value]}
-                withBasis={true}
+                gridClassName={"grid-cols-3"}
+                
               />
             </div>
             <div className="flex flex-col gap-3">
@@ -354,7 +355,6 @@ function DetailProduct() {
                     size={data.size}
                     onChange={onHandleChange}
                     selected={[form.size.value]}
-                    withBasis={true}
                   />
                 </div>
 
