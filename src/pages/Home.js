@@ -88,7 +88,7 @@ function Home() {
   useEffect(() => {
     dispatch(skeletonToggle(true));
 
-    Promise.all([getData()])
+    Promise.all([getData(), getNewRelease(), getPopular()])
       .then(() => {
         dispatch(skeletonToggle(false));
       })
@@ -98,10 +98,8 @@ function Home() {
   }, []);
 
   const getData = () => {
-    return api.homeInitiate().then((res) => {
+    return api.getFeatured().then((res) => {
       const featured = res.data.data.featured;
-      const newRelease = res.data.data.newRelease;
-      const popular = res.data.data.popular;
 
       setFeatured({
         title: featured.detailShoes.shoes.name,
@@ -116,11 +114,26 @@ function Home() {
           return val.size;
         }),
       });
-
-      setPopular(popular);
-      setNewRelease(newRelease);
     });
   };
+
+  const getNewRelease = () => {
+    return api.getNewRelease().then((res) => {
+      if (res.status === 200 && res.data.status) {
+        const data = res.data.data.newRelease;
+        setNewRelease(data)
+      } 
+    });
+  }
+  
+  const getPopular = () => {
+    return api.getPopular().then((res) => {
+      if (res.status === 200 && res.data.status) {
+        const data = res.data.data.popular;
+        setPopular(data);
+      } 
+    });
+  }
 
   const navigateTo = (Route, state) => {
     navigate(Route, {

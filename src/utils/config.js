@@ -22,7 +22,9 @@ export const APIRoutePath = {
     EDIT_USER: "/user/editUser",
 
     // Home
-    HOME_INITIATE: "/home/HomeInitiate",
+    HOME_INITIATE: "/home/homeInitiate",
+    POPULAR: "/home/popular",
+    NEW_RELEASE: "/home/newRelease",
 
     // Products
     PRODUCTS: "/categories/GetShoesListCategory",

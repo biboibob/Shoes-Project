@@ -34,8 +34,16 @@ export default class API {
     return Axios.get(APIRoutePath.USER);
   };
   
-  homeInitiate = (data) => {
+  getFeatured = (data) => {
     return Axios.get(APIRoutePath.HOME_INITIATE, data);
+  };
+
+  getPopular = (data) => {
+    return Axios.get(APIRoutePath.POPULAR, data);
+  };
+
+  getNewRelease = (data) => {
+    return Axios.get(APIRoutePath.NEW_RELEASE, data);
   };
   
   getFilterInitiate = (data) => {

@@ -28,11 +28,7 @@ function Layout({ children }) {
         <Footer />
       </div>
 
-      <SideBar
-        className={`${
-          sideBar ? "left-0" : "-left-full "
-        } fixed w-full h-full bg-white inset-y-0 z-[9999] duration-500 transition-all flex flex-col overscroll-y-contain p-4 gap-3`}
-      />
+      <SideBar />
     </Loading>
   );
 }

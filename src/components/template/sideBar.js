@@ -10,8 +10,10 @@ import Logo from "../../assets/PNG/Logo.png";
 
 //Redux
 import { removeUser } from "../../service/redux/slice/user";
-
 import { sideBarToggle } from "../../service/redux/slice/ui";
+
+//Component
+import { FullPanel } from "../";
 
 function SideBar({ className }) {
   /* Hook */
@@ -57,14 +59,18 @@ function SideBar({ className }) {
     navigate(PageRoutePath.LOGIN);
   };
 
+  const onHideSideBar = () => {
+    dispatch(sideBarToggle(sideBar ? false : true))
+  } 
+
   return (
-    <div className={`${className} last:mt-auto`}>
+    <FullPanel
+      onToggle={sideBar}
+      onHide={() => onHideSideBar()}
+      contentClassName={"h-full gap-3"}
+    >
       <div className="w-full flex items-center justify-between">
         <span className="font-black text-xl">Menu</span>
-        <i
-          className="fa-solid fa-xmark fa-2xl"
-          onClick={() => dispatch(sideBarToggle(sideBar ? false : true))}
-        ></i>
       </div>
 
       <div className="flex flex-col text-lg grow gap-2">
@@ -101,7 +107,7 @@ function SideBar({ className }) {
         <span>Logout</span>
         <i className="fa-solid fa-right-from-bracket"></i>
       </div>
-    </div>
+    </FullPanel>
   );
 }
 
