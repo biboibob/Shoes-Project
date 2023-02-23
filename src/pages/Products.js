@@ -11,6 +11,7 @@ import {
   PriceRange,
   CardCatalog,
   FullPanel,
+  ShoesRange,
 } from "../components/index";
 
 /* Hook */
@@ -207,7 +208,10 @@ function Products() {
           size: [
             ...new Set(
               resFilter.sizeOpt.map((val) => {
-                return Math.round(val.size);
+                return {
+                  size: Math.round(val.size),
+                  stock_number: val.stock_number,
+                };
               })
             ),
           ],
@@ -360,12 +364,15 @@ function Products() {
         ...tmpForm,
         [name]: {
           ...form[name],
-          value: valueProcessing(
-            name === "color"
-              ? data.color.find((val) => val.palette === value).colors
-              : value,
-            form[name].value
-          ),
+          value:
+            name === "size"
+              ? value
+              : valueProcessing(
+                  name === "color"
+                    ? data.color.find((val) => val.palette === value).colors
+                    : value,
+                  form[name].value
+                ),
         },
       });
     } else {
@@ -373,12 +380,15 @@ function Products() {
         ...form,
         [name]: {
           ...form[name],
-          value: valueProcessing(
-            name === "color"
-              ? data.color.find((val) => val.palette === value).colors
-              : value,
-            form[name].value
-          ),
+          value:
+            name === "size"
+              ? value
+              : valueProcessing(
+                  name === "color"
+                    ? data.color.find((val) => val.palette === value).colors
+                    : value,
+                  form[name].value
+                ),
         },
       });
     }
@@ -445,13 +455,14 @@ function Products() {
           />
         </div>
         <div className="FilterStyle">
-          <span className="font-bold">Size</span>
-          <ShoesSize
-            size={data.size}
-            onChange={onHandleChange}
-            selected={form.size.value}
-            gridClassName={"grid-cols-2 lg:grid-cols-3"}
-          />
+          <div className="flex justify-between items-center">
+            <span className="font-bold">Size</span>
+            <span className="text-sm">
+              {form.size.value[0] || 19} - {form.size.value[1] || 50}
+            </span>
+          </div>
+
+          <ShoesRange name="size" onChange={onHandleChange} className="mt-3" />
         </div>
         <div className="FilterStyle">
           <span className="font-bold">Color</span>
@@ -607,13 +618,17 @@ function Products() {
             />
           </div>
           <div className="FilterStyle px-0">
-            <span className="text-sm font-bold">Size</span>
-            <ShoesSize
-              size={data.size}
-              name={"size"}
+            <div className="flex justify-between items-center">
+              <span className="font-bold">Size</span>
+              <span className="text-sm">
+                {tmpForm.size.value[0] || 19} - {tmpForm.size.value[1] || 50}
+              </span>
+            </div>
+
+            <ShoesRange
+              name="size"
               onChange={onHandleChange}
-              selected={tmpForm.size.value}
-              gridClassName={"grid-cols-3"}
+              className="mt-3"
             />
           </div>
           <div className="FilterStyle px-0">

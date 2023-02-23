@@ -11,27 +11,22 @@ function ShoesSize({
   selected,
   name = "size",
   className,
-  gridClassName
+  gridClassName,
 }) {
   /* Redux */
   const uiSelector = useSelector((state) => state.userInterface);
 
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  // const gridCols = (val) => {
-  //   switch (val) {
-  //     case "1":
-  //       return "grid-cols-1";
-  //     case "2":
-  //       return "grid-cols-2";
-  //     case "3":
-  //       return "grid-cols-3";
-  //     case "4":
-  //       return "grid-cols-4";
-  //     case "5":
-  //       return "grid-cols-5";
-  //   }
-  // };
+  const onHandleClick = (name, val) => {
+    if (name === "size_detail_shoe") {
+      if (val.stock_number > 0) {
+        onChange(name, val.size);
+      }
+    } else {
+      onChange(name, val.size);
+    }
+  };
 
   return (
     <div
@@ -43,15 +38,17 @@ function ShoesSize({
               <div
                 className={`${className}
                 text-sm md:text-base py-1 px-2 text-center rounded-md cursor-pointer ${
-                  selected.includes(val)
+                  val.stock_number === 0 && "opacity-20"
+                } ${
+                  selected.includes(val.size)
                     ? "bg-red-pallete text-white"
                     : "bg-dark-gray"
                 }`}
-                style={{ backgroundColor: val }}
+                style={{ backgroundColor: val.size }}
                 key={idx}
-                onClick={() => onChange(name, val)}
+                onClick={() => onHandleClick(name, val)}
               >
-                {val}
+                {val.size}
               </div>
             );
           })

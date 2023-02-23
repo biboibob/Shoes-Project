@@ -1,0 +1,41 @@
+.horizontal-slider {
+    display: flex;
+    align-items: center;
+
+    .track {
+        height: .5rem;
+
+        &-0{
+            background-color: grey;
+            opacity: 20%;
+            border-top-left-radius: .3rem;
+            border-bottom-left-radius: .3rem;
+        }
+        &-1{
+            background-color: black;
+        }
+        &-2{
+            background-color: grey;
+            opacity: 20%;
+            border-top-right-radius: .3rem;
+            border-bottom-right-radius: .3rem;
+        }
+    }
+
+    .thumb {
+        height: 1.6rem;
+        width: 1.6rem;
+        border-radius: 100%;
+        background-color: black;
+        cursor: pointer;
+        font-size: .8rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+       
+
+    
+    }
+}

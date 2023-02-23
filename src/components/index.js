@@ -3,6 +3,7 @@ import CardModel from "./Card/CardModel";
 import ShoesPreview from "./Image/ShoesPreview";
 import ShoesColor from "../components/Feature/ShoesColor";
 import ShoesSize from "../components/Feature/ShoesSize";
+import ShoesRange from "./Feature/ShoesRange";
 import PriceRange from "./Feature/PriceRange";
 import CardCatalog from "./Card/CardCatalog";
 import Quantity from "./Feature/QuantityItem";
@@ -19,5 +20,6 @@ export {
   PriceRange,
   Quantity,
   FullPanel,
-  Loading
+  Loading,
+  ShoesRange
 };

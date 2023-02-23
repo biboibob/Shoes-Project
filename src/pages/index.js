@@ -5,6 +5,8 @@ import Register from "./Register";
 import DetailProduct from "./DetailProduct";
 import Cart from "./Cart"
 import Summary from "./Summary"
+import OrderList from "./OrderList"
+import OrderListDetail from "./OrderListDetail"
 
 export {
   //Authentication
@@ -16,5 +18,7 @@ export {
   Products,
   DetailProduct,
   Cart,
-  Summary
+  Summary,
+  OrderList,
+  OrderListDetail
 };

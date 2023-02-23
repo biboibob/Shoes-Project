@@ -9,6 +9,8 @@ import {
   DetailProduct,
   Cart,
   Summary,
+  OrderList,
+  OrderListDetail
 } from "./pages/index";
 import PublicRoute from "./utils/Routes/PublicRoute";
 import PrivateRoute from "./utils/Routes/PrivateRoute";
@@ -75,6 +77,28 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <Summary />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.ORDER_LIST}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <OrderList />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.ORDER_LIST_DETAIL}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <OrderListDetail />
               </Layout>
             </PrivateRoute>
           }

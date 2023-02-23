@@ -22,7 +22,7 @@ module.exports = {
         
         //pallete
         "red-pallete": "#EF8677",
-        "green-pallete": "#A0E77D",
+        "green-pallete": "#6BC689",
         "soft-green" : "#6BC689",
         "blue-pallete": "#82B6D9",
         "dark-blue-pallete": "#6e9ab7",

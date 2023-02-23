@@ -19,7 +19,7 @@ function CardModel({ image, label, className }) {
           "object-cover object-top ml-auto md:object-contain w-32 md:!w-auto"
         }
       />
-      <span className="order-first my-auto ml-3 md:absolute text-white text-lg md:text-2xl stroke-black stroke-2 font-bold bottom-5 left-5">
+      <span className="order-first my-auto ml-3 md:absolute text-white text-lg md:text-2xl stroke-black stroke-2 font-bold bottom-5 left-5 drop-shadow-md">
         {label}
       </span>
     </div>

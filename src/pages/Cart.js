@@ -289,7 +289,7 @@ function Cart() {
               <span className="font-bold">${totalPrice.totalPrice}</span>
             </div>
             <Button
-              value={"Buy"}
+              value={"Proceed"}
               className="!bg-soft-green p-2 mt-2"
               onClick={onHandleBuy}
             />
@@ -323,7 +323,7 @@ function Cart() {
       </div>
     ) : (
       <div className="flex flex-col grow justify-center items-center">
-        <img src={Logo} className="w-auto h-14 mb-3" />
+        <img src={Logo} className="w-auto animate-bounce h-14 mb-3" />
         <span className="text-lg md:text-xl font-bold tracking-wide">
           Your Cart Empty
         </span>

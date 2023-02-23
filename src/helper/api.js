@@ -26,6 +26,18 @@ export default class API {
   getCourierOption = (data) => {
     return Axios.post(APIRoutePath.GET_COUR_OPTION, data);
   };
+
+  getProceedTransaction = (data) => {
+    return Axios.post(APIRoutePath.PROCEED_TRANSACTION, data);
+  }
+
+  getOrderList = (data) => {
+    return Axios.post(APIRoutePath.ORDER_TRANSACTION, data);
+  }
+
+  getOrderDetail = (data) => {
+    return Axios.post(APIRoutePath.ORDER_TRANSACTION_DETAIL, data);
+  }
   
   /* End Post Section */
   

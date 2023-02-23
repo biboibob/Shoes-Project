@@ -9,6 +9,7 @@ import FormField from "../components/custom/Input";
 
 //asset
 import Nike from "../assets/PNG/LogoBlack.png";
+import LoadingSpin from "../assets/SVG/LoadingSpin.svg";
 
 //component
 import { Input, Button } from "../components/custom";
@@ -21,6 +22,8 @@ function Register() {
   const api = new API();
 
   let navigate = useNavigate();
+
+  const [boolRegister, setBoolRegister] = useState(false);
 
   const [form, setForm] = useState({
     Username: "",
@@ -54,6 +57,7 @@ function Register() {
   };
 
   const onRegister = () => {
+    setBoolRegister(true)
     const params = {
       username: form.Username,
       password: form.Password,
@@ -70,6 +74,7 @@ function Register() {
         console.log(err);
       })
       .finally((res) => {
+        setBoolRegister(false)
         setForm({
           Username: "",
           Password: "",
@@ -139,7 +144,17 @@ function Register() {
             </div>
 
             <Button
-              value={"Sign Up"}
+              disabled={boolRegister}
+               value={
+                <span className="relative flex justify-center items-center">
+                  <img
+                    src={LoadingSpin}
+                    className={`h-auto w-7 ${!boolRegister && "hidden"}`}
+                    alt="loading"
+                  />
+                  Sign Up
+                </span>
+              }
               type={"submit"}
               className="p-2 md:p-3 mt-3 !bg-soft-black-color"
             />

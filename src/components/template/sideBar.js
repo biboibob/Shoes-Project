@@ -5,6 +5,11 @@ import { PageRoutePath } from "../../utils/config";
 import TokenService from "../../utils/Token/tokenService";
 import Swal from "sweetalert2";
 
+//Redux
+import { resetUI } from "../../service/redux/slice/ui";
+import { resetCart } from "../../service/redux/slice/cart";
+import { resetUser } from "../../service/redux/slice/user";
+
 //asset
 import Logo from "../../assets/PNG/Logo.png";
 
@@ -54,7 +59,9 @@ function SideBar({ className }) {
   };
 
   const onLogout = () => {
-    dispatch(removeUser());
+    dispatch(resetUI())
+    dispatch(resetCart())
+    dispatch(resetUser())
     tokenService.clearToken();
     navigate(PageRoutePath.LOGIN);
   };

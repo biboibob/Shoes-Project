@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { Checkbox } from "../components/custom/index";
 import ColorClassifier from "color-classifier"
 import * as Constants from "./Constant";
+import moment from "moment";
 
 export const valueProcessing = (value, state) => {
   if (Array.isArray(state)) {
@@ -124,10 +125,14 @@ export const IDRToUSD = (number) => {
   return parseFloat((number / 16000).toFixed(1));
 };
 
-
 export const colorClassification = (val) => {
   const colorClassifier = new ColorClassifier();
   const results = colorClassifier.classifyFromArray(val, "hex");
   return results
 };
+
+export const formatDate = (val) => {
+  const formatedData = moment(val).format(`DD MMM, HH:mm`)
+  return formatedData
+}
 

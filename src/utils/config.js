@@ -9,6 +9,8 @@ export const PageRoutePath = {
     DETAIL_PRODUCTS: "/Products/:id",
     CART: "/Cart",
     SUMMARY: "/Summary",
+    ORDER_LIST: "/Order-List",
+    ORDER_LIST_DETAIL: "/Order-List/:id",
 }
 
 
@@ -36,5 +38,8 @@ export const APIRoutePath = {
     //Summary 
     GET_PROVINCE: "/Summary/getProvince",
     GET_CITY: "/Summary/getCity",
-    GET_COUR_OPTION: "/Summary/getShippingOption"
+    GET_COUR_OPTION: "/Summary/getShippingOption",
+    PROCEED_TRANSACTION: "/Summary/proceedTransaction",
+    ORDER_TRANSACTION: "/transaction",
+    ORDER_TRANSACTION_DETAIL: "/transaction/transactionDetail"
 } 

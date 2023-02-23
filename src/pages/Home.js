@@ -19,7 +19,6 @@ import "swiper/css/pagination";
 // Asset
 import { First, Second, Third } from "../assets/JPG/Slider";
 import Model from "../assets/PNG/Model/index";
-import ShoesFeatured from "../assets/PNG/Shoes/Featured/index";
 
 //EndPoint and RoutePath
 import API from "../helper/api";
@@ -34,6 +33,9 @@ import {
   ShoesSize,
 } from "../components/index";
 import { Button } from "../components/custom/index";
+
+// Utils
+import { Capitalize } from "../utils";
 
 import "../styles/Home.scss";
 
@@ -110,9 +112,7 @@ function Home() {
           return val.color;
         }),
         image: featured.detailShoes.shoes.image,
-        size: featured.sizeOpt.map((val) => {
-          return val.size;
-        }),
+        size: featured.sizeOpt,
       });
     });
   };
@@ -161,10 +161,10 @@ function Home() {
 
           {!uiSelector.skeleton ? (
             <>
-              <span className="text-xs md:text-lg hidden md:block text-purple-pallete font-semibold">
+              <span className="text-xs md:text-base hidden md:block text-purple-pallete font-semibold">
                 Featured
               </span>
-              <span className="text-lg md:text-5xl font-bold text-soft-gray">
+              <span className="text-lg md:text-4xl font-black text-soft-gray">
                 {featured.title}
               </span>
               <span className="text-xs block md:hidden text-dark-gray-3">
@@ -198,12 +198,7 @@ function Home() {
                   Price :
                 </span>
                 <div className="flex gap-2 md:gap-3">
-                  <span className="text-base md:text-3xl font-bold">
-                    <span className="text-sm text-soft-green md:text-base">
-                      $
-                    </span>
-                    <span className="line-through">{featured.price}</span>
-                  </span>
+                  
                   <span className="text-base md:text-3xl font-bold">
                     <span className="text-sm text-soft-green md:text-base">
                       $
@@ -253,7 +248,7 @@ function Home() {
               <ShoesSize
                 size={featured.size}
                 onChange={onHandleChange}
-                selected={selected.size}
+                selected={[selected.size]}
                 gridClassName={"grid-cols-2 lg:grid-cols-3"}
               />
             </div>
@@ -365,7 +360,7 @@ function Home() {
                 navigateTo(PageRoutePath.PRODUCTS, { category: val })
               }
             >
-              <CardModel label={val} image={Model[val]} />
+              <CardModel label={Capitalize(val)} image={Model[val]} />
             </div>
           ))}
         </div>

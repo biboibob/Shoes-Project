@@ -76,7 +76,7 @@ function DetailProduct() {
       statusErr: false,
       message: "",
     },
-    size: {
+    size_detail_shoe: {
       value: "",
       statusErr: false,
       message: "",
@@ -101,7 +101,12 @@ function DetailProduct() {
       statusErr: false,
       message: "",
     },
-    id: {
+    id_shoes: {
+      value: null,
+      statusErr: false,
+      message: "",
+    },
+    id_product: {
       value: null,
       statusErr: false,
       message: "",
@@ -146,10 +151,11 @@ function DetailProduct() {
           price: dataResponse.shoesDetail.price,
           description: dataResponse.shoesDetail.description,
           category: dataResponse.categoryShoes.category.category_name,
-          id: dataResponse.shoesDetail.id_shoes,
+          id_shoes: dataResponse.shoesDetail.id_shoes,
           asset: dataResponse.shoesPreview.find(
             (val) => val.type === "display"
           ),
+          id_product: dataResponse.categoryShoes.id_product
         };
 
         for (const property in updatedValue) {
@@ -167,9 +173,7 @@ function DetailProduct() {
           color: dataResponse.colorOpt.map((val) => {
             return val.color;
           }),
-          size: dataResponse.sizeOpt.map((val) => {
-            return val.size;
-          }),
+          size: dataResponse.sizeOpt,
           image: dataResponse.shoesPreview.filter(
             (val) => val.type !== "display"
           ),
@@ -326,6 +330,7 @@ function DetailProduct() {
               <ShoesSize
                 className={"flex justify-center text-center !p-2"}
                 size={data.size}
+                name={"size_detail_shoe"}
                 onChange={onHandleChange}
                 selected={[form.size.value]}
                 gridClassName={"grid-cols-3"}
@@ -352,6 +357,7 @@ function DetailProduct() {
                   <span className="h-3 bg-dark-gray rounded-lg w-1/4" />
                   <ShoesSize
                     className={"flex justify-center text-center !p-2"}
+                    name={"size_detail_shoe"}
                     size={data.size}
                     onChange={onHandleChange}
                     selected={[form.size.value]}

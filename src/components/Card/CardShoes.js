@@ -74,7 +74,7 @@ function CardShoes({ data, limit = 5 }) {
                   {val.category.category_name}
                 </span>
               </div>
-              <span className="text-sm md:text-xl text-primary-color font-bold">
+              <span className="text-sm md:text-base text-primary-color font-bold">
                 ${val.shoes.price}
               </span>
             </div>
