@@ -253,7 +253,7 @@ function OrderListDetail() {
                       <span className="font-bold">{userData?.receiver}</span>
                       <span className="text-xs md:text-sm">
                         {userData?.detail_address}, {userData.city_name},{" "}
-                        {userData.province}
+                        {userData.province_name}, {userData.postal_code}
                       </span>
                       <span className="italic text-xs md:text-sm">
                         {userData?.phone}

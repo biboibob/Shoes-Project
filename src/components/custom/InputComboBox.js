@@ -31,11 +31,17 @@ function comboBox(props) {
       >
         <option
           hidden
+          className="!text-soft-black"
           label={`${label}
           ${mandatory && " *"}`}
         />
         {option.map((val, idx) => (
-          <option value={val.value} label={val.label} key={idx}/>
+          <option
+            className="!text-soft-black"
+            value={val.value}
+            label={val.label}
+            key={idx}
+          />
         ))}
       </Form.Select>
       <span className={`${error ? "block" : "hidden"} text-red-pallete`}>

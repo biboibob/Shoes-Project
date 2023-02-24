@@ -649,29 +649,35 @@ function Summary() {
       address_note: form.addressNote.value,
     };
 
-    api.editUser(requestBody).then((res) => {
-      const data = res.data;
-      if (data.status === 200) {
-        Toast.fire({
-          icon: "success",
-          title: data.content,
-        });
+    dispatch(loadingToggle(true));
+    api
+      .editUser(requestBody)
+      .then((res) => {
+        const data = res.data;
+        if (data.status === 200) {
+          Toast.fire({
+            icon: "success",
+            title: data.content,
+          });
 
-        setSelectedCour({
-          code: "",
-          name: "",
-          type: {
+          setSelectedCour({
+            code: "",
             name: "",
-            description: "",
-            ETA: "",
-            price: "",
-          },
-        });
-        onHandleModalToggle();
-        getDetailUser();
-        getCourierOption();
-      }
-    });
+            type: {
+              name: "",
+              description: "",
+              ETA: "",
+              price: "",
+            },
+          });
+          onHandleModalToggle();
+          getDetailUser();
+          getCourierOption();
+        }
+      })
+      .finally(() => {
+        dispatch(loadingToggle(false));
+      });
   };
 
   const onHandleBuy = () => {
@@ -725,19 +731,24 @@ function Summary() {
         }),
     };
 
-    dispatch(loadingToggle(true))
+    dispatch(loadingToggle(true));
 
-    api.getProceedTransaction(requestBody).then((res) => {
-      if (res.status === 200) {
-        Toast.fire({
-          icon: "success",
-          title: Constants.MESSAGE.BUY_SUCCESS,
-        });
-      }
-    }).finally(() => {
-      dispatch(loadingToggle(false))
-      onAfterBuy();
-    });
+    api
+      .getProceedTransaction(requestBody)
+      .then((res) => {
+        if (res.status === 200) {
+          Toast.fire({
+            icon: "success",
+            title: Constants.MESSAGE.BUY_SUCCESS,
+          });
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          dispatch(loadingToggle(false));
+          onAfterBuy();
+        }, 1500);
+      });
   };
 
   const onAfterBuy = () => {
