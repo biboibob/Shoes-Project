@@ -313,8 +313,9 @@ function Home() {
             modules={[Pagination, Mousewheel, Autoplay]}
             className="mySwiper rounded-2xl"
           >
-            {offerSlider.map((val) => (
+            {offerSlider.map((val, idx) => (
               <SwiperSlide
+                key={idx}
                 onClick={() =>
                   navigateTo(PageRoutePath.PRODUCTS, { offer: val.id_sale })
                 }

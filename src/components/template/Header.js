@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector, useDebounce } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../../utils/config";
 import TokenService from "../../utils/Token/tokenService";
@@ -12,10 +12,9 @@ import { resetCart } from "../../service/redux/slice/cart";
 import { resetUser } from "../../service/redux/slice/user";
 
 //Hook
-import { useWindowScroll, usePrevious } from "../../hook/index";
+import { useWindowScroll } from "../../hook/index";
 
 //component
-import Modal from "../custom/Modal";
 import { Button } from "../custom";
 
 //asset
@@ -38,8 +37,6 @@ function Header() {
     status: false,
   });
 
-  /* This Ref To Accessing Previous Value */
-  const prevTotalCart = usePrevious(totalCart);
 
   /* Hook */
   const scrollWindow = useWindowScroll();
@@ -55,15 +52,16 @@ function Header() {
   useEffect(() => {
     let curr = 0;
 
-    cartSelector.map((val) => {
+    cartSelector.forEach((val) => {
       curr += val.addToCart;
     });
 
-    setTotalCart((prevValue) => ({
+    setTotalCart(() => ({
       status:
         totalCart?.value === null || curr === totalCart?.value ? false : true,
       value: curr,
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartSelector]);
 
   useEffect(() => {
@@ -77,6 +75,7 @@ function Header() {
     return () => {
       clearTimeout(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalCart.value]);
 
   const handleLogout = (e) => {
@@ -131,6 +130,7 @@ function Header() {
           <img
             src={Logo}
             width={60}
+            alt="home"
             onClick={() => handleNavigate(PageRoutePath.HOME)}
             className={"cursor-pointer"}
           />
@@ -263,6 +263,7 @@ function Header() {
           <img
             src={Logo}
             width={50}
+            alt="home"
             onClick={() => handleNavigate(PageRoutePath.HOME)}
             className={"cursor-pointer"}
           />
