@@ -134,7 +134,7 @@ function CardShoes({ data, sort, onFetch }) {
           ))}
       </InfiniteScroll>
     ) : (
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem]">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-[.7rem] p-1">
         {loadSkeleton(dummy)}
       </div>
     )

@@ -4,9 +4,8 @@ import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 /* Component */
-import { Checkbox, Input, Button } from "../components/custom/index";
+import { Checkbox, Button } from "../components/custom/index";
 import {
-  ShoesSize,
   ShoesColor,
   PriceRange,
   CardCatalog,
@@ -15,7 +14,7 @@ import {
 } from "../components/index";
 
 /* Hook */
-import { usePrevious, useWindowSize } from "../hook";
+import { useWindowSize } from "../hook";
 
 /* Redux Action */
 import {
@@ -164,6 +163,7 @@ function Products() {
 
   useEffect(() => {
     getInitiateFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getInitiateFilter = () => {
@@ -178,7 +178,7 @@ function Products() {
         for (var i = 0; i < Object.keys(form).length; i++) {
           /* Check Value if Has State Category */
           if (param?.state?.state.category) {
-            Object.keys(form).map((val) => {
+            Object.keys(form).forEach((val) => {
               if (val === param.state.state.category) {
                 currForm[param.state.state.category].value = true;
               }
@@ -188,9 +188,12 @@ function Products() {
 
         /* Set Event Offer Data from API to Form State */
         if (resFilter.getOfferList.length > 0) {
-          for (var i = 0; i < resFilter.getOfferList.length; i++) {
-            currForm[resFilter.getOfferList[i].id_sale] = {
-              value: false,
+          for (var j = 0; j < resFilter.getOfferList.length; j++) {
+            currForm[resFilter.getOfferList[j].id_sale] = {
+              value:
+                param?.state?.state.offer === resFilter.getOfferList[j].id_sale
+                  ? true
+                  : false,
               statusErr: false,
               message: "",
             };
@@ -245,6 +248,8 @@ function Products() {
     if (boolFilter) {
       getData(form, data, search);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, search]);
 
   const fetchMore = (currOffset) => {
@@ -301,6 +306,7 @@ function Products() {
   const getData = useMemo(
     () =>
       _.debounce((newForm, newData, newSearch) => {
+        
         const arrGender = [];
         const arrOffer = [];
 
@@ -314,7 +320,7 @@ function Products() {
           ) {
             if (newForm[currentKey].value) arrGender.push(currentKey);
           } else if (
-            data.offer.some((val) => val.id === parseInt(currentKey))
+            newData.offer.some((val) => val.id === parseInt(currentKey))
           ) {
             if (newForm[currentKey].value) arrOffer.push(parseInt(currentKey));
           }
@@ -475,9 +481,8 @@ function Products() {
               ...new Set(
                 form.color.value.map((val) => {
                   const selectedColor = data.color.find((res) => {
-                    if (res.colors.includes(val)) {
-                      return res;
-                    }
+                    if (res.colors.includes(val)) return res;
+                    return false;
                   });
 
                   return selectedColor.palette;
@@ -646,6 +651,7 @@ function Products() {
                       if (res.colors.includes(val)) {
                         return res;
                       }
+                      return false
                     });
 
                     return selectedColor.palette;

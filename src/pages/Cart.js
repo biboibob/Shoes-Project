@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../utils/config";
+import Skeleton from "react-loading-skeleton";
+import API from "../helper/api";
 
 /* Redux */
 import { useSelector, useDispatch } from "react-redux";
@@ -12,27 +14,31 @@ import { Quantity } from "../components/index";
 /* redux Action */
 import {
   addNewShoes,
-  removeAllCart,
   removeItem,
   onSelectShoesOnCart,
   onSelectAllShoesOnCart,
   onAllowSummaryReducer,
 } from "../service/redux/slice/cart";
+import { skeletonToggle } from "../service/redux/slice/ui";
 
 //Service
 import { Toast } from "../utils";
 
 //asset
 import Logo from "../assets/PNG/LogoBlack.png";
-import { style } from "@mui/system";
 
 function Cart() {
+  const api = new API();
+
   /* Hook */
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const cartSelector = useSelector((state) => state.cart);
+  const uiSelector = useSelector((state) => state.userInterface);
+
   const [form, setForm] = useState([]);
+  const [cartShoesList, setCartShoeList] = useState([]);
 
   // State Handle Checkbox
   const [selectedList, setSelectedList] = useState([]);
@@ -52,6 +58,7 @@ function Cart() {
         .filter((val, idx) => {
           const result = selectedList.some((valSome) => valSome === idx);
           if (result) return val;
+          return false;
         })
         .map((val) => {
           return {
@@ -65,7 +72,9 @@ function Cart() {
         totalPrice:
           selectedResult.length === 1
             ? selectedResult[0].totalQuantityprice.toFixed(2)
-            : selectedResult.reduce((a, b) => a + b.totalQuantityprice, 0).toFixed(2),
+            : selectedResult
+                .reduce((a, b) => a + b.totalQuantityprice, 0)
+                .toFixed(2),
         quantity:
           selectedResult.length === 1
             ? selectedResult[0].quantity
@@ -78,6 +87,8 @@ function Cart() {
         quantity: 0,
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedList, form]);
 
   useEffect(() => {
@@ -89,7 +100,7 @@ function Cart() {
         tmpSelectedList.push(idx);
       }
 
-      Object.keys(val).map((objMap) => {
+      Object.keys(val).forEach((objMap) => {
         obj[objMap] = {
           value: val[objMap],
           statusErr: false,
@@ -101,7 +112,51 @@ function Cart() {
     });
     setSelectedList(tmpSelectedList);
     setForm(newArr);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartSelector]);
+
+  //Get Updated Stock
+  useEffect(() => {
+    getDataCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getDataCart = () => {
+    const requestBody = {
+      id_shoes: cartSelector.data.map((val) => {
+        return val.id_shoes;
+      }),
+    };
+
+    const currentShoeList = [];
+
+    dispatch(skeletonToggle(true));
+    api
+      .getCartData(requestBody)
+      .then((res) => {
+        const data = res.data.data;
+        if (res.status === 200 && res.data.status) {
+          data.shoesCart.forEach((val) => {
+            const currentCartData = cartSelector.data.find(
+              (valFind) => valFind.id_shoes === val.id_shoes
+            );
+            const stockOnly = val.stock.find(
+              (valFind) =>
+                valFind.id_shoes === currentCartData.id_shoes &&
+                valFind.color === currentCartData.color &&
+                valFind.size === currentCartData.size_detail_shoe
+            );
+            currentShoeList.push(stockOnly);
+          });
+
+          setCartShoeList(currentShoeList);
+        }
+      })
+      .finally(() => {
+        dispatch(skeletonToggle(false));
+      });
+  };
 
   /* Handle Change of Form */
   const onHandleChangeQuantity = (name, value, idx) => {
@@ -110,7 +165,7 @@ function Cart() {
 
     let objForm = {};
 
-    Object.keys(arr[idx]).map((val) => {
+    Object.keys(arr[idx]).forEach((val) => {
       objForm[val] = arr[idx][val].value;
     });
 
@@ -183,8 +238,8 @@ function Cart() {
     }
   };
 
-  {
-    return cartSelector.data.length !== 0 ? (
+  return cartSelector.data.length !== 0 ? (
+    !uiSelector.skeleton ? (
       <div className="flex container min-h-full mt-3 gap-3">
         <div className="basis-full md:basis-2/3 flex flex-col gap-3">
           <span className="font-black text-lg md:text-2xl text-soft-gray">
@@ -214,9 +269,13 @@ function Cart() {
                   value={selectedList.some((valSome) => valSome === idx)}
                   onChange={() => onHandleCheckBox(idx)}
                 />
-           
-                <img className="h-auto w-16 md:w-28 object-contain mb-auto border-soft-black border p-2 rounded-lg" src={val.asset.value.URL} />
-          
+
+                <img
+                  className="h-auto w-16 md:w-28 object-contain mb-auto border-soft-black border p-2 rounded-lg"
+                  src={val.asset.value.URL}
+                  alt={"shoes-img"}
+                />
+
                 <div className="flex flex-col ml-2 gap-2 grow">
                   <span
                     className="text-sm md:text-lg cursor-pointer"
@@ -232,7 +291,7 @@ function Cart() {
                     <div className="flex items-center gap-1">
                       <span className="text-gray-400">Size :</span>
                       <span className="py-1 px-2 bg-white border text-[0.7rem] rounded-md">
-                        {val.size.value} - EU
+                        {val.size_detail_shoe.value} - EU
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -254,6 +313,11 @@ function Cart() {
                         value={val.addToCart.value}
                         idx={idx}
                         onChange={onHandleChangeQuantity}
+                        max={
+                          cartShoesList.find(
+                            (valFind) => valFind.id_shoes === val.id_shoes.value
+                          )?.stock_number
+                        }
                       />
                       <i
                         className="fa-solid fa-trash-can text-dark-gray fa-sm md:fa-lg cursor-pointer"
@@ -322,17 +386,39 @@ function Cart() {
         </div>
       </div>
     ) : (
-      <div className="flex flex-col grow justify-center items-center">
-        <img src={Logo} className="w-auto animate-bounce h-14 mb-3" />
-        <span className="text-lg md:text-xl font-bold tracking-wide">
-          Your Cart Empty
-        </span>
-        <span className="text-sm md:text-base font-light tracking-wide">
-          Let's Fill With Your Dream Shoes
-        </span>
-      </div>
-    );
-  }
+      <Skeleton
+        wrapper={() => (
+          <div className="flex md:flex-row flex-col container gap-3">
+            <div className="flex flex-col basis-3/4 gap-3 animate-pulse">
+              <div className="flex h-10 w-32 bg-dark-gray rounded-md" />
+              <div className="flex justify-between">
+                <div className="flex h-8 w-32 bg-dark-gray rounded-md" />
+                <div className="flex h-8 w-32 bg-dark-gray rounded-md" />
+              </div>
+              <div className="flex h-32 w-auto bg-dark-gray rounded-md" />
+              <div className="flex h-32 w-auto bg-dark-gray rounded-md" />
+              <div className="flex h-32 w-auto bg-dark-gray rounded-md" />
+            </div>
+            <div className="flex flex-col basis-1/4 animate-pulse w-auto h-40 bg-dark-gray rounded-md" />
+          </div>
+        )}
+      />
+    )
+  ) : (
+    <div className="flex flex-col grow justify-center items-center">
+      <img
+        src={Logo}
+        className="w-auto animate-bounce h-14 mb-3"
+        alt="logo-nike"
+      />
+      <span className="text-lg md:text-xl font-bold tracking-wide">
+        Your Cart Empty
+      </span>
+      <span className="text-sm md:text-base font-light tracking-wide">
+        Let's Fill With Your Dream Shoes
+      </span>
+    </div>
+  );
 }
 
 export default Cart;

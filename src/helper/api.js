@@ -38,6 +38,10 @@ export default class API {
   getOrderDetail = (data) => {
     return Axios.post(APIRoutePath.ORDER_TRANSACTION_DETAIL, data);
   }
+
+  getCartData = (data) => {
+    return Axios.post(APIRoutePath.CART_LIST, data);
+  }
   
   /* End Post Section */
   
@@ -68,6 +72,10 @@ export default class API {
 
   getDetailUser = () => {
     return Axios.get(APIRoutePath.DETAIL_USER);
+  };
+
+  getSliderOffering = () => {
+    return Axios.get(APIRoutePath.OFFER_SLIDER);
   };
 
 

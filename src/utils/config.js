@@ -27,6 +27,7 @@ export const APIRoutePath = {
     HOME_INITIATE: "/home/homeInitiate",
     POPULAR: "/home/popular",
     NEW_RELEASE: "/home/newRelease",
+    OFFER_SLIDER: "/home/sliderOffer",
 
     // Products
     PRODUCTS: "/categories/GetShoesListCategory",
@@ -41,5 +42,8 @@ export const APIRoutePath = {
     GET_COUR_OPTION: "/Summary/getShippingOption",
     PROCEED_TRANSACTION: "/Summary/proceedTransaction",
     ORDER_TRANSACTION: "/transaction",
-    ORDER_TRANSACTION_DETAIL: "/transaction/transactionDetail"
+    ORDER_TRANSACTION_DETAIL: "/transaction/transactionDetail",
+
+    //Cart
+    CART_LIST: "/cart/getStock"
 } 

@@ -21,6 +21,9 @@ import { Button } from "../custom";
 //asset
 import Logo from "../../assets/PNG/LogoBlack.png";
 
+//Service
+import { Capitalize } from "../../utils";
+
 function Header() {
   /* State */
   const navigate = useNavigate();
@@ -93,9 +96,9 @@ function Header() {
 
   const onLogout = () => {
     tokenService.clearToken();
-    dispatch(resetUI())
-    dispatch(resetCart())
-    dispatch(resetUser())
+    dispatch(resetUI());
+    dispatch(resetCart());
+    dispatch(resetUser());
     navigate(PageRoutePath.LOGIN);
   };
 
@@ -186,26 +189,62 @@ function Header() {
               {/* Handle Menu User on Large Screen */}
               <div
                 className={`${
-                  userMenu ? "max-w-xs" : "max-w-0"
-                } transition-all duration-500 overflow-x-hidden box-border rounded-lg hidden md:block right-0 gap-2 absolute top-16 bg-white shadow-xl`}
+                  userMenu ? "top-16" : "-top-[50rem]"
+                } transition-all duration-500 overflow-x-hidden box-border rounded-lg hidden md:block right-0 gap-2 w-[15rem] absolute bg-white shadow-xl`}
               >
-                <div className="flex flex-col p-3">
-                  <div className="flex gap-5">
-                    <div className="flex flex-col basis-3/4">
-                      <span className="text-lg font-bold">
-                        {loginData?.username}
-                      </span>
-                      <span className="text-sm">{loginData?.email}</span>
-                    </div>
-                    <div className="bg-primary-color p-1 px-2 text-sm rounded-lg text-white h-fit basis-1/4">
-                      {loginData?.role}
+                <div className="flex flex-col gap-3 p-3">
+                  <div className="flex flex-col items-center">
+                    <i className="fa-solid fa-circle-user text-5xl"></i>
+                    <span className="text-lg font-bold">
+                      {Capitalize(loginData?.username)}
+                    </span>
+                    <span className="text-sm">{loginData?.email}</span>
+                  </div>
+
+                  {/* Menu Option */}
+                  <div className="flex flex-col">
+                    <span className="px-1">Menu</span>
+                    <hr className="mb-3 mt-1 ml-[-1rem] mr-[-1rem]"></hr>
+                    <div className="flex flex-col gap-2.5 px-1">
+                      <div className="flex items-center text-gray-400 gap-2 hover:text-soft-black">
+                        <i className="basis-1/6 fa-regular fa-user"></i>
+                        <span className="basis-5/6">Profile</span>
+                      </div>
+                      <div className="flex items-center text-gray-400 gap-2 hover:text-soft-black" onClick={() => handleNavigate(PageRoutePath.ORDER_LIST)}>
+                        <i className="basis-1/6 fa-solid fa-bag-shopping"></i>
+                        <span className="basis-5/6">Order</span>
+                      </div>
+                      <div className="flex items-center text-gray-400 justify-between gap-2 hover:text-soft-black" onClick={() => handleNavigate(PageRoutePath.CART)}>
+                        <div className="flex basis-4/5 items-center">
+                          <i className="basis-1/4 fa-solid fa-cart-shopping"></i>
+                          <span className="basis-3/4">Cart</span>
+                        </div>
+
+                        {totalCart.value > 0 && (
+                          <span className="flex relative h-6 w-6">
+                            <span
+                              className={`${
+                                totalCart.status && "animate-ping"
+                              } absolute ease-in inline-flex h-full w-full rounded-full bg-red-pallete opacity-75`}
+                            ></span>
+                            <span className="relative inline-flex rounded-full h-6 w-6 bg-red-pallete text-white text-xs font-bold items-center justify-center">
+                              {totalCart.value}
+                            </span>
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <hr className="my-3"></hr>
+                  <hr className="my-1 ml-[-1rem] mr-[-1rem]"></hr>
                   <Button
-                    value="Logout"
+                    value={
+                      <div className="flex gap-2  justify-center items-center">
+                        <i className="fa-solid fa-power-off"></i>
+                        <span>Logout</span>
+                      </div>
+                    }
                     onClick={handleLogout}
-                    className={"bg-red-500 p-1 !text-base"}
+                    className={"bg-red-500 p-1 py-2 !text-base"}
                   />
                 </div>
               </div>

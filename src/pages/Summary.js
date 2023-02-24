@@ -37,7 +37,7 @@ import { paypal, masterCard, visa } from "../assets/PNG/Payment";
 import API from "../helper/api";
 
 /* Service */
-import { MandatoryCheck, Toast, Capitalize, IDRToUSD } from "../utils";
+import { MandatoryCheck, Toast, IDRToUSD } from "../utils";
 
 function Summary() {
   const api = new API();
@@ -47,7 +47,6 @@ function Summary() {
 
   // Redux State
   const cartSelector = useSelector((state) => state.cart);
-  const loginInfoSelector = useSelector((state) => state.userInfo.loginData);
   const uiSelector = useSelector((state) => state.userInterface);
 
   /*Dummy Cour Section*/
@@ -255,6 +254,8 @@ function Summary() {
     return () => {
       dispatch(onAllowSummaryReducer(false));
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //Triggered When Shipping Change
@@ -268,12 +269,14 @@ function Summary() {
         ).toFixed(2),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCour]);
 
   useEffect(() => {
     if (selectedAddress.receiver.value.length > 0) {
       getCourierOption();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAddress.receiver.value]);
 
   //Handle City Option
@@ -281,6 +284,7 @@ function Summary() {
     if (form.province.value !== "") {
       getCity();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.province.value]);
 
   const getCourierOption = () => {
@@ -716,7 +720,7 @@ function Summary() {
             price: val.price,
             quantity: val.addToCart,
             color: val.color,
-            size: val.size,
+            size: val.size_detail_shoe,
           };
         }),
     };
@@ -959,6 +963,7 @@ function Summary() {
                         <img
                           className="h-auto w-14 md:w-24 object-contain mb-auto border-soft-black border p-2 rounded-lg"
                           src={val.asset.URL}
+                          alt="shoes-img"
                         />
                         <div className="flex flex-col grow">
                           <span className="text-sm md:text-base">
@@ -968,7 +973,7 @@ function Summary() {
                             {val.category}
                           </span>
                           <span className="flex text-xs md:text-sm items-center h-fit gap-1 mt-4 ">
-                            {val.size} EU -
+                            {val.size_detail_shoe} EU -
                             <span
                               className="flex h-3 w-3 md:h-5 md:w-5 rounded-full"
                               style={{
@@ -1063,7 +1068,9 @@ function Summary() {
               <div className="grid grid-cols-3 gap-2">
                 <Card
                   className={`flex flex-col p-3 gap-4 justify-between items-start cursor-pointer border-2 ${
-                    selectedPayment === "Free" ? "border-blue-500" : "border-white"
+                    selectedPayment === "Free"
+                      ? "border-blue-500"
+                      : "border-white"
                   }`}
                   onClick={() => setSelectedPayment("Free")}
                 >
@@ -1073,16 +1080,16 @@ function Summary() {
                     type="radio"
                   />
 
-                  <span className="ml-auto">Free</span>
+                  <span className="text-sm md:text-base ml-auto">Free</span>
                 </Card>
                 <Card
                   className={`bg-dark-gray-2 opacity-50 flex flex-col p-3 gap-4 justify-between items-start cursor-pointer `}
                 >
                   <Checkbox noLabel={true} type="radio" />
-
                   <img
                     className={"h-auto w-12 md:w-16 object-contain ml-auto"}
                     src={paypal}
+                    alt="paypal-img"
                   />
                 </Card>
                 <Card
@@ -1094,10 +1101,12 @@ function Summary() {
                     <img
                       className={"h-auto w-6 md:w-8 object-contain"}
                       src={visa}
+                      alt="visa-img"
                     />
                     <img
                       className={"h-auto w-6 md:w-8 object-contain"}
                       src={masterCard}
+                      alt="masterCard-img"
                     />
                   </div>
                 </Card>
@@ -1123,7 +1132,11 @@ function Summary() {
                       key={idx}
                     >
                       <div className="flex md:basis-1/6 justify-center">
-                        <img src={val?.logo} className="w-10 md:w-12 h-auto" />
+                        <img
+                          src={val?.logo}
+                          className="w-10 md:w-12 h-auto"
+                          alt="courier-img"
+                        />
                       </div>
                       <div className="flex flex-col grow gap-2">
                         <span className="text-sm md:text-base font-black">

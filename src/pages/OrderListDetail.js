@@ -38,6 +38,7 @@ function OrderListDetail() {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getData = () => {
@@ -186,6 +187,7 @@ function OrderListDetail() {
                         <img
                           className="h-auto w-14 md:w-20 object-contain mb-auto"
                           src={val.image}
+                          alt="shoes-img"
                         />
                         <div className="flex flex-col gap-4 grow">
                           <div className="flex flex-col">
@@ -230,7 +232,7 @@ function OrderListDetail() {
                     <span className="basis-3/12">Courier</span>
                     <span className="shirnk">:</span>
                     <span className="basis-9/12 font-bold">
-                      {orderData.courier}
+                      {orderData.courier?.toUpperCase()}
                     </span>
                   </div>
 
