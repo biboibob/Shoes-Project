@@ -1,5 +1,5 @@
 import React from "react";
-// import Form from "react-bootstrap/Form";
+import Form from "react-bootstrap/Form";
 
 function comboBox(props) {
   const {
@@ -18,7 +18,7 @@ function comboBox(props) {
 
   return (
     <>
-      <select
+      <Form.Select
         onChange={onChange}
         name={name}
         value={value}
@@ -26,7 +26,7 @@ function comboBox(props) {
         data-mandatory={mandatory || false}
         aria-label="Default select example"
         className={`${className} !text-${size} md:text-base p-2.5 md:p-3 rounded-md ${
-          disabled ? "!bg-dark-gray-3" : "bg-transparent"
+          disabled ? "!bg-dark-gray-3" : "bg-white"
         } text-soft-black placeholder-soft-black border-2 border-soft-black outline-0 w-full`}
       >
         <option
@@ -43,7 +43,7 @@ function comboBox(props) {
             key={idx}
           />
         ))}
-      </select>
+      </Form.Select>
       <span className={`${error ? "block" : "hidden"} text-red-pallete`}>
         {message}
       </span>
