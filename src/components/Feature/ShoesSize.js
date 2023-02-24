@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 /* Skeleton Library */
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function ShoesSize({

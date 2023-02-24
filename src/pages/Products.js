@@ -306,7 +306,6 @@ function Products() {
   const getData = useMemo(
     () =>
       _.debounce((newForm, newData, newSearch) => {
-        
         const arrGender = [];
         const arrOffer = [];
 
@@ -463,9 +462,12 @@ function Products() {
         <div className="FilterStyle">
           <div className="flex justify-between items-center">
             <span className="font-bold">Size</span>
-            <span className="text-sm">
-              {form.size.value[0] || 19} - {form.size.value[1] || 50}
-            </span>
+
+            {!uiSelector.skeleton && (
+              <span className="text-sm">
+                {form.size.value[0] || 19} - {form.size.value[1] || 50}
+              </span>
+            )}
           </div>
 
           <ShoesRange name="size" onChange={onHandleChange} className="mt-3" />
@@ -625,9 +627,11 @@ function Products() {
           <div className="FilterStyle px-0">
             <div className="flex justify-between items-center">
               <span className="font-bold">Size</span>
-              <span className="text-sm">
-                {tmpForm.size.value[0] || 19} - {tmpForm.size.value[1] || 50}
-              </span>
+              {!uiSelector.skeleton && (
+                <span className="text-sm">
+                  {tmpForm.size.value[0] || 19} - {tmpForm.size.value[1] || 50}
+                </span>
+              )}
             </div>
 
             <ShoesRange
@@ -651,7 +655,7 @@ function Products() {
                       if (res.colors.includes(val)) {
                         return res;
                       }
-                      return false
+                      return false;
                     });
 
                     return selectedColor.palette;

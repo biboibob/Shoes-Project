@@ -725,15 +725,18 @@ function Summary() {
         }),
     };
 
+    dispatch(loadingToggle(true))
+
     api.getProceedTransaction(requestBody).then((res) => {
       if (res.status === 200) {
         Toast.fire({
           icon: "success",
           title: Constants.MESSAGE.BUY_SUCCESS,
         });
-
-        onAfterBuy();
       }
+    }).finally(() => {
+      dispatch(loadingToggle(false))
+      onAfterBuy();
     });
   };
 

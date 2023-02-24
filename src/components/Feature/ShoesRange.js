@@ -1,5 +1,9 @@
 import React from "react";
 import ReactSlider from "react-slider";
+import { useSelector } from "react-redux";
+
+/* Skeleton Library */
+import Skeleton from "react-loading-skeleton";
 
 import "../../styles/components/shoeRange.scss";
 
@@ -12,11 +16,13 @@ function ShoesRange({
   min = 19,
   max = 50,
 }) {
+  const uiSelector = useSelector((state) => state.userInterface);
+
   const onChangeValue = (state) => {
     onChange(name, state);
   };
 
-  return (
+  return !uiSelector.skeleton ? (
     <ReactSlider
       min={min}
       max={max}
@@ -30,6 +36,12 @@ function ShoesRange({
       pearling
       minDistance={distance}
       onChange={onChangeValue}
+    />
+  ) : (
+    <Skeleton
+      wrapper={() => (
+        <div className="animate-pulse h-6 w-auto rounded-md bg-dark-gray" />
+      )}
     />
   );
 }

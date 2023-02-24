@@ -33,6 +33,7 @@ const OrderList = () => {
 
   useEffect(() => {
     getList();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab]);
 
   const getList = () => {
@@ -112,27 +113,28 @@ const OrderList = () => {
                   </div>
                   <div className="flex gap-3">
                     <img
+                      alt="shoes-img"
                       className="h-auto w-12 md:w-16 object-contain mb-auto mt-2"
-                      src={val.transaction_detail_parent[0].image}
+                      src={val.transaction_detail_parent[0]?.image}
                     />
                     <div className="flex flex-col gap-3 text-soft-black">
                       <div className="flex flex-col">
                         <span className="text-sm md:text-base font-semibold">
-                          {val.transaction_detail_parent[0].name}
+                          {val.transaction_detail_parent[0]?.name}
                         </span>
                         <span className="text-xs md:text-sm flex gap-1 items-center">
-                          {val.transaction_detail_parent[0].size} EU -{" "}
+                          {val.transaction_detail_parent[0]?.size} EU -{" "}
                           <span
                             className="flex h-3 w-3 md:h-4 md:w-4 rounded-full"
                             style={{
                               backgroundColor:
-                                val.transaction_detail_parent[0].color.toLowerCase(),
+                                val.transaction_detail_parent[0]?.color.toLowerCase(),
                             }}
                           ></span>
                         </span>
                       </div>
                       <span className="text-xs px-2 py-1 bg-dark-gray rounded w-fit">
-                        Qty : {val.transaction_detail_parent[0].quantity}
+                        Qty : {val.transaction_detail_parent[0]?.quantity}
                       </span>
                     </div>
                   </div>
@@ -160,7 +162,7 @@ const OrderList = () => {
             ))
         ) : (
           <div className="flex flex-col grow justify-center items-center">
-            <img src={Logo} className="w-auto animate-bounce h-14 mb-3" />
+            <img src={Logo} alt="logo-img" className="w-auto animate-bounce h-14 mb-3" />
             <span className="text-lg md:text-xl font-bold tracking-wide">
               This Order Empty
             </span>
