@@ -240,7 +240,7 @@ function Cart() {
 
   return cartSelector.data.length !== 0 ? (
     !uiSelector.skeleton ? (
-      <div className="flex container min-h-full mt-3 gap-3">
+      <div className="flex container grow min-h-full mt-3 gap-3">
         <div className="basis-full md:basis-2/3 flex flex-col gap-3">
           <span className="font-black text-lg md:text-2xl text-soft-gray">
             Cart
@@ -304,7 +304,7 @@ function Cart() {
                       />
                     </div>
                   </span>
-
+    
                   <div className="flex justify-between mt-4 items-center">
                     <div className="flex items-center gap-3">
                       <Quantity
@@ -315,7 +315,8 @@ function Cart() {
                         onChange={onHandleChangeQuantity}
                         max={
                           cartShoesList.find(
-                            (valFind) => valFind.id_shoes === val.id_shoes.value
+                            (valFind) =>
+                              valFind?.id_shoes === val?.id_shoes.value
                           )?.stock_number
                         }
                       />
@@ -337,7 +338,7 @@ function Cart() {
           ))}
 
           {/* Handle Summary in Mobile View */}
-          <div className="md:hidden flex flex-col gap-1">
+          <div className="md:hidden flex flex-col gap-1 mt-auto">
             <span className="text-base font-bold mb-2">Summary</span>
             <div className="flex justify-between text-sm">
               <span>Total Price ({totalPrice.quantity} Items)</span>

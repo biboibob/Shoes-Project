@@ -14,7 +14,6 @@ function textField(props) {
     mandatory = false,
     error,
     message,
-    vertical = false,
   } = props;
 
   return (

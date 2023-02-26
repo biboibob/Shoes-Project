@@ -11,6 +11,7 @@ export const PageRoutePath = {
     SUMMARY: "/Summary",
     ORDER_LIST: "/Order-List",
     ORDER_LIST_DETAIL: "/Order-List/:id",
+    PROFILE: "/Profile",
 }
 
 
@@ -37,8 +38,8 @@ export const APIRoutePath = {
     DETAIL_SHOES: "/detailProduct",
 
     //Summary 
-    GET_PROVINCE: "/Summary/getProvince",
-    GET_CITY: "/Summary/getCity",
+    GET_PROVINCE: "/general/getProvince",
+    GET_CITY: "/general/getCity",
     GET_COUR_OPTION: "/Summary/getShippingOption",
     PROCEED_TRANSACTION: "/Summary/proceedTransaction",
     ORDER_TRANSACTION: "/transaction",

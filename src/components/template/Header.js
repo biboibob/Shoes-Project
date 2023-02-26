@@ -206,7 +206,7 @@ function Header() {
                     <span className="px-1">Menu</span>
                     <hr className="mb-3 mt-1 ml-[-1rem] mr-[-1rem]"></hr>
                     <div className="flex flex-col gap-2.5 px-1">
-                      <div className="flex items-center text-gray-400 gap-2 hover:text-soft-black">
+                      <div className="flex items-center text-gray-400 gap-2 hover:text-soft-black" onClick={() => handleNavigate(PageRoutePath.PROFILE)}>
                         <i className="basis-1/6 fa-regular fa-user"></i>
                         <span className="basis-5/6">Profile</span>
                       </div>

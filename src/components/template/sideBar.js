@@ -149,7 +149,10 @@ function SideBar() {
       <div>
         <span className="font-black text-lg">Menu</span>
         <div className="flex flex-col text-lg gap-2 text-soft-gray">
-          <div className="flex items-center border-b border-dark-gray-2 py-3 text-base">
+          <div
+            className="flex items-center border-b border-dark-gray-2 py-3 text-base"
+            onClick={() => handleNavigate(PageRoutePath.PROFILE)}
+          >
             <i className="basis-2/12 fa-solid fa-user"></i>
             <span className="basis-10/12">Profile</span>
           </div>

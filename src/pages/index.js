@@ -7,18 +7,20 @@ import Cart from "./Cart"
 import Summary from "./Summary"
 import OrderList from "./OrderList"
 import OrderListDetail from "./OrderListDetail"
+import Profile from "./Profile"
 
 export {
-  //Authentication
+  //Public
   Login,
   Register,
   
-  //App
+  //Private
   Home,
   Products,
   DetailProduct,
   Cart,
   Summary,
   OrderList,
-  OrderListDetail
+  OrderListDetail,
+  Profile
 };

@@ -10,7 +10,8 @@ import {
   Cart,
   Summary,
   OrderList,
-  OrderListDetail
+  OrderListDetail,
+  Profile
 } from "./pages/index";
 import PublicRoute from "./utils/Routes/PublicRoute";
 import PrivateRoute from "./utils/Routes/PrivateRoute";
@@ -99,6 +100,17 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <OrderListDetail />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path={PageRoutePath.PROFILE}
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Profile />
               </Layout>
             </PrivateRoute>
           }

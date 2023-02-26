@@ -7,5 +7,7 @@ export const MESSAGE = {
   SELECT_PAYMENT: "Please select available payment",
   BUY_CONFIRMATION: "Have you checked all your order and shipment?",
   BUY_SUCCESS: "Your Payment Successfull!",
-  ORDER_NOT_FOUND: "Your order ID not found."
+  ORDER_NOT_FOUND: "Your order ID not found.",
+  SUCCESS_SAVE: "Data saved successfully",
+  FEATURE_UNABLE: "This feature temporary unavailable"
 };

@@ -747,7 +747,7 @@ function Summary() {
         setTimeout(() => {
           dispatch(loadingToggle(false));
           onAfterBuy();
-        }, 1500);
+        }, 2000);
       });
   };
 

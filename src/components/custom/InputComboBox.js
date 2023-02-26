@@ -27,7 +27,7 @@ function comboBox(props) {
         aria-label="Default select example"
         className={`${className} !text-${size} md:text-base p-2.5 md:p-3 rounded-md ${
           disabled ? "!bg-dark-gray-3" : "bg-white"
-        } text-soft-black placeholder-soft-black border-2 border-soft-black outline-0 w-full`}
+        } !text-black placeholder-soft-black border-2 border-soft-black outline-0 w-full`}
       >
         <option
           hidden
