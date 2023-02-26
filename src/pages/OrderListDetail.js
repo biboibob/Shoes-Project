@@ -166,7 +166,7 @@ function OrderListDetail() {
                     className="text-sm md:text-base flex items-center gap-2 cursor-pointer"
                     onClick={onToggleOrderProgress}
                   >
-                    Lihat Detail
+                    See Detail
                     <i className="fa-solid fa-chevron-down fa-sm"></i>
                   </span>
                 </div>

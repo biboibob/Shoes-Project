@@ -1,8 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 
-import "../../styles/components/Custom/Combobox.scss";
-
 function comboBox(props) {
   const {
     label,
