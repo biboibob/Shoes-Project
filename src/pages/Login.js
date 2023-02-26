@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../utils/config";
 import API from "../helper/api";
@@ -8,6 +7,8 @@ import { useDispatch } from "react-redux";
 
 //redux Action
 import { addUser } from "../service/redux/slice/user";
+import { resetUI } from "../service/redux/slice/ui";
+import { resetCart } from "../service/redux/slice/cart";
 
 //component
 import { Input, Button } from "../components/custom";
@@ -18,6 +19,9 @@ import LoadingSpin from "../assets/SVG/LoadingSpin.svg";
 
 //scss
 import LoginStyle from "../styles/Login.module.scss";
+
+//Service
+import { Toast } from "../utils";
 
 // tokenService
 const tokenService = TokenService.getService();
@@ -52,7 +56,10 @@ function Login() {
     const validateEmptyArray = Object.values(form).includes("");
 
     if (validateEmptyArray) {
-      toast.info("There's Still Empty Field!");
+      Toast.fire({
+        icon: "info",
+        title: "There's Still Empty Field!",
+      });
     } else {
       onLogin();
     }
@@ -70,13 +77,18 @@ function Login() {
       .then((res) => {
         if (res.data.status === 200) {
           dispatch(addUser(res.data.data.userInfo));
+          dispatch(resetUI());
+          dispatch(resetCart());
           navigate(PageRoutePath.HOME);
           tokenService.setToken({
             accessToken: res.data.data.accessToken,
             refreshToken: res.data.data.refreshToken,
           });
         } else {
-          toast.info(res.data.message);
+          Toast.fire({
+            icon: "info",
+            title: res.data.message,
+          });
         }
       })
       .catch((err) => console.log(err))
@@ -91,7 +103,6 @@ function Login() {
 
   return (
     <div className="flex flex-col justify-center h-100 items-center grow bg-white">
-      <ToastContainer />
 
       <div className="flex h-full w-full grow shadow-2xl">
         <div className="flex flex-col relative bg-white w-full p-4 md:!p-10 md:basis-2/5">
@@ -129,9 +140,6 @@ function Login() {
                 onChange={onChangeForm}
                 className="my-2"
               />
-              <span className="flex text-sm md:text-base mt-1">
-                Forgot Password ?
-              </span>
             </div>
 
             <Button

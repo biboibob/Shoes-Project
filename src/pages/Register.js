@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import { PageRoutePath } from "../utils/config";
 import API from "../helper/api";
-
-//component
-import FormField from "../components/custom/Input";
 
 //asset
 import Nike from "../assets/PNG/LogoBlack.png";
@@ -16,6 +12,9 @@ import { Input, Button } from "../components/custom";
 
 //scss
 import LoginStyle from "../styles/Login.module.scss";
+
+//Service
+import { Toast } from "../utils";
 
 function Register() {
   //config
@@ -44,20 +43,26 @@ function Register() {
   };
 
   const onHandleRegister = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const validateEmptyArray = Object.values(form).includes("");
 
     if (validateEmptyArray) {
-      toast.info("There's Still Empty Field!");
+      Toast.fire({
+        icon: "info",
+        title: "There's Still Empty Field!",
+      });
     } else if (form.Password !== form.ConfirmPassword) {
-      toast.info("Your Password doesn't match");
+      Toast.fire({
+        icon: "info",
+        title: "Your Password doesn't match!",
+      });
     } else {
       onRegister();
     }
   };
 
   const onRegister = () => {
-    setBoolRegister(true)
+    setBoolRegister(true);
     const params = {
       username: form.Username,
       password: form.Password,
@@ -68,20 +73,28 @@ function Register() {
     api
       .registerUser(params)
       .then((res) => {
-        toast.success("Register Successfull");
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally((res) => {
-        setBoolRegister(false)
+        Toast.fire({
+          icon: "success",
+          title: "Register Successfull",
+        });
+
         setForm({
           Username: "",
           Password: "",
           ConfirmPassword: "",
           Email: "",
         });
-        onNavigate(PageRoutePath.LOGIN)
+        onNavigate(PageRoutePath.LOGIN);
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: err?.response?.data.error,
+        });
+        setBoolRegister(false);
+      })
+      .finally(() => {
+        setBoolRegister(false);
       });
   };
 
@@ -91,7 +104,6 @@ function Register() {
 
   return (
     <>
-      <ToastContainer />
       <div className="flex min-h-screen grow shadow-2xl">
         <div className="flex flex-col bg-white w-full gap-4 p-4 md:!p-10 md:basis-2/5">
           <div className="flex relative">
@@ -101,7 +113,10 @@ function Register() {
               alt="logo"
             />
           </div>
-          <form  onSubmit={onHandleRegister} className="flex flex-col gap-2 my-auto">
+          <form
+            onSubmit={onHandleRegister}
+            className="flex flex-col gap-2 my-auto"
+          >
             <div className="flex flex-col gap-1">
               <span className="font-black text-soft-black-color text-2xl md:text-3xl">
                 Sign Up
@@ -145,7 +160,7 @@ function Register() {
 
             <Button
               disabled={boolRegister}
-               value={
+              value={
                 <span className="relative flex justify-center items-center">
                   <img
                     src={LoadingSpin}

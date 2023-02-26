@@ -1,6 +1,8 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 
+import "../../styles/components/Custom/Combobox.scss";
+
 function comboBox(props) {
   const {
     label,
@@ -24,7 +26,7 @@ function comboBox(props) {
         value={value}
         disabled={disabled}
         data-mandatory={mandatory || false}
-        aria-label="Default select example"
+        id="Combo-Box"
         className={`${className} !text-${size} md:text-base p-2.5 md:p-3 rounded-md ${
           disabled ? "!bg-dark-gray-3" : "bg-white"
         } !text-black placeholder-soft-black border-2 border-soft-black outline-0 w-full`}
@@ -34,14 +36,18 @@ function comboBox(props) {
           className="!text-soft-black"
           label={`${label}
           ${mandatory && " *"}`}
-        />
+        >
+          {label}
+        </option>
         {option.map((val, idx) => (
           <option
             className="!text-soft-black"
-            value={val.value}
-            label={val.label}
+            value={val?.value}
+            label={val?.label}
             key={idx}
-          />
+          >
+            {val.value}
+          </option>
         ))}
       </Form.Select>
       <span className={`${error ? "block" : "hidden"} text-red-pallete`}>
