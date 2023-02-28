@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -8,12 +8,6 @@ import Skeleton from "react-loading-skeleton";
 
 //style
 import styles from "../../styles/components/CardCatalog.module.scss";
-
-//asset
-import JordanBlue from "../../assets/PNG/Shoes/Categories/Jordan/Jordan-Blue.png";
-
-//Hook
-import { usePrevious } from "../../hook";
 
 /* Util */
 import { PageRoutePath } from "../../utils/config";
