@@ -134,6 +134,13 @@ function Register() {
                 className="my-2"
               />
               <Input
+                label={"Email"}
+                name={"Email"}
+                value={form.Email}
+                onChange={onChangeForm}
+                className="my-2"
+              />
+              <Input
                 type="password"
                 label={"Confirm Password"}
                 name={"ConfirmPassword"}
@@ -146,13 +153,6 @@ function Register() {
                 label={"Password"}
                 name={"Password"}
                 value={form.Password}
-                onChange={onChangeForm}
-                className="my-2"
-              />
-              <Input
-                label={"Email"}
-                name={"Email"}
-                value={form.Email}
                 onChange={onChangeForm}
                 className="my-2"
               />

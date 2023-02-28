@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageRoutePath } from "../utils/config";
 import Skeleton from "react-loading-skeleton";
+import Swal from "sweetalert2";
 import API from "../helper/api";
 
 /* Redux */
@@ -174,7 +175,18 @@ function Cart() {
 
   /* Handle Delete Items from Cart */
   const onHandleDeleteItem = (val) => {
-    dispatch(removeItem([val]));
+    Swal.fire({
+      title: "Confirmation Delete",
+      text: "Are you sure want to remove this shoe from your cart?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "Sure",
+      denyButtonText: `Nope`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(removeItem([val]));
+      }
+    });
   };
 
   /* Handle Delete Items from Cart By Selected Value */
@@ -185,12 +197,23 @@ function Cart() {
         title: "Please Select Shoes To Be Deleted",
       });
     } else {
-      dispatch(removeItem(selectedList));
-      setSelectedList([]);
-      setSelectAll(false);
-      Toast.fire({
-        icon: "success",
-        title: "Selected Shoes Successfully Deleted",
+      Swal.fire({
+        title: "Confirmation Delete",
+        text: "Are you sure want to remove this shoe from your cart?",
+        icon: "warning",
+        showDenyButton: true,
+        confirmButtonText: "Sure",
+        denyButtonText: `Nope`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(removeItem(selectedList));
+          setSelectedList([]);
+          setSelectAll(false);
+          Toast.fire({
+            icon: "success",
+            title: "Selected Shoes Successfully Deleted",
+          });
+        }
       });
     }
   };
@@ -304,7 +327,7 @@ function Cart() {
                       />
                     </div>
                   </span>
-    
+
                   <div className="flex justify-between mt-4 items-center">
                     <div className="flex items-center gap-3">
                       <Quantity

@@ -419,6 +419,48 @@ function Products() {
     });
   };
 
+  // On Clear Filter
+  const onClearFilter = () => {
+    setToggleFilter(false)
+    setForm({
+      women: {
+        value: false,
+        statusErr: false,
+        message: "",
+      },
+      men: {
+        value: false,
+        statusErr: false,
+        message: "",
+      },
+      kids: {
+        value: false,
+        statusErr: false,
+        message: "",
+      },
+      size: {
+        value: [],
+        statusErr: false,
+        message: "",
+      },
+      minPrice: {
+        value: 0,
+        statusErr: false,
+        message: "",
+      },
+      maxPrice: {
+        value: 0,
+        statusErr: false,
+        message: "",
+      },
+      color: {
+        value: [],
+        statusErr: false,
+        message: "",
+      },
+    });
+  };
+
   return (
     <div className="flex container relative min-h-min">
       <div className="hidden md:flex md:flex-col md:!basis-1/5 border border-gray-border">
@@ -470,7 +512,7 @@ function Products() {
             )}
           </div>
 
-          <ShoesRange name="size" onChange={onHandleChange} className="mt-3" />
+          <ShoesRange name="size" onChange={onHandleChange} className="my-3" />
         </div>
         <div className="FilterStyle">
           <span className="font-bold">Color</span>
@@ -500,6 +542,14 @@ function Products() {
               {JSXEventOffer(val.id, val.label, form, onHandleChange)}
             </div>
           ))}
+        </div>
+
+        <div className="FilterStyle border-b-0">
+          <Button
+            value={"Clear Filter"}
+            className={"!text-sm py-2"}
+            onClick={onClearFilter}
+          />
         </div>
       </div>
       <div className="flex flex-col gap-3 md:gap-4 md:border-y md:border-r border-gray-border basis-full md:basis-4/5 p-2 md:!p-5">
@@ -637,7 +687,7 @@ function Products() {
             <ShoesRange
               name="size"
               onChange={onHandleChange}
-              className="mt-3"
+              className="my-3"
             />
           </div>
           <div className="FilterStyle px-0">
@@ -674,11 +724,17 @@ function Products() {
           </div>
         </div>
 
-        <div className="bg-white text-sm bottom-0 inset-x-0 w-full">
+        <div className="flex bg-white text-sm bottom-0 inset-x-0 w-full gap-2">
+          <Button
+            value={"Reset"}
+            onClick={onClearFilter}
+            className="!bg-white !text-soft-black border-2 border-soft-black p-2 mt-2 basis-1/2"
+          />
+
           <Button
             value={"Apply"}
             onClick={onApplyFilter}
-            className="!bg-soft-green p-2 mt-2"
+            className="!bg-soft-black !text-white border-2 border-soft-black p-2 mt-2 basis-1/2"
           />
         </div>
       </FullPanel>

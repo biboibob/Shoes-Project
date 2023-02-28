@@ -169,7 +169,7 @@ function SideBar() {
           >
             <div className="flex grow items-center">
               <i className="basis-2/12 fa-solid fa-cart-shopping"></i>
-              <span className="basis-10/12 ml-1.5">Cart</span>
+              <span className="basis-10/12">Cart</span>
             </div>
             {totalCart.value > 0 && (
               <span className="flex relative h-6 w-6">

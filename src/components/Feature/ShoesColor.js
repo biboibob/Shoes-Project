@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 /* Skeleton Library */
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 function ShoesColor({ colors, onChange, selected, name = "color" }) {
@@ -17,8 +17,8 @@ function ShoesColor({ colors, onChange, selected, name = "color" }) {
         ? colors.map((val, idx) => {
             return (
               <div
-                className={`w-[1.8rem] h-[1.8rem] md:w-[2rem] md:h-[2rem] rounded-full border-2 cursor-pointer drop-shadow ${
-                  selected.includes(val) ? "border-stone-400" : "border-white"
+                className={`w-[1.8rem] h-[1.8rem] md:w-[2rem] md:h-[2rem] rounded-full  cursor-pointer shadow-sm ${
+                  selected.includes(val) && "border-stone-400 border-4" 
                 }`}
                 style={{ backgroundColor: val }}
                 key={idx}
