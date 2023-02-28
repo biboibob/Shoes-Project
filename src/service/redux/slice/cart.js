@@ -25,7 +25,7 @@ export const cartSlice = createSlice({
         (val) =>
           val.name === action.payload.name &&
           val.color === action.payload.color &&
-          val.size === action.payload.size
+          val.size_detail_shoe === action.payload.size_detail_shoe
       );
 
       if (shoesInState) {
@@ -33,7 +33,7 @@ export const cartSlice = createSlice({
           if (
             val.name === action.payload.name &&
             val.color === action.payload.color &&
-            val.size === action.payload.size
+            val.size_detail_shoe === action.payload.size_detail_shoe
           ) {
             val.addToCart += action.payload.addToCart;
           }

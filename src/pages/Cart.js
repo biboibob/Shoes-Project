@@ -194,7 +194,7 @@ function Cart() {
     if (selectedList.length === 0) {
       Toast.fire({
         icon: "warning",
-        title: "Please Select Shoes To Be Deleted",
+        title: "Please Select Shoes Delete",
       });
     } else {
       Swal.fire({
