@@ -24,7 +24,6 @@ import { Toast } from "../utils";
 import API from "../helper/api";
 import { PageRoutePath } from "../utils/config";
 
-
 function DetailProduct() {
   const api = new API();
   const navigate = useNavigate();
@@ -36,6 +35,7 @@ function DetailProduct() {
 
   /* Test Data */
   const [data, setData] = useState({
+    allInfo: {},
     color: ["#414E97", "#555"],
     image: [],
     size: [
@@ -122,7 +122,6 @@ function DetailProduct() {
   //Toggle Button ReadMore
   const [readMore, setReadMore] = useState(true);
 
-
   useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -192,6 +191,7 @@ function DetailProduct() {
             image: dataResponse.shoesPreview.filter(
               (val) => val.type !== "display"
             ),
+            allInfo: dataResponse.shoesDetail,
           });
 
           setForm(updatedForm);
@@ -426,8 +426,10 @@ function DetailProduct() {
               value={form.addToCart.value}
               onChange={onHandleChange}
               max={
-                data.size.find(
-                  (val) => val.size === form.size_detail_shoe.value
+                data.allInfo?.stock?.find(
+                  (val) =>
+                    val.size === form.size_detail_shoe.value &&
+                    val.color === form.color.value
                 )?.stock_number
               }
             />

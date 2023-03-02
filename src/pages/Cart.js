@@ -19,6 +19,7 @@ import {
   onSelectShoesOnCart,
   onSelectAllShoesOnCart,
   onAllowSummaryReducer,
+  onEditQuantityShoe,
 } from "../service/redux/slice/cart";
 import { skeletonToggle } from "../service/redux/slice/ui";
 
@@ -89,11 +90,50 @@ function Cart() {
       });
     }
 
+    // setForm(
+    //   form.map((val) => {
+    //     return {
+    //       ...val,
+    //       // addToCart: {
+    //       //   ...val.addToCart,
+    //       //   value:
+    //       //     val.addToCart > currentStock(val)
+    //       //       ? currentStock(val)
+    //       //       : val.addToCart,
+    //       // },
+    //     };
+    //   })
+    // );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedList, form]);
 
   useEffect(() => {
     let tmpSelectedList = [];
+
+    // Get Highest Current Stock Number in Database
+    const currentStock = (val, updateValue = false) => {
+      const stockNumber =  cartShoesList.find(
+        (valFind) =>
+          val.id_shoes === valFind.id_shoes &&
+          valFind.color === val?.color &&
+          valFind.size === val?.size_detail_shoe
+      )?.stock_number;
+
+      if (updateValue) {
+        dispatch(
+          onEditQuantityShoe({
+            id_shoes: val.id_shoes,
+            color: val.color,
+            size_detail_shoe: val.size_detail_shoe,
+            updatedStock: stockNumber,
+          })
+        );
+      }
+
+      return stockNumber
+    };
+
     const newArr = cartSelector.data.map((val, idx) => {
       let obj = {};
 
@@ -102,12 +142,29 @@ function Cart() {
       }
 
       Object.keys(val).forEach((objMap) => {
-        obj[objMap] = {
-          value: val[objMap],
-          statusErr: false,
-          message: "",
-        };
+        
+        // Check if value redux addToCart greater than currentStock
+        if (objMap === "addToCart") {
+          obj[objMap] = {
+            value:
+              val[objMap] > currentStock(val) ? currentStock(val, true) : val[objMap],
+            statusErr: false,
+            message: "",
+          };
+        } else {
+          obj[objMap] = {
+            value: val[objMap],
+            statusErr: false,
+            message: "",
+          };
+        }
       });
+
+      obj["maximum_stock"] = {
+        value: currentStock(val),
+        statusErr: false,
+        message: "",
+      };
 
       return obj;
     });
@@ -115,7 +172,7 @@ function Cart() {
     setForm(newArr);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartSelector]);
+  }, [cartSelector, cartShoesList]);
 
   //Get Updated Stock
   useEffect(() => {
@@ -138,16 +195,17 @@ function Cart() {
       .then((res) => {
         const data = res.data.data;
         if (res.status === 200 && res.data.status) {
-          data.shoesCart.forEach((val) => {
-            const currentCartData = cartSelector.data.find(
+          cartSelector.data.forEach((val) => {
+            const currentCartDetail = data.shoesCart.find(
               (valFind) => valFind.id_shoes === val.id_shoes
             );
-            const stockOnly = val.stock.find(
+
+            const stockOnly = currentCartDetail.stock.find(
               (valFind) =>
-                valFind.id_shoes === currentCartData.id_shoes &&
-                valFind.color === currentCartData.color &&
-                valFind.size === currentCartData.size_detail_shoe
+                valFind.size === val.size_detail_shoe &&
+                valFind.color === val.color
             );
+
             currentShoeList.push(stockOnly);
           });
 
@@ -261,6 +319,29 @@ function Cart() {
     }
   };
 
+  // const currentStockNumber = (val, updateValue = false) => {
+  //   const stockNumber = cartShoesList.find((valFind) => {
+  //     return (
+  //       valFind?.id_shoes === val?.id_shoes.value &&
+  //       valFind.color === val.color.value &&
+  //       valFind.size === val.size_detail_shoe.value
+  //     );
+  //   })?.stock_number;
+
+  //   if (updateValue) {
+  //     dispatch(
+  //       onEditQuantityShoe({
+  //         id_shoes: val.id_shoes.value,
+  //         color: val.color.value,
+  //         size_detail_shoe: val.size_detail_shoe.value,
+  //         updatedStock: stockNumber,
+  //       })
+  //     );
+  //   }
+
+  //   return stockNumber;
+  // };
+
   return cartSelector.data.length !== 0 ? (
     !uiSelector.skeleton ? (
       <div className="flex container grow min-h-full mt-3 gap-3">
@@ -304,7 +385,7 @@ function Cart() {
                     className="text-sm md:text-lg cursor-pointer"
                     onClick={() =>
                       handleNavigate(
-                        `${PageRoutePath.PRODUCTS}/${val.id.value}`
+                        `${PageRoutePath.PRODUCTS}/${val.id_shoes.value}`
                       )
                     }
                   >
@@ -333,15 +414,15 @@ function Cart() {
                       <Quantity
                         size="small"
                         name={"addToCart"}
+                        // value={
+                        //   val.addToCart.value > currentStockNumber(val)
+                        //     ? currentStockNumber(val, true)
+                        //     : val.addToCart.value
+                        // }
                         value={val.addToCart.value}
                         idx={idx}
                         onChange={onHandleChangeQuantity}
-                        max={
-                          cartShoesList.find(
-                            (valFind) =>
-                              valFind?.id_shoes === val?.id_shoes.value
-                          )?.stock_number
-                        }
+                        max={form.maximum_stock?.value}
                       />
                       <i
                         className="fa-solid fa-trash-can text-dark-gray fa-sm md:fa-lg cursor-pointer"

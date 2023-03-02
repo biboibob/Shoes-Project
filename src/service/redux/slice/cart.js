@@ -58,6 +58,19 @@ export const cartSlice = createSlice({
       //   state.data.splice(valMap, 1);
       // });
     },
+    onEditQuantityShoe: (state, action) => {
+      state.data = state.data.map((val) => {
+        if (
+          val.id_shoes === action.payload.id_shoes &&
+          val.color === action.payload.color &&
+          val.size_detail_shoe === action.payload.size_detail_shoe
+        ) {
+          val.addToCart = action.payload.updatedStock;
+        }
+
+        return val
+      });
+    },
     removeAllCart: (state, action) => {
       state.data = [];
     },
@@ -94,7 +107,8 @@ export const {
   onSelectShoesOnCart,
   onSelectAllShoesOnCart,
   resetCart,
-  onRemoveAfterBuy
+  onRemoveAfterBuy,
+  onEditQuantityShoe
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
