@@ -90,21 +90,6 @@ function Cart() {
       });
     }
 
-    // setForm(
-    //   form.map((val) => {
-    //     return {
-    //       ...val,
-    //       // addToCart: {
-    //       //   ...val.addToCart,
-    //       //   value:
-    //       //     val.addToCart > currentStock(val)
-    //       //       ? currentStock(val)
-    //       //       : val.addToCart,
-    //       // },
-    //     };
-    //   })
-    // );
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedList, form]);
 
