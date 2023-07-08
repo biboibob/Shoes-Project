@@ -1,0 +1,10 @@
+version: "1.0"
+
+services:
+  app:  
+    container_name: docker-shoes-project-c
+    image: docker-shoes-project-i
+    build:
+      context: .
+    ports:
+      - 8080:80
