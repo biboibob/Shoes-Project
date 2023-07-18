@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Secret file
 .env
+
+# Docker
+docker-compose.yml
