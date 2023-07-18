@@ -27,6 +27,9 @@ COPY . .
 # Then we do a build with yarn build 
 RUN npm run build
 
+# Jenkinsfile reference
+RUN apk add -U subversion
+
 # start app 
 CMD ["npm", "start"]
 
