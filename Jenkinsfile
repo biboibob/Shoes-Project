@@ -17,7 +17,13 @@ pipeline {
         }
         stage('Test') {
             steps {
+                // Chmod means you run on highest user (probably admin)
                 sh 'chmod +x ./Jenkins/scripts/test.sh'
+            }
+        }
+        stage("Build Docker Image") {
+            steps {
+                sh 'docker build -t shoes-project-docker-with-jenkins-i'
             }
         }
       
