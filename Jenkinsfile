@@ -6,12 +6,10 @@ pipeline {
         }
     }
 
-    tools{nodejs "node"}
-
     stages {
         stage('Test') {
             steps {
-                bat 'node --version'
+                sh 'node --version'
             }
         }
         stage("Build") {
@@ -21,7 +19,7 @@ pipeline {
             //     }
             // }
             steps {
-                bat "npm install"
+                sh "npm install"
             }
         }
       
