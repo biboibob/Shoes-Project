@@ -19,6 +19,7 @@ pipeline {
             steps {
                 sh './Jenkins/scripts/test.sh'
             }
+        }
       
     }
 }
