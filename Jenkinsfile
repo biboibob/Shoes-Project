@@ -6,23 +6,19 @@ pipeline {
             args '-p 3030:3030'
         }
     }
-
+    environment {
+        CI = 'true'
+    }
     stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-            }
-        }
         stage("Build") {
-            // agent {
-            //     docker {
-            //         reuseNode true
-            //     }
-            // }
             steps {
                 sh "npm install"
             }
         }
+        stage('Test') {
+            steps {
+                sh './Jenkins/scripts/test.sh'
+            }
       
     }
 }
