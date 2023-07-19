@@ -23,7 +23,9 @@ pipeline {
         }
         stage("Build Docker Image") {
             steps {
-                sh 'docker build -t shoes-project-docker-with-jenkins-i'
+                script {
+                    sh 'docker build -t shoes-project-docker-with-jenkins-i'
+                }
             }
         }
       
