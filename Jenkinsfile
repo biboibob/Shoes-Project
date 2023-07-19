@@ -1,5 +1,6 @@
 pipeline {
-    agent { dockerfile true }
+    // agent { dockerfile true }
+    agent any
 
     tools{nodejs "node"}
 
@@ -7,6 +8,7 @@ pipeline {
         stage("Build") {
             steps {
                 bat "npm install"
+                
             }
         }
       
