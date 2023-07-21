@@ -1,5 +1,7 @@
 pipeline {
     // agent { dockerfile true }
+
+    tools {nodejs "NodeJs"}
     agent {
         docker {
             image 'node:17-alpine'
