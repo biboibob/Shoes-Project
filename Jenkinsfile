@@ -1,14 +1,14 @@
 pipeline {
-    // agent { dockerfile true }
+    agent { dockerfile true }
 
     tools {nodejs "node"}
 
-    agent {
-        docker {
-            image 'node:17-alpine'
-            args '-p 3030:3030'
-        }
-    }
+    // agent {
+    //     docker {
+    //         image 'node:17-alpine'
+    //         args '-p 3030:3030'
+    //     }
+    // }
     environment {
         CI = 'true'
     }
@@ -27,7 +27,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    sh script: 'docker build -t shoes-project-docker-with-jenkins-i .' 
+                    sh script: 'docker build -t docker-jenkins-shoes-i .' 
                 }
             }
         }
