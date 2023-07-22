@@ -61,6 +61,12 @@ FROM jenkins/jenkins:2.401.2-jdk17
 
 USER root
 
+RUN \
+    whoami \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        apt-transport-https
+
 RUN apt-get update && apt-get install -y lsb-release
 
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
