@@ -27,7 +27,8 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    sh script: 'docker build -t docker-jenkins-shoes-i .' 
+                    // Adding Network host to resolve deb.debian failed to fetch
+                    sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
                 }
             }
         }
