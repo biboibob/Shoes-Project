@@ -61,13 +61,8 @@ FROM jenkins/jenkins:2.401.2-jdk17
 
 USER root
 
-RUN \
-    whoami \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        apt-transport-https
-
-RUN apt-get update && apt-get install -y lsb-release
+# This command is used to get HTTPS resource (apt-transport-https)
+RUN apt-get update && apt-get install -y lsb-release && apt-transport-https
 
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
