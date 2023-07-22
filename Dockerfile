@@ -61,9 +61,13 @@ FROM jenkins/jenkins:2.401.2-jdk17
 
 USER root
 
-RUN apt-get update
+RUN apt-get update 
 
-RUN apt-get install -y lsb-release
+RUN apt-get install \
+     ca-certificates \
+     curl \
+     gnupg \
+     lsb-release
 
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
@@ -78,5 +82,6 @@ RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+
 
 
