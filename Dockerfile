@@ -66,8 +66,7 @@ RUN apt-get update
 RUN apt-get install \
      ca-certificates \
      curl \
-     gnupg \
-     lsb-release
+     gnupg 
 
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
