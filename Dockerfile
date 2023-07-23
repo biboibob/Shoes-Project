@@ -59,6 +59,8 @@ ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 FROM jenkins/jenkins:2.401.2-jdk17
 
+RUN apk add -U subversion
+
 USER root
 
 RUN apt-get update && apt-get install -y lsb-release
