@@ -1,9 +1,10 @@
 pipeline {
-    agent { dockerfile true }
 
-    // agent any
+    agent any
 
     tools {nodejs "node"}
+
+    // agent { dockerfile true }
 
     // agent {
     //     docker {
