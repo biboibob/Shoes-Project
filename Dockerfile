@@ -57,19 +57,24 @@ ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 ## Jenkins Configuration
 
-# FROM jenkins/jenkins:2.401.2-jdk17
+FROM jenkins/jenkins:2.401.2-jdk17
 
-# USER root
+USER root
 
-# RUN apt update && \
-#     apt install -y --no-install-recommends gnupg curl ca-certificates apt-transport-https && \
-#     curl -sSfL https://apt.octopus.com/public.key | apt-key add - && \
-#     sh -c "echo deb https://apt.octopus.com/ stable main > /etc/apt/sources.list.d/octopus.com.list" && \
-#     apt update && apt install -y octopuscli
+RUN apt-get update && apt-get install -y lsb-release
 
-# USER jenkins
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
 
-# RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
+RUN apt-get update && apt-get install -y docker-ce-cli
+
+USER jenkins
+
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
 
 
