@@ -42,7 +42,7 @@ pipeline {
                     sh script: 'docker build  -t shoes-project-react-app -f ./Docker/App/Dockerfile --no-cache .'
 
                     //Tagging Port For App
-                    sh script: 'docker tag react-app localhost:5000/shoes-project-react-app'
+                    sh script: 'docker tag shoes-project-react-app localhost:5000/shoes-project-react-app'
 
                     // Pushing Tagging Port to Docker
                     sh script: 'docker push localhost:5000/shoes-project-react-app'
