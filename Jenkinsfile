@@ -39,7 +39,7 @@ pipeline {
         stage("Deploy") {
             steps {
                 script {
-                    sh script: 'docker run -d -p 3030:3030 shoes-project-react-app'
+                    sh script: 'docker run -p 3020:3020 shoes-project-react-app'
                 }
             }
         }
