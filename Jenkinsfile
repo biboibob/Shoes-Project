@@ -33,7 +33,7 @@ pipeline {
                     // Adding Network host to resolve deb.debian failed to fetch
                     sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
                 }
-            }
+            } 
         }
       
     }
