@@ -2,9 +2,9 @@ version: "1.0"
 
 services:
   app:  
-    container_name: docker-shoes-project-c
-    image: docker-shoes-project-i
+    container_name: docker-jenkins-c
+    image: docker-jenkins-shoes-i
     build:
       context: .
     ports:
-      - 8000:80
+      - 3030:80
