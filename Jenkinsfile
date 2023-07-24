@@ -27,21 +27,28 @@ pipeline {
                 sh 'chmod +x ./Jenkins/scripts/test.sh'
             }
         }
-        stage("Build Docker Image") {
+        stage("Build Docker Image Network") {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
                     sh script: 'docker build --network host -t docker-jenkins-shoes-i -f ./Docker/JenkinsBuild/Dockerfile .' 
-
-                    //Adding Image for Applicatioon (-f represent file path location)
-                    sh script: 'docker build  -t shoes-project-react-app -f ./Docker/App/Dockerfile .'
                 }
             }
         }
-        stage("Deploy") {
+        stage("Build Docker Image App") {
             steps {
                 script {
-                    sh script: 'docker run -p 3020:3020 shoes-project-react-app'
+                    //Adding Image for Applicatioon (-f represent file path location)
+                    sh script: 'docker build  -t shoes-project-react-app -f ./Docker/App/Dockerfile --no-cache .'
+
+                    //Tagging Port For App
+                    sh script: 'docker tag react-app localhost:5000/shoes-project-react-app'
+
+                    // Pushing Tagging Port to Docker
+                    sh script: 'docker push localhost:5000/shoes-project-react-app'
+
+                    // Remove Existing shoes-project 
+                    sh script: 'docker rmi -f shoes-project-react-app localhost:5000/shoes-project-react-app'
                 }
             }
         }
