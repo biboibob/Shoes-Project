@@ -30,6 +30,9 @@ RUN npm run build
 # Jenkinsfile reference
 RUN apk add -U subversion
 
+# Expose the port.
+EXPOSE 3030
+
 # start app 
 CMD ["npm", "start"]
 
