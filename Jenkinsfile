@@ -32,13 +32,18 @@ pipeline {
                 script {
                     // Adding Network host to resolve deb.debian failed to fetch
                     sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
-                    sh script: 'docker build -t shoes-project-react-app .'
                 }
-            } 
+            } steps {
+                script {
+                    sh script: 'docker build --network host -t shoes-project-react-app .'
+                }
+            }
         }
         stage("Deploy") {
             steps {
-                sh 'docker run -d -p 3030:3030 shoes-project-react-app'
+                script {
+                    sh script: 'docker run -d -p 3030:3030 shoes-project-react-app'
+                }
             }
         }
       
