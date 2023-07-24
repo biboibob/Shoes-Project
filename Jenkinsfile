@@ -30,9 +30,11 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    // Adding Network host to resolve deb.debian failed to fetch
-                    sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
-                    sh script: 'docker build --network host -t shoes-project-react-app .'
+                    // Adding Image for Network (-f represent file path location)
+                    sh script: 'docker build --network host -t docker-jenkins-shoes-i -f ./Docker/JenkinsBuild/Dockerfile .' 
+
+                    //Adding Image for Applicatioon (-f represent file path location)
+                    sh script: 'docker build  -t shoes-project-react-app -f ./Docker/App/Dockerfile .'
                 }
             }
         }
