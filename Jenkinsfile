@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
-                    sh script: 'docker build --network jenkins -t docker-jenkins-shoes-i -f ./Docker/JenkinsBuild/Dockerfile .' 
+                    sh script: 'docker build --network host -t docker-jenkins-shoes-i -f ./Docker/JenkinsBuild/Dockerfile .' 
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     //Adding Image for Applicatioon (-f represent file path location)
-                    sh script: 'docker build --network jenkins -t shoes-project-react-app -f ./Docker/App/Dockerfile --no-cache .'
+                    sh script: 'docker build --network host -t shoes-project-react-app -f ./Docker/App/Dockerfile --no-cache .'
 
                     //Tagging Port For App
                     sh script: 'docker tag shoes-project-react-app localhost:5000/shoes-project-react-app'
