@@ -9,7 +9,7 @@ ENV TZ="Asia/Jakarta"
 USER root
 
 ##Adding -V to detail the breaking error when apt-get install/update
-RUN apt-get update && apt-get install -y -V lsb-release
+RUN apt-get update && apt-get install -y -V --fix-missing lsb-release
 
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
   https://download.docker.com/linux/debian/gpg
@@ -19,7 +19,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
   https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
-RUN apt-get update && apt-get install -y -V docker-ce-cli
+RUN apt-get update && apt-get install -y -V --fix-missing docker-ce-cli
 
 USER jenkins
 
