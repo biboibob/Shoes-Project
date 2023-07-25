@@ -4,6 +4,8 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:16-alpine as builder
 
+ENV TZ="Asia/Jakarta"
+
 # set working directory
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 WORKDIR /app
@@ -39,6 +41,8 @@ CMD ["npm", "start"]
 # we are going to create a new image using the above create image with Nginx. 
 # Nginx is used to develop server-side applications. So the first step is to import Nginx. 
 FROM nginx:1.19.0
+
+ENV TZ="Asia/Jakarta"
 
 # Then we are going to create and set a new working directory in our new image.
 WORKDIR /usr/share/nginx/html

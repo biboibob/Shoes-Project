@@ -4,6 +4,8 @@
 
 FROM jenkins/jenkins:2.401.2-jdk17
 
+ENV TZ="Asia/Jakarta"
+
 USER root
 
 RUN apt-get update && apt-get install -y lsb-release
