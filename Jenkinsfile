@@ -27,31 +27,42 @@ pipeline {
                 sh 'chmod +x ./Jenkins/scripts/test.sh'
             }
         }
-        stage("Build Docker Image Network") {
+        stage("Accessing Container and Check Running Container in DIND") {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
-                    sh script: 'docker build --network host -t docker-jenkins-shoes-i -f ./Docker/JenkinsBuild/Dockerfile .' 
+                    sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
+                    sh script: 'docker ps'
+                   
                 }
             }
         }
-        stage("Build Docker Image App") {
-            steps {
-                script {
-                    //Adding Image for Applicatioon (-f represent file path location)
-                    sh script: 'docker build --network host -t shoes-project-react-app -f ./Docker/App/Dockerfile --no-cache .'
+       
+        // stage("Build Docker Image Network") {
+        //     steps {
+        //         script {
+        //             // Adding Image for Network (-f represent file path location)
+        //             sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
+        //         }
+        //     }
+        // }
+        // stage("Build Docker Image App") {
+        //     steps {
+        //         script {
+        //             //Adding Image for Applicatioon (-f represent file path location)
+        //             sh script: 'docker build --network host -t shoes-project-react-app --no-cache .'
 
-                    //Tagging Port For App
-                    sh script: 'docker tag shoes-project-react-app localhost:5000/shoes-project-react-app'
+        //             //Tagging Port For App
+        //             sh script: 'docker tag shoes-project-react-app localhost:5000/shoes-project-react-app'
 
-                    // Pushing Tagging Port to Docker
-                    sh script: 'docker push localhost:5000/shoes-project-react-app'
+        //             // Pushing Tagging Port to Docker
+        //             sh script: 'docker push localhost:5000/shoes-project-react-app'
 
-                    // Remove Existing shoes-project 
-                    sh script: 'docker rmi -f shoes-project-react-app localhost:5000/shoes-project-react-app'
-                }
-            }
-        }
+        //             // Remove Existing shoes-project 
+        //             sh script: 'docker rmi -f shoes-project-react-app localhost:5000/shoes-project-react-app'
+        //         }
+        //     }
+        // }
       
     }
 }
