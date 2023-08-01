@@ -32,8 +32,16 @@ pipeline {
                 script {
                     // Adding Image for Network (-f represent file path location)
                     // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
-                    sh script: 'docker ps'
-                   
+                    
+                    sh script: 'docker images'
+                    sh script: 'chmod +x docker build --network jenkins -t shoes-project-react-app .'
+                }
+            }
+        }
+        stage("Checking Images In Registry") {
+            steps {
+                script {
+                    sh script: 'docker images'
                 }
             }
         }
