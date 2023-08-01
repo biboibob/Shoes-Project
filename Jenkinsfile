@@ -33,8 +33,8 @@ pipeline {
                     // Adding Image for Network (-f represent file path location)
                     // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
                     
-                    sh script: 'docker images'
-                    sh script: 'chmod +x docker build -t shoes-project-react-app -f ./Docker/App/Dockerfile .'
+                    // sh script: 'docker images'
+                    sh script: 'docker build -t shoes-project-react-app -f ./Docker/App/Dockerfile .'
                 }
             }
         }
