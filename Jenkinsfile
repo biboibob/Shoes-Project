@@ -27,14 +27,14 @@ pipeline {
                 sh 'chmod +x ./Jenkins/scripts/test.sh'
             }
         }
-        stage("Accessing Container and Check Running Container in DIND") {
+        stage("Building Image") {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
                     // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
                     
                     // sh script: 'docker images'
-                    sh script: 'docker build -t shoes-project-react-app -f ./Docker/App/Dockerfile .'
+                    sh script: 'docker build -t shoes-project-react-app .'
                 }
             }
         }
