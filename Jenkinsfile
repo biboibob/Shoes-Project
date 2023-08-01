@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
-                    sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
+                    // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
                     sh script: 'docker ps'
                    
                 }
