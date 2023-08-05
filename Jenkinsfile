@@ -27,14 +27,25 @@ pipeline {
                 sh 'chmod +x ./Jenkins/scripts/test.sh'
             }
         }
-        stage("Building Image") {
+        // stage("Building Image") {
+        //     steps {
+        //         script {
+        //             // Adding Image for Network (-f represent file path location)
+        //             // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
+                    
+        //             // sh script: 'docker images'
+        //             sh script: 'docker build -t shoes-project-react-app .'
+        //         }
+        //     }
+        // }
+        
+        stage("Check Availability") {
             steps {
                 script {
-                    // Adding Image for Network (-f represent file path location)
-                    // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
-                    
-                    // sh script: 'docker images'
-                    sh script: 'docker build -t shoes-project-react-app .'
+                    sh script: 'docker --version'
+                    sh script: 'node --version'
+                    sh script: 'npm --version'
+                    sh script: 'docker ps'
                 }
             }
         }

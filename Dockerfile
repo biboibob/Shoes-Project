@@ -64,38 +64,38 @@ ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 ## Docker Configuration
 
-# Use a base image (e.g., Ubuntu)
-FROM ubuntu:latest
+# # Use a base image (e.g., Ubuntu)
+# FROM ubuntu:latest
 
-# Update the package lists and install lsb-release
-RUN apt-get update && apt-get install -y lsb-release
+# # Update the package lists and install lsb-release
+# RUN apt-get update && apt-get install -y lsb-release
 
-# Install Docker prerequisites
-RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+# # Install Docker prerequisites
+# RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-# Install Docker-in-Docker
-RUN curl -fsSL https://get.docker.com | sh
+# # Install Docker-in-Docker
+# RUN curl -fsSL https://get.docker.com | sh
 
 # ## Jenkins Configuration
 
-# FROM jenkins/jenkins:2.401.2-jdk17
+FROM jenkins/jenkins:latest
 
-# USER root
+USER root
 
-# RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update && apt-get install -y lsb-release
 
-# RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-#   https://download.docker.com/linux/debian/gpg
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+  https://download.docker.com/linux/debian/gpg
 
-# RUN echo "deb [arch=$(dpkg --print-architecture) \
-#   signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-#   https://download.docker.com/linux/debian \
-#   $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+  https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 
-# RUN apt-get update && apt-get install -y docker-ce-cli
+RUN apt-get update && apt-get install -y docker-ce-cli
 
-# USER jenkins
+USER jenkins
 
-# RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
 
 
