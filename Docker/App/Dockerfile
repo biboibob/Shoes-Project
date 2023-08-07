@@ -6,7 +6,7 @@ FROM node:16-alpine as builder
 
 RUN apk update && \
     apk upgrade && \
-    apk add autoconf automake libtool nasm make pkg-config git apt-utils
+    apk add
 
 
 ENV TZ="Asia/Jakarta"
