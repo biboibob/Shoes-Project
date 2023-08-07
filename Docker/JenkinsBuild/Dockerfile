@@ -2,17 +2,17 @@
 
 ## Docker Configuration
 
-# Use a base image (e.g., Ubuntu)
-FROM ubuntu:latest
+# # Use a base image (e.g., Ubuntu)
+# FROM ubuntu:latest
 
-# Update the package lists and install lsb-release
-RUN apt-get update && apt-get install -y lsb-release
+# # Update the package lists and install lsb-release
+# RUN apt-get update && apt-get install -y lsb-release
 
-# Install Docker prerequisites
-RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+# # Install Docker prerequisites
+# RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-# Install Docker-in-Docker
-RUN curl -fsSL https://get.docker.com | sh
+# # Install Docker-in-Docker
+# RUN curl -fsSL https://get.docker.com | sh
 
 ## Jenkins Configuration
 
