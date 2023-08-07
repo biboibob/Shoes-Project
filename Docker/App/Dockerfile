@@ -4,10 +4,7 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:16 as builder
 
-RUN apt-get update && apt-get upgrade && \
-    # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories && \
-    # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories && \
-    apt-get install --no-cache 
+RUN apt-get update && apt-get upgrade && apt-get install --no-cache 
 
 
 ENV TZ="Asia/Jakarta"
