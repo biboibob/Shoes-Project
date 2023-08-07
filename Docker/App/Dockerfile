@@ -4,9 +4,9 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:carbon as builder
 
-RUN apk update
-RUN apk upgrade -y
-RUN apk -y install autoconf automake libtool nasm make pkg-config git apt-utils
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
 
 
 ENV TZ="Asia/Jakarta"
@@ -47,9 +47,9 @@ CMD ["npm", "start"]
 # Nginx is used to develop server-side applications. So the first step is to import Nginx. 
 FROM nginx:1.19.0
 
-RUN apk update
-RUN apk upgrade -y
-RUN apk -y install autoconf automake libtool nasm make pkg-config git apt-utils
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
 
 
 ENV TZ="Asia/Jakarta"
