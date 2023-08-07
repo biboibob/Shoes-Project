@@ -4,7 +4,7 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:16-alpine as builder
 
-RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update && apt-get install -y
 
 ENV TZ="Asia/Jakarta"
 
@@ -44,7 +44,7 @@ CMD ["npm", "start"]
 # Nginx is used to develop server-side applications. So the first step is to import Nginx. 
 FROM nginx:1.19.0
 
-RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update && apt-get install -y
 
 ENV TZ="Asia/Jakarta"
 
