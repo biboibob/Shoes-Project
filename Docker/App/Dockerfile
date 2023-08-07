@@ -47,10 +47,6 @@ CMD ["npm", "start"]
 # Nginx is used to develop server-side applications. So the first step is to import Nginx. 
 FROM nginx:1.19.0
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
-
 
 ENV TZ="Asia/Jakarta"
 
