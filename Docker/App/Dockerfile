@@ -4,9 +4,9 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:16-alpine as builder
 
-RUN apk update --no-cache && apk upgrade --no-cache && \
-    echo @3.18 http://nl.alpinelinux.org/alpine/v3.18/community >> /etc/apk/repositories && \
-    echo @3.18 http://nl.alpinelinux.org/alpine/v3.18/main >> /etc/apk/repositories && \
+RUN apk update && apk upgrade && \
+    echo @3.10 http://nl.alpinelinux.org/alpine/v3.10/community >> /etc/apk/repositories && \
+    echo @3.10 http://nl.alpinelinux.org/alpine/v3.10/main >> /etc/apk/repositories && \
     apk add --no-cache 
 
 
