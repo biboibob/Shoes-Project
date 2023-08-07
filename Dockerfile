@@ -6,8 +6,8 @@ FROM node:16-alpine as builder
 
 # Update the package lists and install lsb-release
 RUN apk update && \
-    apk upgrade -y && \
-    apk -y install --no-cache autoconf automake libtool nasm make pkg-config git apt-utils
+    apk upgrade && \
+    apk install --no-cache autoconf automake libtool nasm make pkg-config git apt-utils
 
 ENV TZ="Asia/Jakarta"
 
