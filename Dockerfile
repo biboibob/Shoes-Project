@@ -5,7 +5,9 @@
 FROM node:carbon as builder
 
 # Update the package lists and install lsb-release
-RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
 
 ENV TZ="Asia/Jakarta"
 
@@ -46,7 +48,9 @@ CMD ["npm", "start"]
 FROM nginx:1.19.0
 
 # Update the package lists and install lsb-release
-RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
 
 ENV TZ="Asia/Jakarta"
 
