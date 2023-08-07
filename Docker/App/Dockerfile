@@ -2,12 +2,12 @@
 
 # pull official base image 
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
-FROM node:16-alpine as builder
+FROM node:16 as builder
 
-RUN apk update && apk upgrade && \
-    echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories && \
-    echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories && \
-    apk add --no-cache 
+RUN apt-get update && apt-get upgrade && \
+    # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories && \
+    # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories && \
+    apk-get install --no-cache 
 
 
 ENV TZ="Asia/Jakarta"
