@@ -7,13 +7,7 @@ FROM node:16-alpine as builder
 RUN apk update && apk upgrade && \
     echo @3.10 http://nl.alpinelinux.org/alpine/v3.10/community >> /etc/apk/repositories && \
     echo @3.10 http://nl.alpinelinux.org/alpine/v3.10/main >> /etc/apk/repositories && \
-    apk add --no-cache \
-    chromium@3.10=~73.0.3683.103 \
-    nss@3.10 \
-    freetype@3.10 \
-    freetype-dev@3.10 \
-    harfbuzz@3.10 \
-    ttf-freefont@3.10
+    apk add --no-cache 
 
 
 ENV TZ="Asia/Jakarta"
