@@ -4,6 +4,9 @@
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
 FROM node:16-alpine as builder
 
+# Update the package lists and install lsb-release
+RUN apt-get update && apt-get install -y lsb-release
+
 ENV TZ="Asia/Jakarta"
 
 # set working directory
@@ -42,6 +45,9 @@ CMD ["npm", "start"]
 # Nginx is used to develop server-side applications. So the first step is to import Nginx. 
 FROM nginx:1.19.0
 
+# Update the package lists and install lsb-release
+RUN apt-get update && apt-get install -y lsb-release
+
 ENV TZ="Asia/Jakarta"
 
 # Then we are going to create and set a new working directory in our new image.
@@ -78,11 +84,11 @@ ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
 # ## Jenkins Configuration
 
-FROM jenkins/jenkins:latest
+# FROM jenkins/jenkins:latest
 
-USER root
+# USER root
 
-RUN apt-get update && apt-get install -y lsb-release
+# RUN apt-get update && apt-get install -y lsb-release
 
 # RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
 #   https://download.docker.com/linux/debian/gpg
