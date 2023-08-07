@@ -7,7 +7,7 @@ FROM node:16 as builder
 RUN apt-get update && apt-get upgrade && \
     # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories && \
     # echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories && \
-    apk-get install --no-cache 
+    apt-get install --no-cache 
 
 
 ENV TZ="Asia/Jakarta"
