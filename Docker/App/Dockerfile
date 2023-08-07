@@ -5,8 +5,8 @@
 FROM node:16-alpine as builder
 
 RUN apk update && apk upgrade && \
-    echo @latest-stable http://nl.alpinelinux.org/alpine/v3.10/community >> /etc/apk/repositories && \
-    echo @latest-stable http://nl.alpinelinux.org/alpine/v3.10/main >> /etc/apk/repositories && \
+    echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/community >> /etc/apk/repositories && \
+    echo @latest-stable http://nl.alpinelinux.org/alpine/latest-stable/main >> /etc/apk/repositories && \
     apk add --no-cache 
 
 
