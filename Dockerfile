@@ -2,12 +2,12 @@
 
 # pull official base image 
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
-FROM node:carbon as builder
+FROM node:16-alpine as builder
 
 # Update the package lists and install lsb-release
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
+RUN apk update && \
+    apk upgrade -y && \
+    apk -y install --no-cache autoconf automake libtool nasm make pkg-config git apt-utils
 
 ENV TZ="Asia/Jakarta"
 
