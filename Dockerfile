@@ -5,8 +5,8 @@
 FROM node:16.11.1-bullseye as builder
 
 # Update the package lists and install lsb-release
-RUN apt-get update && apt-get upgrade && \
-    apt-get --no-cache 
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y --no-cache 
 
 ENV TZ="Asia/Jakarta"
 
