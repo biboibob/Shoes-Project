@@ -30,7 +30,7 @@ RUN npm install
 # After that, we need to copy the rest of the content to the working directory 
 COPY . . 
 
-# Then we do a build with yarn build 
+# Then we do a build with yarn builds
 RUN npm run build
 
 
