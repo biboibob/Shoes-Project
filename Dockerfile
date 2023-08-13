@@ -2,12 +2,11 @@
 
 # pull official base image 
 # Although react is not a node application, it needs to use node to build the application. So as the first step, we have to import node.
-FROM node:16-alpine as builder
+FROM node:16.11.1-bullseye as builder
 
 # Update the package lists and install lsb-release
-RUN apk update && \
-    apk upgrade && \
-    apk add
+RUN apt-get update && apt-get upgrade && \
+    apt-get --no-cache 
 
 ENV TZ="Asia/Jakarta"
 
