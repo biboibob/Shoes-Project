@@ -33,7 +33,7 @@ pipeline {
                     // Adding Image for Network (-f represent file path location)
                     // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
                     
-                    // sh script: 'docker image'
+                    // sh script: 'docker images'
                     sh scrpit: 'docker rmi shoes-project-react-app'
                     sh script: 'docker build --no-cache -t shoes-project-react-app -f ./Docker/App/Dockerfile  .'
                 }
