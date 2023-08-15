@@ -32,7 +32,6 @@ COPY . .
 # Then we do a build with yarn builds test
 RUN npm run build
 
-
 # start app 
 CMD ["npm", "start"]
 
@@ -54,9 +53,6 @@ RUN rm -rf ./*
 
 # Then we need to copy the 1st stage’s static resources onto the current image 
 COPY --from=builder /app/build .
-
-# Expose the port.
-EXPOSE 3030
 
 # Finally, we need to give instructions to run the application inside the container with ENTRYPOINT. For this, we have to use an array of strings.
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
