@@ -51,7 +51,7 @@ pipeline {
               steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: 'chmod +x docker push shoes-project-react-app'
+                    sh script: ' docker push -u shoes-project-react-app'
                 }
             }
         }
