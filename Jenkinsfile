@@ -13,7 +13,7 @@ pipeline {
     //     }
     // }
     environment {
-        CI = 'true'
+       DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
     }
     stages {
         stage("Build") {
@@ -21,12 +21,12 @@ pipeline {
                 sh "npm install"
             }
         }
-        stage('Test') {
-            steps {
-                // Chmod means you run on highest user (probably admin)
-                sh 'chmod +x ./Jenkins/scripts/test.sh'
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         // Chmod means you run on highest user (probably admin)
+        //         sh 'chmod +x ./Jenkins/scripts/test.sh'
+        //     }
+        // }
         stage("Building Image") {
             steps {
                 script {
@@ -39,22 +39,29 @@ pipeline {
                 }
             }
         }
-        
-        // stage("Check Availability") {
-        //     steps {
-        //         script {
-        //             sh script: 'docker --version'
-        //             sh script: 'node --version'
-        //             sh script: 'npm --version'
-        //             sh script: 'docker ps'
-        //         }
-        //     }
-        // }
+        stage('login') {
+              steps {
+                // try login to dockerhub with environtment we declare above
+               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('push') {
+              steps {
+                // try login to dockerhub with environtment we declare above
+               sh 'docker push shoes-project-react-app'
+            }
+        }
         stage("Checking Images In Registry") {
             steps {
                 script {
                     sh script: 'docker images'
                 }
+            }
+        }
+        post {
+            always {
+                //Command to Logout Docker after do several stages above
+                sh 'docker logout'
             }
         }
        
