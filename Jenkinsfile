@@ -94,11 +94,12 @@ pipeline {
         //     }
         // }
       
-    }
+        }
     // post {
     //     always {
     //         //Command to Logout Docker after do several stages above
     //         sh 'docker logout'
     //     }
     // }
+    }
 }
