@@ -35,7 +35,6 @@ pipeline {
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
                     dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'\
-                    echo 'Build Image Completed'
                 }
             }
         }
@@ -44,7 +43,6 @@ pipeline {
                 script {
                     // try login to dockerhub with environtment we declare above
                     sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    echo 'Login Succeed'
                 }
             }
         }
@@ -53,7 +51,7 @@ pipeline {
                 script {
                     // try login to dockerhub with environtment we declare above
                     sh script: 'sudo docker push shoes-project-react-app'
-                    echo 'Push Image Completed'
+
                 // docker.withRegistry('', registryCredential) {
                 //     dockerImage.push()
                 // }
