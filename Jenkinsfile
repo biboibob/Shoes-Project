@@ -12,9 +12,7 @@ pipeline {
     //     }
     // }
     environment {
-        registryCredential = 'biboibob-dockerhub'
-        dockerImage = ''
-    //    DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
     }
     stages {
         stage('Build') {
@@ -36,7 +34,8 @@ pipeline {
 
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
+                    dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'\
+                    echo 'Build Image Completed'
                 }
             }
         }
@@ -44,7 +43,8 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    echo 'Login Succeed'
                 }
             }
         }
@@ -52,13 +52,13 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    // sh script: ' docker push shoes-project-react-app'
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push()
-                    }
+                    sh script: 'sudo docker push shoes-project-react-app'
+                    echo 'Push Image Completed'
+                // docker.withRegistry('', registryCredential) {
+                //     dockerImage.push()
+                // }
                 }
             }
-
         }
         stage('Checking Images In Registry') {
                 steps {
@@ -67,11 +67,11 @@ pipeline {
                     }
                 }
         }
-    // post {
-    //     always {
-    //         //Command to Logout Docker after do several stages above
-    //         sh 'docker logout'
-    //     }
-    // }
+        post {
+            always {
+                //Command to Logout Docker after do several stages above
+                sh 'docker logout'
+            }
+        }
     }
 }
