@@ -27,18 +27,18 @@ pipeline {
         //         sh 'chmod +x ./Jenkins/scripts/test.sh'
         //     }
         // }
-        // stage("Building Image") {
-        //     steps {
-        //         script {
-        //             // Adding Image for Network (-f represent file path location)
-        //             // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
+        stage("Building Image") {
+            steps {
+                script {
+                    // Adding Image for Network (-f represent file path location)
+                    // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
                     
-        //             // sh script: 'docker images'
-        //             sh scrpit: 'docker image rm shoes-project-react-app'
-        //             sh script: 'docker build --no-cache -t shoes-project-react-app -f ./Docker/App/Dockerfile  .'
-        //         }
-        //     }
-        // }
+                    // sh script: 'docker images'
+                    // sh scrpit: 'docker image rm shoes-project-react-app'
+                    sh script: 'docker build --no-cache -t shoes-project-react-app -f ./Docker/App/Dockerfile  .'
+                }
+            }
+        }
         stage('login') {
               steps {
                 script {
@@ -47,21 +47,21 @@ pipeline {
                 }
             }
         }
-        // stage('push') {
-        //       steps {
-        //         script {
-        //             // try login to dockerhub with environtment we declare above
-        //             sh script: 'docker push shoes-project-react-app'
-        //         }
-        //     }
-        // }
-        // stage("Checking Images In Registry") {
-        //     steps {
-        //         script {
-        //             sh script: 'docker images'
-        //         }
-        //     }
-        // }
+        stage('push') {
+              steps {
+                script {
+                    // try login to dockerhub with environtment we declare above
+                    sh script: 'docker push shoes-project-react-app'
+                }
+            }
+        }
+        stage("Checking Images In Registry") {
+            steps {
+                script {
+                    sh script: 'docker images'
+                }
+            }
+        }
         
        
         // stage("Build Docker Image Network") {
