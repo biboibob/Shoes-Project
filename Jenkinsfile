@@ -34,7 +34,7 @@ pipeline {
 
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'\
+                    sh script: 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'\
                 }
             }
         }
@@ -59,11 +59,11 @@ pipeline {
             }
         }
         stage('Checking Images In Registry') {
-                steps {
-                    script {
-                        sh script: 'docker images'
-                    }
+            steps {
+                script {
+                    sh script: 'docker images'
                 }
+            }
         }
     }
     post {
