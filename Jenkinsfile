@@ -58,12 +58,7 @@ pipeline {
                 }
             }
         }
-        post {
-            always {
-                //Command to Logout Docker after do several stages above
-                sh 'docker logout'
-            }
-        }
+        
        
         // stage("Build Docker Image Network") {
         //     steps {
@@ -91,5 +86,11 @@ pipeline {
         //     }
         // }
       
+    }
+    post {
+        always {
+            //Command to Logout Docker after do several stages above
+            sh 'docker logout'
+        }
     }
 }
