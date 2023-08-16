@@ -1,8 +1,7 @@
 pipeline {
-
     agent any
 
-    tools {nodejs "node"}
+    tools { nodejs 'node' }
 
     // agent { dockerfile true }
 
@@ -18,9 +17,9 @@ pipeline {
     //    DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
     }
     stages {
-        stage("Build") {
+        stage('Build') {
             steps {
-                sh "npm install"
+                sh 'npm install'
             }
         }
         // stage('Test') {
@@ -29,12 +28,12 @@ pipeline {
         //         sh 'chmod +x ./Jenkins/scripts/test.sh'
         //     }
         // }
-        stage("Building Image") {
+        stage('Building Image') {
             steps {
                 script {
                     // Adding Image for Network (-f represent file path location)
                     // sh script: 'docker container exec -it docker-jenkins-shoes-c bash'
-                    
+
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
                     dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
@@ -42,7 +41,7 @@ pipeline {
             }
         }
         stage('login') {
-              steps {
+            steps {
                 script {
                     // try login to dockerhub with environtment we declare above
                     sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -50,29 +49,28 @@ pipeline {
             }
         }
         stage('Deploy Image') {
-              steps {
+            steps {
                 script {
                     // try login to dockerhub with environtment we declare above
                     // sh script: ' docker push shoes-project-react-app'
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
                 }
             }
-        }
-        stage("Checking Images In Registry") {
-            steps {
-                script {
-                    sh script: 'docker images'
+            stage('Checking Images In Registry') {
+                steps {
+                    script {
+                        sh script: 'docker images'
+                    }
                 }
             }
-        }
-        
-       
+
         // stage("Build Docker Image Network") {
         //     steps {
         //         script {
         //             // Adding Image for Network (-f represent file path location)
-        //             sh script: 'docker build --network host -t docker-jenkins-shoes-i .' 
+        //             sh script: 'docker build --network host -t docker-jenkins-shoes-i .'
         //         }
         //     }
         // }
@@ -88,12 +86,11 @@ pipeline {
         //             // Pushing Tagging Port to Docker
         //             sh script: 'docker push localhost:5000/shoes-project-react-app'
 
-        //             // Remove Existing shoes-project 
+        //             // Remove Existing shoes-project
         //             sh script: 'docker rmi -f shoes-project-react-app localhost:5000/shoes-project-react-app'
         //         }
         //     }
         // }
-      
         }
     // post {
     //     always {
