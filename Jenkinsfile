@@ -41,14 +41,18 @@ pipeline {
         }
         stage('login') {
               steps {
-                // try login to dockerhub with environtment we declare above
-               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                script {
+                    // try login to dockerhub with environtment we declare above
+                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
             }
         }
         stage('push') {
               steps {
-                // try login to dockerhub with environtment we declare above
-               sh 'docker push shoes-project-react-app'
+                script {
+                    // try login to dockerhub with environtment we declare above
+                    sh script: 'docker push shoes-project-react-app'
+                }
             }
         }
         stage("Checking Images In Registry") {
