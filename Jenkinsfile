@@ -13,7 +13,9 @@ pipeline {
     //     }
     // }
     environment {
-       DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
+        registryCredential = 'biboibob-dockerhub'
+        dockerImage = ''
+    //    DOCKERHUB_CREDENTIALS = credentials('biboibob-dockerhub')
     }
     stages {
         stage("Build") {
@@ -35,7 +37,7 @@ pipeline {
                     
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    sh script: 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
+                    dockerImage = 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
                 }
             }
         }
@@ -47,11 +49,13 @@ pipeline {
                 }
             }
         }
-        stage('push') {
+        stage('Deploy Image') {
               steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: ' docker push shoes-project-react-app'
+                    // sh script: ' docker push shoes-project-react-app'
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
                 }
             }
         }
