@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: 'sudo docker push shoes-project-react-app'
+                    sh script: 'docker push shoes-project-react-app'
 
                 // docker.withRegistry('', registryCredential) {
                 //     dockerImage.push()
