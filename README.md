@@ -4,7 +4,7 @@ This Tutorial should help you to configure the initial setup for docker and jenk
 2. Docker desktop installed in your desktop
 3. Using JDK-17 above
 
-## Step 1 - Initalize your Dockerfile 📂
+## Step 1 - Initialize your Dockerfile 📂
 
 ### Making an Directory path for your dockerfile
 So if you've a react app, to make it more clean and accessable you could make a new folder called dockerfile on your source code, and make a few folder inside of it like JenkinsBuild, Docker, etc. The purpose of this step is to make our code segmentation for docker it self. Here's what it looks like 
@@ -29,7 +29,8 @@ docker network create jenkins
 
 ### Run a docker:dind Docker image
 
-```docker run --name jenkins-docker --rm --detach ^
+```
+  docker run --name jenkins-docker --rm --detach ^
   --privileged --network jenkins --network-alias docker ^
   --env DOCKER_TLS_CERTDIR=/certs ^
   --volume jenkins-docker-certs:/certs/client ^
