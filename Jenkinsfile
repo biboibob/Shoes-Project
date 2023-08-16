@@ -1,3 +1,4 @@
+/* groovylint-disable CompileStatic, LineLength */
 pipeline {
     agent any
 
@@ -34,7 +35,7 @@ pipeline {
 
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    sh script: 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'\
+                    sh script: 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
                 }
             }
         }
