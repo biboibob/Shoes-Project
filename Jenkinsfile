@@ -35,7 +35,7 @@ pipeline {
 
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    sh script: 'docker build --no-cache -t shoes-project-react-app:$(git rev-parse --short HEAD) -f ./Docker/App/Dockerfile  .'
+                    sh script: 'docker build --no-cache -t shoes-project-react-app -f ./Docker/App/Dockerfile  .'
                 }
             }
         }
@@ -51,7 +51,8 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: 'docker push biboibob/shoes-project-react-app:$(git rev-parse --short HEAD)'
+                    //  Left is Reponame and Right is Image Name along with the tag
+                    sh script: 'docker push biboibob/shoes-project-react-app'
 
                 // docker.withRegistry('', registryCredential) {
                 //     dockerImage.push()
