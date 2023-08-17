@@ -43,8 +43,7 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    // sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin docker.io'
-                    sh script: 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW docker.io'
+                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
         }
@@ -52,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: 'docker push shoes-project-react-app:$(git rev-parse --short HEAD)'
+                    sh script: 'docker push biboibob/shoes-project-react-app:$(git rev-parse --short HEAD)'
 
                 // docker.withRegistry('', registryCredential) {
                 //     dockerImage.push()
