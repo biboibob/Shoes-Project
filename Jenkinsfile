@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh script:'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin docker.io'
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // try login to dockerhub with environtment we declare above
-                    sh script: 'docker push shoes-project-react-app'
+                    sh script: 'docker push shoes-project-react-app:$(git rev-parse --short HEAD)'
 
                 // docker.withRegistry('', registryCredential) {
                 //     dockerImage.push()
