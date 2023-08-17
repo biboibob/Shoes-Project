@@ -35,7 +35,7 @@ pipeline {
 
                     // sh script: 'docker images'
                     // sh scrpit: 'docker image rm shoes-project-react-app'
-                    sh script: 'docker build --no-cache -t shoes-project-react-app -f ./Docker/App/Dockerfile  .'
+                    sh script: 'docker build --no-cache -t biboibob/shoes-project-react-app -f ./Docker/App/Dockerfile  .'
                 }
             }
         }
