@@ -168,6 +168,7 @@ And then there's Plugins option in system configuration section. Click it
 * Node JS
 * Docker 
 * Job Configuration History Plugin (This Plugin Need to Restore some pipeline removed accidently)
+* Docker Pipeline
 
 > ![image](https://github.com/biboibob/Shoes-Project/assets/75656538/dec6bfa8-4f90-4838-a99e-393e7c80366c)
 
